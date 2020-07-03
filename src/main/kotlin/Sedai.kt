@@ -1,17 +1,14 @@
 package app.fourdrin.sedai
 
-import app.fourdrin.sedai.ftp.Worker
+import app.fourdrin.sedai.ftp.FTPWorker
 import io.grpc.ServerBuilder
 import org.apache.curator.framework.CuratorFramework
 import org.apache.curator.framework.CuratorFrameworkFactory
-import org.apache.curator.framework.imps.CuratorFrameworkState
 import org.apache.curator.framework.recipes.leader.CancelLeadershipException
 import org.apache.curator.framework.recipes.leader.LeaderSelector
 import org.apache.curator.framework.recipes.leader.LeaderSelectorListenerAdapter
 import org.apache.curator.retry.ExponentialBackoffRetry
 import org.apache.curator.utils.CloseableUtils
-import java.io.Closeable
-import java.net.ConnectException
 
 const val SEDAI_GRPC_SERVER_PORT = 50051
 const val SEDAI_ZK_CONNECTION_STRING = "localhost:2181"
@@ -68,11 +65,11 @@ class Sedai : LeaderSelectorListenerAdapter() {
 
     override fun takeLeadership(client: CuratorFramework?) {
         try {
-            println("This instance of Sedai is currently the leader")
-            Worker.start()
+            println("This instance of Sedai is currently the leader. I will be managing the FTP server.")
+            FTPWorker.start()
         } catch (e: CancelLeadershipException) {
             println("This instance of Sedai is no longer the leader")
-            Worker.close()
+            FTPWorker.close()
         }
     }
 }
