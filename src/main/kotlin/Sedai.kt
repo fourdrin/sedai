@@ -1,41 +1,78 @@
 package app.fourdrin.sedai
 
 import app.fourdrin.sedai.ftp.Worker
-import io.grpc.Server
 import io.grpc.ServerBuilder
 import org.apache.curator.framework.CuratorFramework
+import org.apache.curator.framework.CuratorFrameworkFactory
+import org.apache.curator.framework.imps.CuratorFrameworkState
+import org.apache.curator.framework.recipes.leader.CancelLeadershipException
+import org.apache.curator.framework.recipes.leader.LeaderSelector
 import org.apache.curator.framework.recipes.leader.LeaderSelectorListenerAdapter
+import org.apache.curator.retry.ExponentialBackoffRetry
+import org.apache.curator.utils.CloseableUtils
 import java.io.Closeable
+import java.net.ConnectException
+
+const val SEDAI_GRPC_SERVER_PORT = 50051
+const val SEDAI_ZK_CONNECTION_STRING = "localhost:2181"
+const val SEDAI_ZK_LEADERSHIP_GROUP = "/fourdrin/sedai"
 
 fun main() {
-    // Configure the gRPC Server
-    val server = ServerBuilder
-        .forPort(50051)
-        .build()
-
     // Initialize the service
-    val service = Sedai.initService(server)
-    service.start()
+    val service = Sedai.initService()
+
+    // Start up everything
+    try {
+        service.start()
+    } catch (e: Exception) {
+        println(e)
+        service.shutdown()
+    }
+
 }
 
-class Sedai constructor(private val gRPCServer: Server) : LeaderSelectorListenerAdapter(), Closeable {
+class Sedai : LeaderSelectorListenerAdapter() {
+    private val grpcServer = ServerBuilder
+        .forPort(SEDAI_GRPC_SERVER_PORT)
+        .build()
+
+    private val client: CuratorFramework = CuratorFrameworkFactory.newClient(
+        SEDAI_ZK_CONNECTION_STRING,
+        ExponentialBackoffRetry(1000, 3)
+    )
+
+    private val leaderSelector = LeaderSelector(client, SEDAI_ZK_LEADERSHIP_GROUP, this)
+
     companion object {
-        fun initService(gRPCServer: Server): Sedai {
-            return Sedai(gRPCServer)
+        // Configure curator client and the leader selector
+        fun initService(): Sedai {
+            return Sedai()
         }
     }
 
     fun start() {
-        gRPCServer.start()
-        Worker.start()
-        gRPCServer.awaitTermination()
+        println("Starting up Sedai...determining leadership...")
+        client.start()
+
+        leaderSelector.start()
+        grpcServer.start()
+        grpcServer.awaitTermination()
     }
 
-    override fun close() {
-        gRPCServer.shutdown()
+    fun shutdown() {
+        println("Shutting down Sedai...")
+        grpcServer.shutdown()
+        CloseableUtils.closeQuietly(client)
+        CloseableUtils.closeQuietly(leaderSelector)
     }
 
     override fun takeLeadership(client: CuratorFramework?) {
-        Worker.start()
+        try {
+            println("This instance of Sedai is currently the leader")
+            Worker.start()
+        } catch (e: CancelLeadershipException) {
+            println("This instance of Sedai is no longer the leader")
+            Worker.close()
+        }
     }
 }
