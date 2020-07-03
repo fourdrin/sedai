@@ -1,8 +1,7 @@
 package app.fourdrin.sedai.ftp.tasks
 
 import app.fourdrin.sedai.ftp.FTP_ROOT_DIRECTORY
-import app.fourdrin.sedai.ftp.FtpTask
-import app.fourdrin.sedai.ftp.PIPELINE_DIRECTORY
+import app.fourdrin.sedai.ftp.FtpRunnable
 import app.fourdrin.sedai.models.*
 import com.google.gson.Gson
 import kotlinx.coroutines.async
@@ -19,8 +18,8 @@ import java.util.concurrent.ConcurrentLinkedQueue
 const val ASSET_REGEX = ".(jpg|jpeg|epub)"
 const val MANIFEST_NAME = "manifest.json"
 
-class CheckpointTask constructor(private val s3Client: S3Client, private val queue: ConcurrentLinkedQueue<Work?>) :
-    FtpTask(s3Client) {
+class CheckpointRunnable constructor(override val s3Client: S3Client, private val queue: ConcurrentLinkedQueue<Work?>) :
+    FtpRunnable {
 
     override fun run() {
         runBlocking {

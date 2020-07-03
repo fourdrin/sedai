@@ -1,17 +1,15 @@
 package app.fourdrin.sedai.ftp.tasks
 
 import app.fourdrin.sedai.ftp.FTP_ROOT_DIRECTORY
-import app.fourdrin.sedai.ftp.FtpTask
+import app.fourdrin.sedai.ftp.FtpRunnable
 import app.fourdrin.sedai.ftp.PIPELINE_DIRECTORY
 import app.fourdrin.sedai.models.Account
 import app.fourdrin.sedai.models.Manifest
 import app.fourdrin.sedai.models.Work
 import com.google.gson.Gson
-import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import software.amazon.awssdk.core.sync.ResponseTransformer
 import software.amazon.awssdk.services.s3.S3Client
@@ -19,7 +17,7 @@ import software.amazon.awssdk.services.s3.model.CopyObjectRequest
 import software.amazon.awssdk.services.s3.model.DeleteObjectRequest
 import software.amazon.awssdk.services.s3.model.GetObjectRequest
 
-class FileSyncTask constructor(private val work: Work, private val s3Client: S3Client) : FtpTask(s3Client) {
+class FileSyncRunnable constructor(override val s3Client: S3Client, private val work: Work) : FtpRunnable {
 
     override fun run() {
         // Open the manifest file

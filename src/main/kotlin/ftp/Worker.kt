@@ -1,11 +1,8 @@
 package app.fourdrin.sedai.ftp
 
-import app.fourdrin.sedai.ftp.tasks.CheckpointTask
-import app.fourdrin.sedai.ftp.tasks.FileSyncTask
+import app.fourdrin.sedai.ftp.tasks.CheckpointRunnable
+import app.fourdrin.sedai.ftp.tasks.FileSyncRunnable
 import app.fourdrin.sedai.models.Work
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.asCoroutineDispatcher
-import kotlinx.coroutines.launch
 import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider
 import software.amazon.awssdk.regions.Region
 import software.amazon.awssdk.services.s3.S3Client
@@ -30,13 +27,13 @@ object Worker : Closeable {
 
     fun start() {
         // Schedule checkpoint tasks, which kick off the book load process by getting the current "state" of the FTP server
-        checkpointExecutor.scheduleAtFixedRate(CheckpointTask(s3Client, workQueue) , 0, 60, TimeUnit.SECONDS)
+        checkpointExecutor.scheduleAtFixedRate(CheckpointRunnable(s3Client, workQueue) , 0, 60, TimeUnit.SECONDS)
 
         // Schedule a task to read from the work queue, which triggers moving files off the FTP server into the book load folder
         fileSyncExecutor.scheduleAtFixedRate({
             val work = workQueue.poll()
             if (work != null) {
-                FileSyncTask(work, s3Client).run()
+                FileSyncRunnable(s3Client, work).run()
             }
         }, 0, 10, TimeUnit.SECONDS)
     }
