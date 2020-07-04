@@ -1,12 +1,19 @@
 package app.fourdrin.sedai.ftp.tasks
 
+import app.fourdrin.sedai.SEDAI_GRPC_SERVER_HOST
+import app.fourdrin.sedai.SEDAI_GRPC_SERVER_PORT
 import app.fourdrin.sedai.ftp.FTP_ROOT_DIRECTORY
 import app.fourdrin.sedai.ftp.FtpRunnable
 import app.fourdrin.sedai.ftp.PIPELINE_DIRECTORY
+import app.fourdrin.sedai.loader.LoaderClient
 import app.fourdrin.sedai.models.Account
 import app.fourdrin.sedai.models.Manifest
+import app.fourdrin.sedai.models.FTPWork
 import app.fourdrin.sedai.models.Work
 import com.google.gson.Gson
+import io.grpc.ManagedChannelBuilder
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.asExecutor
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
@@ -17,7 +24,14 @@ import software.amazon.awssdk.services.s3.model.CopyObjectRequest
 import software.amazon.awssdk.services.s3.model.DeleteObjectRequest
 import software.amazon.awssdk.services.s3.model.GetObjectRequest
 
-class FileSyncRunnable constructor(override val s3Client: S3Client, private val work: Work) : FtpRunnable {
+class FileSyncRunnable constructor(override val s3Client: S3Client, private val work: FTPWork) : FtpRunnable {
+
+    private val loaderClient = LoaderClient(
+        ManagedChannelBuilder.forAddress(SEDAI_GRPC_SERVER_HOST, SEDAI_GRPC_SERVER_PORT)
+            .usePlaintext()
+            .executor(Dispatchers.Default.asExecutor())
+            .build()
+    )
 
     override fun run() {
         // Open the manifest file
@@ -31,11 +45,16 @@ class FileSyncRunnable constructor(override val s3Client: S3Client, private val 
         val account = json.accounts[work.accountName]
 
         // Move over things specified in the manifest file from this account's FTP folder to the data pipeline folder
-        // TODO: Emit the synced file to Kafka so downstream consumers can begin to process this file
         if (account != null) {
             runBlocking {
-                syncFile(account).collect {
-                        syncedFile -> println(syncedFile)
+                syncFile(account).collect { s3Key ->
+                    var assetType = LoaderServiceOuterClass.AssetType.UNRECOGNIZED
+                    if (s3Key.endsWith(".xml")) {
+                        assetType = LoaderServiceOuterClass.AssetType.METADATA
+                    }
+
+
+                    loaderClient.createLoad(s3Key, assetType)
                 }
             }
         }
@@ -63,11 +82,9 @@ class FileSyncRunnable constructor(override val s3Client: S3Client, private val 
                     .key(metadataFile)
                     .build()
 
-                s3Client.deleteObject(deleteRequest)
-
-                emit("${PIPELINE_DIRECTORY}/${metadataFile}")
+                // s3Client.deleteObject(deleteRequest)
+                emit(destination)
             } catch (e: Exception) {
-                println(e)
             }
         }
     }

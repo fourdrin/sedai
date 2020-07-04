@@ -4,8 +4,9 @@ data class Manifest(val id: String, val startedAt: String, val accounts: Map<Str
 data class Account(val name: String, val metadataFiles: List<String?> = listOf(), val assetFiles: Map<String, Asset> = hashMapOf())
 
 enum class AssetType {
+    METADATA,
     EPUB,
-    COVER
+    COVER,
 }
 
 typealias Asset = Map<AssetType, String?>

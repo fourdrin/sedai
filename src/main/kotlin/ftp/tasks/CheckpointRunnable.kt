@@ -1,5 +1,6 @@
 package app.fourdrin.sedai.ftp.tasks
 
+import app.fourdrin.sedai.ftp.FTPWorkerWithQueue
 import app.fourdrin.sedai.ftp.FTP_ROOT_DIRECTORY
 import app.fourdrin.sedai.ftp.FtpRunnable
 import app.fourdrin.sedai.models.*
@@ -18,7 +19,7 @@ import java.util.concurrent.ConcurrentLinkedQueue
 const val ASSET_REGEX = ".(jpg|jpeg|epub)"
 const val MANIFEST_NAME = "manifest.json"
 
-class CheckpointRunnable constructor(override val s3Client: S3Client, private val queue: ConcurrentLinkedQueue<Work?>) :
+class CheckpointRunnable constructor(override val s3Client: S3Client) :
     FtpRunnable {
 
     override fun run() {
@@ -56,7 +57,6 @@ class CheckpointRunnable constructor(override val s3Client: S3Client, private va
                 }
             }
             job.join()
-            println(accounts)
 
 
             val manifest = Manifest(id, startedAt.toString(), accounts.toMap())
@@ -77,13 +77,13 @@ class CheckpointRunnable constructor(override val s3Client: S3Client, private va
                 val account = accounts[accountKey]
 
                 if (account != null) {
-                    val work = Work(
+                    val work = FTPWork(
                         id,
                         accountName = accountKey,
                         manifestName = MANIFEST_NAME
                     )
 
-                    queue.add(work)
+                    FTPWorkerWithQueue.workerQueue.add(work)
                 }
             }
         }
@@ -148,7 +148,6 @@ private suspend fun buildAssetFiles(accountKey: String, s3Objects: List<S3Object
         }
         .forEach() { key ->
             val isbn = key.replace(matcher, "").replace(accountS3Key, "")
-            println(key)
             val assetType =  if (key.matches(matcher)) AssetType.COVER else AssetType.EPUB
 
             // Check if we've seen this asset before (i.e. the cover but not the epub and vice versa).
