@@ -3,7 +3,6 @@ package app.fourdrin.sedai.ftp.tasks
 import app.fourdrin.sedai.ftp.FTPWorkerWithQueue
 import app.fourdrin.sedai.SEDAI_FTP_ROOT_DIRECTORY
 import app.fourdrin.sedai.SEDAI_MANIFEST_NAME
-import app.fourdrin.sedai.ftp.FtpRunnable
 import app.fourdrin.sedai.models.*
 import com.google.gson.Gson
 import kotlinx.coroutines.async

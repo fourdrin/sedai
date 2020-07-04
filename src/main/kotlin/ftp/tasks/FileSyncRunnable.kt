@@ -3,7 +3,6 @@ package app.fourdrin.sedai.ftp.tasks
 import app.fourdrin.sedai.SEDAI_GRPC_SERVER_HOST
 import app.fourdrin.sedai.SEDAI_GRPC_SERVER_PORT
 import app.fourdrin.sedai.SEDAI_FTP_ROOT_DIRECTORY
-import app.fourdrin.sedai.ftp.FtpRunnable
 import app.fourdrin.sedai.SEDAI_PIPELINE_DIRECTORY
 import app.fourdrin.sedai.loader.LoaderClient
 import app.fourdrin.sedai.models.Account
@@ -23,7 +22,8 @@ import software.amazon.awssdk.services.s3.model.CopyObjectRequest
 import software.amazon.awssdk.services.s3.model.DeleteObjectRequest
 import software.amazon.awssdk.services.s3.model.GetObjectRequest
 
-class FileSyncRunnable constructor(override val s3Client: S3Client, private val work: FTPWork) : FtpRunnable {
+class FileSyncRunnable constructor(override val s3Client: S3Client, private val work: FTPWork) :
+    FtpRunnable {
 
     private val loaderClient = LoaderClient(
         ManagedChannelBuilder.forAddress(SEDAI_GRPC_SERVER_HOST, SEDAI_GRPC_SERVER_PORT)

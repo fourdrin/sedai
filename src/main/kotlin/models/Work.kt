@@ -1,5 +1,18 @@
 package app.fourdrin.sedai.models
 
+
+enum class AssetType {
+    METADATA,
+    EPUB,
+    COVER,
+}
+
+enum class MetadataVersion {
+    TWO,
+    THREE,
+    UNKNOWN
+}
+
 sealed class Work {
     abstract val id: String
 }
@@ -18,5 +31,6 @@ data class FTPWork(
 
 data class LoaderWork(
     override val id: String,
-    val assetType: AssetType
+    val assetType: AssetType,
+    val metadataVersion: MetadataVersion = MetadataVersion.UNKNOWN
 ) : Work()
