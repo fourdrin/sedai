@@ -13,14 +13,6 @@ import org.apache.curator.framework.recipes.leader.LeaderSelectorListenerAdapter
 import org.apache.curator.retry.ExponentialBackoffRetry
 import org.apache.curator.utils.CloseableUtils
 
-const val SEDAI_GRPC_SERVER_HOST = "localhost"
-const val SEDAI_GRPC_SERVER_PORT = 50051
-const val SEDAI_ZK_CONNECTION_STRING = "localhost:2181"
-const val SEDAI_ZK_LEADERSHIP_GROUP = "/fourdrin/sedai"
-const val SEDAI_FTP_ROOT_DIRECTORY = "books-ftp"
-const val SEDAI_PIPELINE_DIRECTORY = "books-data-pipeline"
-const val SEDAI_MANIFEST_NAME = "manifest.json"
-
 fun main() {
     // Initialize the service
     val service = Sedai.initService()
