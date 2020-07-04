@@ -12,9 +12,6 @@ import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
 
-const val FTP_ROOT_DIRECTORY = "books-ftp"
-const val PIPELINE_DIRECTORY = "books-data-pipeline"
-
 object FTPWorkerWithQueue : WorkerWithQueue<FTPWork> {
     private val checkpointExecutor = Executors.newSingleThreadScheduledExecutor()
     private val fileSyncExecutor = Executors.newSingleThreadScheduledExecutor()

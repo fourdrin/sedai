@@ -1,7 +1,8 @@
 package app.fourdrin.sedai.ftp.tasks
 
 import app.fourdrin.sedai.ftp.FTPWorkerWithQueue
-import app.fourdrin.sedai.ftp.FTP_ROOT_DIRECTORY
+import app.fourdrin.sedai.SEDAI_FTP_ROOT_DIRECTORY
+import app.fourdrin.sedai.SEDAI_MANIFEST_NAME
 import app.fourdrin.sedai.ftp.FtpRunnable
 import app.fourdrin.sedai.models.*
 import com.google.gson.Gson
@@ -14,10 +15,8 @@ import software.amazon.awssdk.services.s3.model.ListObjectsV2Request
 import software.amazon.awssdk.services.s3.model.PutObjectRequest
 import software.amazon.awssdk.services.s3.model.S3Object
 import java.time.Instant
-import java.util.concurrent.ConcurrentLinkedQueue
 
 const val ASSET_REGEX = ".(jpg|jpeg|epub)"
-const val MANIFEST_NAME = "manifest.json"
 
 class CheckpointRunnable constructor(override val s3Client: S3Client) :
     FtpRunnable {
@@ -28,7 +27,7 @@ class CheckpointRunnable constructor(override val s3Client: S3Client) :
 
             // Get all the top-level accounts on our "ftp" server
             val accountsRequest = ListObjectsV2Request.builder()
-                .bucket(FTP_ROOT_DIRECTORY)
+                .bucket(SEDAI_FTP_ROOT_DIRECTORY)
                 .delimiter("/")
                 .build()
 
@@ -45,7 +44,7 @@ class CheckpointRunnable constructor(override val s3Client: S3Client) :
             val id = startedAt.epochSecond.toString()
 
             // Set the key for the generated manifest file
-            val manifestKey = "${id}/${MANIFEST_NAME}"
+            val manifestKey = "${id}/$SEDAI_MANIFEST_NAME"
 
             // For each account, use a coroutine to record the current state of asset files and metadata files (e.g epubs and ONIX files)
             val job = launch {
@@ -80,7 +79,7 @@ class CheckpointRunnable constructor(override val s3Client: S3Client) :
                     val work = FTPWork(
                         id,
                         accountName = accountKey,
-                        manifestName = MANIFEST_NAME
+                        manifestName = SEDAI_MANIFEST_NAME
                     )
 
                     FTPWorkerWithQueue.workerQueue.add(work)
@@ -98,7 +97,7 @@ class CheckpointRunnable constructor(override val s3Client: S3Client) :
             var nextContinuationToken: String? = null
             val listRequest = ListObjectsV2Request.builder()
                 .bucket(
-                    FTP_ROOT_DIRECTORY
+                    SEDAI_FTP_ROOT_DIRECTORY
                 )
                 .prefix(accountKey)
                 .continuationToken(nextContinuationToken)

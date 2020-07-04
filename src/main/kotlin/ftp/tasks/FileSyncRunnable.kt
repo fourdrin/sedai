@@ -2,14 +2,13 @@ package app.fourdrin.sedai.ftp.tasks
 
 import app.fourdrin.sedai.SEDAI_GRPC_SERVER_HOST
 import app.fourdrin.sedai.SEDAI_GRPC_SERVER_PORT
-import app.fourdrin.sedai.ftp.FTP_ROOT_DIRECTORY
+import app.fourdrin.sedai.SEDAI_FTP_ROOT_DIRECTORY
 import app.fourdrin.sedai.ftp.FtpRunnable
-import app.fourdrin.sedai.ftp.PIPELINE_DIRECTORY
+import app.fourdrin.sedai.SEDAI_PIPELINE_DIRECTORY
 import app.fourdrin.sedai.loader.LoaderClient
 import app.fourdrin.sedai.models.Account
 import app.fourdrin.sedai.models.Manifest
 import app.fourdrin.sedai.models.FTPWork
-import app.fourdrin.sedai.models.Work
 import com.google.gson.Gson
 import io.grpc.ManagedChannelBuilder
 import kotlinx.coroutines.Dispatchers
@@ -36,7 +35,7 @@ class FileSyncRunnable constructor(override val s3Client: S3Client, private val 
     override fun run() {
         // Open the manifest file
         val manifestRequest = GetObjectRequest.builder()
-            .bucket(PIPELINE_DIRECTORY)
+            .bucket(SEDAI_PIPELINE_DIRECTORY)
             .key(work.manifestS3Key)
             .build()
 
@@ -62,12 +61,12 @@ class FileSyncRunnable constructor(override val s3Client: S3Client, private val 
 
     private fun syncFile(account: Account): Flow<String> = flow {
         account.metadataFiles.forEach { metadataFile ->
-            val source = "${FTP_ROOT_DIRECTORY}/${metadataFile}"
+            val source = "$SEDAI_FTP_ROOT_DIRECTORY/${metadataFile}"
             val destination = "${work.id}/${metadataFile}"
             // Copy the file over
             val copyRequest = CopyObjectRequest.builder()
                 .copySource(source)
-                .destinationBucket(PIPELINE_DIRECTORY)
+                .destinationBucket(SEDAI_PIPELINE_DIRECTORY)
                 .destinationKey(destination)
                 .build()
 
@@ -78,11 +77,12 @@ class FileSyncRunnable constructor(override val s3Client: S3Client, private val 
                 // only load files when the publisher _actually_ uploads them to the FTP server.
 
                 val deleteRequest = DeleteObjectRequest.builder()
-                    .bucket(FTP_ROOT_DIRECTORY)
+                    .bucket(SEDAI_FTP_ROOT_DIRECTORY)
                     .key(metadataFile)
                     .build()
 
-                // s3Client.deleteObject(deleteRequest)
+                s3Client.deleteObject(deleteRequest)
+
                 emit(destination)
             } catch (e: Exception) {
             }
