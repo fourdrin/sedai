@@ -1,17 +1,14 @@
 package app.fourdrin.sedai.ftp.tasks
 
-import app.fourdrin.sedai.SEDAI_GRPC_SERVER_HOST
-import app.fourdrin.sedai.SEDAI_GRPC_SERVER_PORT
-import app.fourdrin.sedai.SEDAI_FTP_ROOT_DIRECTORY
-import app.fourdrin.sedai.SEDAI_PIPELINE_DIRECTORY
+import app.fourdrin.sedai.*
 import app.fourdrin.sedai.loader.LoaderClient
-import app.fourdrin.sedai.models.Account
-import app.fourdrin.sedai.models.Manifest
-import app.fourdrin.sedai.models.FTPWork
+import app.fourdrin.sedai.loader.LoaderWorkerWithQueue
+import app.fourdrin.sedai.models.*
 import com.google.gson.Gson
 import io.grpc.ManagedChannelBuilder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.asExecutor
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
@@ -24,13 +21,6 @@ import software.amazon.awssdk.services.s3.model.GetObjectRequest
 
 class FileSyncRunnable constructor(override val s3Client: S3Client, private val work: FTPWork) :
     FtpRunnable {
-
-    private val loaderClient = LoaderClient(
-        ManagedChannelBuilder.forAddress(SEDAI_GRPC_SERVER_HOST, SEDAI_GRPC_SERVER_PORT)
-            .usePlaintext()
-            .executor(Dispatchers.Default.asExecutor())
-            .build()
-    )
 
     override fun run() {
         // Open the manifest file
@@ -47,15 +37,28 @@ class FileSyncRunnable constructor(override val s3Client: S3Client, private val 
         if (account != null) {
             runBlocking {
                 syncFile(account).collect { s3Key ->
-                    var assetType = LoaderServiceOuterClass.AssetType.UNRECOGNIZED
+                    var assetType = AssetType.EPUB
                     if (s3Key.endsWith(".xml")) {
-                        assetType = LoaderServiceOuterClass.AssetType.METADATA
+                        assetType = AssetType.METADATA
                     }
+                    val work = LoaderWork(
+                        id = s3Key,
+                        assetType = assetType
+                    )
+                    LoaderWorkerWithQueue.workerQueue.add(work)
 
+                    /*
+                    val loaderClient = LoaderClient(
+                        ManagedChannelBuilder.forAddress(SEDAI_GRPC_SERVER_HOST, SEDAI_GRPC_SERVER_PORT)
+                            .usePlaintext()
+                            .build()
+                    )
 
-                    loaderClient.createLoad(s3Key, assetType)
+                    val result = async { loaderClient.createLoad(s3Key, assetType) }
+                     */
                 }
             }
+
         }
     }
 
@@ -76,16 +79,22 @@ class FileSyncRunnable constructor(override val s3Client: S3Client, private val 
                 // Delete it from the FTP folder.  This will prevent us from loading the same file multiple times and, instead,
                 // only load files when the publisher _actually_ uploads them to the FTP server.
 
-                val deleteRequest = DeleteObjectRequest.builder()
-                    .bucket(SEDAI_FTP_ROOT_DIRECTORY)
-                    .key(metadataFile)
-                    .build()
+                // HACK: Skip if the account is the "internal" account.  Ideally, deleting should be configured based on environment
+                if (account.name != SEDAI_INTERNAL_FTP_ACCOUNT_NAME) {
+                    val deleteRequest = DeleteObjectRequest.builder()
+                        .bucket(SEDAI_FTP_ROOT_DIRECTORY)
+                        .key(metadataFile)
+                        .build()
 
-                s3Client.deleteObject(deleteRequest)
+                    s3Client.deleteObject(deleteRequest)
+
+                }
 
                 emit(destination)
             } catch (e: Exception) {
             }
         }
+
+        // TODO: Sync assets
     }
 }

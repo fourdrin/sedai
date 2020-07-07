@@ -1,7 +1,6 @@
 package app.fourdrin.sedai.onix
 
-class VersionThreeParserStrategy: ParserStrategy {
+class ThreeLongParserStrategy: ParserStrategy {
     override fun parseMetadataFile(metadataFileKey: String) {
-        TODO("Not yet implemented")
     }
 }

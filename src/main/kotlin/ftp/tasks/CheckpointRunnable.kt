@@ -22,6 +22,7 @@ class CheckpointRunnable constructor(override val s3Client: S3Client) :
 
     override fun run() {
         runBlocking {
+            println("Establishing a new checkpoint...")
             val accounts = mutableMapOf<String, Account>()
 
             // Get all the top-level accounts on our "ftp" server

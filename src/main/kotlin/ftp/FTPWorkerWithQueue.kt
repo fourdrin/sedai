@@ -36,8 +36,8 @@ object FTPWorkerWithQueue : WorkerWithQueue<FTPWork> {
     }
 
     override fun close() {
-        checkpointExecutor.shutdown()
-        fileSyncExecutor.shutdown()
+        checkpointExecutor.awaitTermination(1, TimeUnit.MINUTES)
+        fileSyncExecutor.awaitTermination(10, TimeUnit.SECONDS)
     }
 }
 

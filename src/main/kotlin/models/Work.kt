@@ -8,8 +8,10 @@ enum class AssetType {
 }
 
 enum class MetadataVersion {
-    TWO,
-    THREE,
+    TWO_SHORT,
+    TWO_LONG,
+    THREE_SHORT,
+    THREE_LONG,
     UNKNOWN
 }
 

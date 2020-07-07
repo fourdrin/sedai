@@ -15,11 +15,10 @@ class LoaderClient constructor(private val channel: ManagedChannel) : Closeable 
             .setS3Key(s3Key)
             .setAssetType(assetType)
             .build()
-        val response = async { stub.createLoad(request) }
-        response.await()
+        async { stub.createLoad(request) }
     }
 
     override fun close() {
-        channel.shutdown().awaitTermination(5, TimeUnit.SECONDS)
+        channel.shutdown().awaitTermination(1, TimeUnit.MINUTES)
     }
 }
