@@ -1,5 +1,8 @@
 package app.fourdrin.sedai.models
 
+import app.fourdrin.sedai.models.onix.MetadataVersion
+import java.io.InputStream
+
 
 enum class AssetType {
     METADATA,
@@ -7,13 +10,6 @@ enum class AssetType {
     COVER,
 }
 
-enum class MetadataVersion {
-    TWO_SHORT,
-    TWO_LONG,
-    THREE_SHORT,
-    THREE_LONG,
-    UNKNOWN
-}
 
 sealed class Work {
     abstract val id: String
@@ -34,5 +30,6 @@ data class FTPWork(
 data class LoaderWork(
     override val id: String,
     val assetType: AssetType,
-    val metadataVersion: MetadataVersion = MetadataVersion.UNKNOWN
+    val metadataVersion: MetadataVersion,
+    val metadataFile: InputStream? = null
 ) : Work()

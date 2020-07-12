@@ -4,6 +4,7 @@ import app.fourdrin.sedai.*
 import app.fourdrin.sedai.loader.LoaderClient
 import app.fourdrin.sedai.loader.LoaderWorkerWithQueue
 import app.fourdrin.sedai.models.*
+import app.fourdrin.sedai.models.onix.Unknown
 import com.google.gson.Gson
 import io.grpc.ManagedChannelBuilder
 import kotlinx.coroutines.Dispatchers
@@ -23,6 +24,7 @@ class FileSyncRunnable constructor(override val s3Client: S3Client, private val 
     FtpRunnable {
 
     override fun run() {
+        println("Syncing files...")
         // Open the manifest file
         val manifestRequest = GetObjectRequest.builder()
             .bucket(SEDAI_PIPELINE_DIRECTORY)
@@ -43,7 +45,8 @@ class FileSyncRunnable constructor(override val s3Client: S3Client, private val 
                     }
                     val work = LoaderWork(
                         id = s3Key,
-                        assetType = assetType
+                        assetType = assetType,
+                        metadataVersion = Unknown
                     )
                     LoaderWorkerWithQueue.workerQueue.add(work)
 

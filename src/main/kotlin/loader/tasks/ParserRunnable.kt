@@ -1,9 +1,14 @@
 package app.fourdrin.sedai.loader.tasks
 
-import app.fourdrin.sedai.onix.ParserStrategy
+import app.fourdrin.sedai.models.MetadataParserStrategy
+import java.io.InputStream
 
-class ParserRunnable constructor(private val strategy: ParserStrategy, private val metadataFileKey: String) : Runnable {
+class ParserRunnable constructor(private val metadataStrategy: MetadataParserStrategy, private val metadataFile: InputStream?) : Runnable {
     override fun run() {
-        strategy.parseMetadataFile(metadataFileKey)
+        if (metadataFile != null) {
+            println("Parsing: $metadataStrategy")
+            val d = metadataStrategy.parseMetadataFile(metadataFile)
+            println(d)
+        }
     }
 }

@@ -2,6 +2,7 @@ package app.fourdrin.sedai.loader
 
 import app.fourdrin.sedai.models.AssetType
 import app.fourdrin.sedai.models.LoaderWork
+import app.fourdrin.sedai.models.onix.Unknown
 import java.lang.Exception
 
 class LoaderService : LoaderServiceGrpcKt.LoaderServiceCoroutineImplBase() {
@@ -16,7 +17,8 @@ class LoaderService : LoaderServiceGrpcKt.LoaderServiceCoroutineImplBase() {
 
         val work = LoaderWork(
             id = request.s3Key,
-            assetType = assetType
+            assetType = assetType,
+            metadataVersion = Unknown
         )
         LoaderWorkerWithQueue.workerQueue.add(work)
 
