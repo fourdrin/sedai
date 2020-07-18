@@ -2,14 +2,7 @@ package app.fourdrin.sedai.loader.tasks
 
 import app.fourdrin.sedai.SEDAI_PIPELINE_DIRECTORY
 import app.fourdrin.sedai.loader.LoaderWorkerWithQueue
-import app.fourdrin.sedai.models.AssetType
-import app.fourdrin.sedai.models.LoaderWork
-import app.fourdrin.sedai.models.onix.MetadataVersion
-import app.fourdrin.sedai.models.onix.ThreeLong
-import app.fourdrin.sedai.models.onix.ThreeShort
-import app.fourdrin.sedai.models.onix.TwoLong
-import app.fourdrin.sedai.models.onix.TwoShort
-import app.fourdrin.sedai.models.onix.Unknown
+import app.fourdrin.sedai.models.*
 import software.amazon.awssdk.core.sync.ResponseTransformer
 import software.amazon.awssdk.services.s3.S3Client
 import software.amazon.awssdk.services.s3.model.GetObjectRequest
@@ -59,21 +52,21 @@ class MetadataRunnable constructor(private val s3Client: S3Client, private val m
         }
 
         if (firstTag != null) {
-            val metadataVersion: MetadataVersion = when (firstTag) {
-                "ONIXMessageAcknowledgement" -> ThreeLong
-                "ONIXmessageacknowledgement" -> ThreeShort
-                "ONIXMessage" -> TwoLong
-                "ONIXmessage" -> TwoShort
-                else -> Unknown
+            val metadataType: MetadataType = when (firstTag) {
+                "ONIXMessageAcknowledgement" -> OnixThreeLong
+                "ONIXmessageacknowledgement" -> OnixThreeShort
+                "ONIXMessage" -> OnixTwoLong
+                "ONIXmessage" -> OnixTwoShort
+                else -> UnknownMetadata
             }
 
 
-            if (metadataVersion != Unknown) {
+            if (metadataType != UnknownMetadata) {
                 val metadataFile = ByteArrayInputStream(resp.asByteArray())
                 val work = LoaderWork(
                     id = metadataKey,
                     assetType = AssetType.METADATA,
-                    metadataVersion = metadataVersion,
+                    metadataType = metadataType,
                     metadataFile = metadataFile
                 )
 

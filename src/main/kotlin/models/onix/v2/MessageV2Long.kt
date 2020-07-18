@@ -1,17 +1,20 @@
-package app.fourdrin.sedai.models.onix.v2
 
+import app.fourdrin.sedai.models.onix.v2.Header
+import app.fourdrin.sedai.models.onix.v2.MessageV2
+import app.fourdrin.sedai.models.onix.v2.Product
+import app.fourdrin.sedai.models.onix.v2.ProductIdentifier
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement
 
 @JacksonXmlRootElement(localName = "ONIXMessage")
-class ONIXMessageLong: OnixDocumentV2() {
+data class MessageV2Long (
     @JacksonXmlProperty(localName = "Header")
-    override val header: Header = HeaderLong()
+    override val header: HeaderLong?,
 
     @JacksonXmlProperty(localName = "Product")
-    override val products: List<ProductLong> = listOf()
-}
+    override val products: List<ProductLong>
+) : MessageV2
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class HeaderLong (
@@ -20,16 +23,23 @@ data class HeaderLong (
 
     @JacksonXmlProperty(localName = "FromEANNumber")
     override val fromEANNumber: String? = ""
-) : Header()
+) : Header
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class ProductLong(
     @JacksonXmlProperty(localName = "RecordReference")
-    override val recordReference: String,
+    override val recordReference: String?,
+
+    @JacksonXmlProperty(localName = "NotificationType")
+    override val notificationType: String?,
 
     @JacksonXmlProperty(localName = "ProductIdentifier")
-    override val productIdentifiers: List<ProductIdentifierLong>
-) : Product()
+    override val productIdentifiers: List<ProductIdentifierLong>,
+
+    @JacksonXmlProperty(localName = "ProductForm")
+    override val productForm: String?
+
+) : Product
 
 data class ProductIdentifierLong(
     @JacksonXmlProperty(localName = "IDTypeName")
@@ -40,4 +50,4 @@ data class ProductIdentifierLong(
 
     @JacksonXmlProperty(localName = "ProductIDType")
     override val productIDType: String?
-): ProductIdentifier()
+): ProductIdentifier

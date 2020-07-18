@@ -1,19 +1,17 @@
 package app.fourdrin.sedai.models.onix.parser
 
-import app.fourdrin.sedai.models.MetadataParserStrategy
-import app.fourdrin.sedai.models.onix.*
-import com.ctc.wstx.api.WstxInputProperties
+import app.fourdrin.sedai.models.*
+import app.fourdrin.sedai.models.onix.v2.MessageV2
 import com.ctc.wstx.stax.WstxInputFactory
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.xml.JacksonXmlModule
 import com.fasterxml.jackson.dataformat.xml.XmlFactory
 import com.fasterxml.jackson.dataformat.xml.XmlMapper
-import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import javax.xml.stream.XMLInputFactory
 
-abstract class OnixParserStrategy: MetadataParserStrategy {
+abstract class OnixParserStrategy<out T: MetadataDocument> : MetadataParserStrategy<T> {
     private val inputFactory = WstxInputFactory()
 
     init {
@@ -44,13 +42,11 @@ abstract class OnixParserStrategy: MetadataParserStrategy {
         .configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true)
 
     companion object Factory {
-        fun build(metadataVersion: MetadataVersion): OnixParserStrategy {
-            return when (metadataVersion) {
-                is TwoShort -> TwoShortOnixParserStrategy()
-                is TwoLong -> TwoLongOnixParserStrategy()
-                is ThreeShort -> ThreeShortOnixParserStrategy()
-                is ThreeLong -> ThreeLongOnixParserStrategy()
-                is Unknown -> TODO()
+        fun build(metadataType: MetadataType): OnixParserStrategy<MetadataDocument> {
+            return when (metadataType) {
+                is OnixTwoLong -> TwoLongOnixParserStrategy()
+                is OnixTwoShort -> TwoShortOnixParserStrategy()
+                else -> TODO()
             }
         }
     }

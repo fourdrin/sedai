@@ -1,16 +1,18 @@
 package models.onix.parser
 
-import app.fourdrin.sedai.models.onix.TwoLong
-import app.fourdrin.sedai.models.onix.parser.OnixParserStrategy
+import app.fourdrin.sedai.models.onix.parser.TwoLongOnixParserStrategy
+import app.fourdrin.sedai.models.onix.v2.MessageV2
 import org.apache.commons.io.IOUtils
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
-import java.io.ByteArrayInputStream
 
-internal class TwoLongOnixParserStrategyTest {
-    private val strategy = OnixParserStrategy.build(TwoLong)
+internal class OnixTwoLongOnixParserStrategyTest {
+    private val strategy = TwoLongOnixParserStrategy(
+
+    )
 
     private val fullDoc = """
 <?xml version="1.0"?>
@@ -94,14 +96,26 @@ internal class TwoLongOnixParserStrategyTest {
     @Test
     @Tag("smoke")
     fun smoke() {
+        var doc: MessageV2? = null
         assertDoesNotThrow {
-            strategy.parseMetadataFile(inputStream)
+            doc = strategy.parseMetadataFile(inputStream)
         }
+        assertNotNull(doc)
     }
 
     @Test
     fun testParseSingleProduct() {
         val doc = strategy.parseMetadataFile(inputStream)
-        assertNotNull(doc)
+        assertEquals(1, doc.products.size)
+    }
+
+    @Test
+    fun testProductTopLevelFields() {
+        val doc = strategy.parseMetadataFile(inputStream)
+        val product = doc.products[0]
+
+        assertEquals("1234567890", product.recordReference)
+        assertEquals("03", product.notificationType)
+        assertEquals("BB", product.productForm)
     }
 }

@@ -2,10 +2,7 @@ package app.fourdrin.sedai.loader
 
 import app.fourdrin.sedai.loader.tasks.MetadataRunnable
 import app.fourdrin.sedai.loader.tasks.ParserRunnable
-import app.fourdrin.sedai.models.AssetType
-import app.fourdrin.sedai.models.LoaderWork
-import app.fourdrin.sedai.models.WorkerWithQueue
-import app.fourdrin.sedai.models.onix.Unknown
+import app.fourdrin.sedai.models.*
 import app.fourdrin.sedai.models.onix.parser.OnixParserStrategy
 import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider
 import software.amazon.awssdk.regions.Region
@@ -28,9 +25,13 @@ object LoaderWorkerWithQueue : WorkerWithQueue<LoaderWork> {
             val work = workerQueue.poll()
             if (work != null) {
                 if (work.assetType == AssetType.METADATA) {
-                    when (work.metadataVersion) {
-                        Unknown -> MetadataRunnable(s3Client, work.id).run()
-                        else -> ParserRunnable(OnixParserStrategy.build(work.metadataVersion), work.metadataFile).run()
+                    when (work.metadataType) {
+                        UnknownMetadata -> MetadataRunnable(s3Client, work.id).run()
+                        CSVMetadata -> TODO()
+                        else -> {
+                            val strategy = OnixParserStrategy.build(work.metadataType)
+                            ParserRunnable(strategy, work.metadataFile).run()
+                        }
                     }
                 }
             }

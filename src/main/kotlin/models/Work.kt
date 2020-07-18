@@ -1,6 +1,5 @@
 package app.fourdrin.sedai.models
 
-import app.fourdrin.sedai.models.onix.MetadataVersion
 import java.io.InputStream
 
 
@@ -30,6 +29,6 @@ data class FTPWork(
 data class LoaderWork(
     override val id: String,
     val assetType: AssetType,
-    val metadataVersion: MetadataVersion,
+    val metadataType: MetadataType,
     val metadataFile: InputStream? = null
 ) : Work()

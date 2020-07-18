@@ -1,15 +1,9 @@
 package app.fourdrin.sedai.ftp.tasks
 
 import app.fourdrin.sedai.*
-import app.fourdrin.sedai.loader.LoaderClient
 import app.fourdrin.sedai.loader.LoaderWorkerWithQueue
 import app.fourdrin.sedai.models.*
-import app.fourdrin.sedai.models.onix.Unknown
 import com.google.gson.Gson
-import io.grpc.ManagedChannelBuilder
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.asExecutor
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
@@ -46,7 +40,7 @@ class FileSyncRunnable constructor(override val s3Client: S3Client, private val 
                     val work = LoaderWork(
                         id = s3Key,
                         assetType = assetType,
-                        metadataVersion = Unknown
+                        metadataType = UnknownMetadata
                     )
                     LoaderWorkerWithQueue.workerQueue.add(work)
 

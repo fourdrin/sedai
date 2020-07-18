@@ -1,10 +1,11 @@
 package app.fourdrin.sedai.models.onix.parser
 
-import app.fourdrin.sedai.models.onix.OnixDocument
+import app.fourdrin.sedai.models.MetadataDocument
+import app.fourdrin.sedai.models.onix.v2.MessageV2
 import java.io.InputStream
 
-class TwoShortOnixParserStrategy : OnixParserStrategy() {
-    override fun parseMetadataFile(metadataFile: InputStream): OnixDocument {
+class TwoShortOnixParserStrategy : OnixParserStrategy<MessageV2>() {
+    override fun parseMetadataFile(metadataFile: InputStream): MessageV2 {
         TODO()
     }
 }
