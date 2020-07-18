@@ -1,6 +1,7 @@
 package models.onix.parser
 
 import app.fourdrin.sedai.models.onix.parser.TwoLongOnixParserStrategy
+import app.fourdrin.sedai.models.onix.parser.TwoShortOnixParserStrategy
 import app.fourdrin.sedai.models.onix.v2.MessageV2
 import org.apache.commons.io.IOUtils
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -10,54 +11,54 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.fail
 
-internal class TwoLongOnixParserStrategyTest {
-    private val strategy = TwoLongOnixParserStrategy()
+internal class TwoShortOnixParserStrategyTest {
+    private val strategy = TwoShortOnixParserStrategy()
     private val header = """
-    <Header>
-        <FromSAN>a</FromSAN>
-        <FromEANNumber>1</FromEANNumber>
-        <SenderIdentifier>
-            <SenderIDType>01</SenderIDType>
-            <IDTypeName>Foo</IDTypeName>
-            <IDValue>Bar</IDValue>
-        </SenderIdentifier>
-        <SenderIdentifier>
-            <SenderIDType>01</SenderIDType>
-            <IDTypeName>Biz</IDTypeName>
-            <IDValue>Baz</IDValue>
-        </SenderIdentifier>
-        <FromCompany>Foo LLC</FromCompany>
-        <FromPerson>foo</FromPerson>
-        <FromEmail>foo@foollc.local</FromEmail>
-        <ToSAN>b</ToSAN>
-        <ToEANNumber>2</ToEANNumber>
-        <AddresseeIdentifier>
-            <AddresseeIDType>01</AddresseeIDType>
-            <IDTypeName>Foo</IDTypeName>
-            <IDValue>Bar</IDValue>
-        </AddresseeIdentifier>
-        <AddresseeIdentifier>
-            <AddresseeIDType>02</AddresseeIDType>
-            <IDTypeName>Foo 2</IDTypeName>
-            <IDValue>Bar 2</IDValue>
-        </AddresseeIdentifier>
-        <ToCompany>Bar LLC</ToCompany>
-        <ToPerson>bar</ToPerson>
-        <MessageNumber>1234</MessageNumber>
-        <MessageRepeat>1</MessageRepeat>
-        <SentDate>20200618</SentDate>
-        <MessageNote>updates</MessageNote>
-        <DefaultLinearUnit>cm</DefaultLinearUnit>
-        <DefaultWeightUnit>oz</DefaultWeightUnit>
-        <DefaultLanguageOfText>eng</DefaultLanguageOfText>
-        <DefaultPriceTypeCode>01</DefaultPriceTypeCode>
-        <DefaultCurrencyCode>USD</DefaultCurrencyCode>
-        <DefaultClassOfTrade>gen</DefaultClassOfTrade>
-    </Header>
+    <header>
+        <m173>a</m173>
+        <m172>1</m172>
+        <senderidentifier>
+            <m379>01</m379>
+            <b233>Foo</b233>
+            <b244>Bar</b244>
+        </senderidentifier>
+        <senderidentifier>
+            <m379>01</m379>
+            <b233>Biz</b233>
+            <b244>Baz</b244>
+        </senderidentifier>
+        <m174>Foo LLC</m174>
+        <m175>foo</m175>
+        <m283>foo@foollc.local</m283>
+        <m177>b</m177>
+        <m176>2</m176>
+        <addresseeidentifier>
+            <m379>01</m379>
+            <b233>Foo</b233>
+            <b244>Bar</b244>
+        </addresseeidentifier>
+        <addresseeidentifier>
+            <m379>02</m379>
+            <b233>Foo 2</b233>
+            <b244>Bar 2</b244>
+        </addresseeidentifier>
+        <m178>Bar LLC</m178>
+        <m179>bar</m179>
+        <m180>1234</m180>
+        <m181>1</m181>
+        <m182>20200618</m182>
+        <m183>updates</m183>
+        <m187>cm</m187>
+        <m188>oz</m188>
+        <m184>eng</m184>
+        <m185>01</m185>
+        <m186>USD</m186>
+        <m193>gen</m193>
+    </header>
     """.trimIndent()
 
     private val products = """
-    <Product>
+    <product>
         <RecordReference>1234567890</RecordReference>
         <NotificationType>03</NotificationType>
         <ProductIdentifier>
@@ -125,7 +126,7 @@ internal class TwoLongOnixParserStrategyTest {
                 <PriceAmount>35.00</PriceAmount>
             </Price>
         </SupplyDetail>
-    </Product>
+    </product>
         
     """.trimIndent()
 
@@ -239,28 +240,5 @@ internal class TwoLongOnixParserStrategyTest {
 
         assertEquals("cm", doc.header.defaultLinearUnit)
         assertEquals("oz", doc.header.defaultWeightUnit)
-    }
-
-    @Test
-    fun testProductRecordReference() {
-        val doc = strategy.parseMetadataFile(inputStream)
-        val product = doc.products[0]
-
-        assertEquals("1234567890", product.recordReference)
-    }
-
-    @Test
-    fun testProductNotificationType() {
-        val doc = strategy.parseMetadataFile(inputStream)
-        val product = doc.products[0]
-
-        assertEquals("03", product.notificationType)
-    }
-
-    @Test
-    fun testProductForm() {
-        val doc = strategy.parseMetadataFile(inputStream)
-        val product = doc.products[0]
-        assertEquals("BB", product.productForm)
     }
 }

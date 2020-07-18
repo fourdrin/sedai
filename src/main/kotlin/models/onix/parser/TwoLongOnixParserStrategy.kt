@@ -1,7 +1,6 @@
 package app.fourdrin.sedai.models.onix.parser
 
 import MessageV2Long
-import app.fourdrin.sedai.models.MetadataDocument
 import app.fourdrin.sedai.models.onix.v2.MessageV2
 import com.fasterxml.jackson.module.kotlin.readValue
 import java.io.InputStream

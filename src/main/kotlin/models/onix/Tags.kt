@@ -4,6 +4,11 @@ package app.fourdrin.sedai.models.onix
 // https://onixedit.com/en-us/products/onixedit/onix-tags
 
 sealed class TagV2 {
+    object Message {
+        const val LONG = "ONIXMessage"
+        const val SHORT = "ONIXmessage"
+    }
+
     object Header {
         const val LONG = "Header"
         const val SHORT = "header"

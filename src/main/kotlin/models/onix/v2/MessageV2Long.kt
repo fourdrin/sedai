@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement
 
-@JacksonXmlRootElement(localName = "ONIXMessage")
+@JacksonXmlRootElement(localName = TagV2.Message.LONG)
 data class MessageV2Long(
     @JacksonXmlProperty(localName = TagV2.Header.LONG)
     override val header: HeaderLong,
@@ -15,7 +15,6 @@ data class MessageV2Long(
 
 // Header
 
-@JsonIgnoreProperties(ignoreUnknown = true)
 data class HeaderLong(
     @JacksonXmlProperty(localName = TagV2.Header.FromSAN.LONG)
     override val fromSAN: String? = "",
@@ -81,7 +80,6 @@ data class HeaderLong(
     override val defaultClassOfTrade: String?
 ) : Header
 
-@JsonIgnoreProperties(ignoreUnknown = true)
 data class SenderIdentifierLong(
     @JacksonXmlProperty(localName = TagV2.Header.SenderIdentifier.SenderIDType.LONG)
     override val senderIDType: String,
@@ -93,7 +91,6 @@ data class SenderIdentifierLong(
     override val idValue: String?
 ) : SenderIdentifier
 
-@JsonIgnoreProperties(ignoreUnknown = true)
 data class AddresseeIdentifierLong(
     @JacksonXmlProperty(localName = TagV2.Header.AddresseeIdentifier.AddresseeIDType.LONG)
     override val addresseeIDType: String,
