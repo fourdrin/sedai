@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<!DOCTYPE ONIXmessage SYSTEM "http://www.editeur.org/onix/2.1/reference/onix-international.dtd">
-<ONIXmesssssage>
+<!DOCTYPE ONIXmessage SYSTEM "http://www.editeur.org/onix/2.1/short/onix-international.dtd">
+<ONIXmessage>
     <header>
         <m173>a</m173>
         <m172>1</m172>
@@ -111,5 +111,4 @@
             </Price>
         </SupplyDetail>
     </product>
-
-</ONIXmesssssage>
+</ONIXmessage>
