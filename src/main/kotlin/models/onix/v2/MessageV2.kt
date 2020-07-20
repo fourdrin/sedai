@@ -69,7 +69,9 @@ interface Product {
 
     val productIdentifiers: List<ProductIdentifier>
     val barcodes: List<String>?
+
     @Deprecated("No longer supported in ONIX 2.1") val replacesISBN: String?
+    @Deprecated("No longer supported in ONIX 2.1") val replacesEAN13: String?
 
     val productForm: String?
 

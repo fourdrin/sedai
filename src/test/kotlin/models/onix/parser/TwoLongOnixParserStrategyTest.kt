@@ -175,4 +175,9 @@ internal class ProductLongTests : TwoLongOnixParserStrategyTest() {
     fun testReplacesISBN() {
         assertEquals("111", product.replacesISBN)
     }
+
+    @Test
+    fun testReplacesEAN13() {
+        assertEquals("222", product.replacesEAN13)
+    }
 }

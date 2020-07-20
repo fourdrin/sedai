@@ -69,6 +69,7 @@
         </ProductIdentifier>
         <Barcode>abc</Barcode>
         <ReplacesISBN>111</ReplacesISBN>
+        <ReplacesEAN13>222</ReplacesEAN13>
         <ProductForm>BB</ProductForm>
         <Title>
             <TitleType>01</TitleType>
