@@ -67,6 +67,8 @@
             <IDTypeName>UPC</IDTypeName>
             <IDValue>111</IDValue>
         </ProductIdentifier>
+        <Barcode>abc</Barcode>
+        <ReplacesISBN>111</ReplacesISBN>
         <ProductForm>BB</ProductForm>
         <Title>
             <TitleType>01</TitleType>

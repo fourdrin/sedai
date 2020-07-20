@@ -250,6 +250,17 @@ sealed class TagV2 {
                 const val SHORT = "b244"
             }
         }
+
+        object BarCode {
+            const val LONG = "Barcode"
+            const val SHORT = "b246"
+        }
+
+        @Deprecated("No longer supported in ONIX 2.1")
+        object ReplacesISBN {
+            const val LONG = "ReplacesISBN"
+            const val SHORT = "b010"
+        }
     }
 }
 

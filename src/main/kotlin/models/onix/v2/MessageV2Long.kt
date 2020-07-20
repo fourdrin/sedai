@@ -153,6 +153,12 @@ data class ProductLong(
     @JacksonXmlProperty(localName = TagV2.Product.ProductIdentifier.LONG)
     override val productIdentifiers: List<ProductIdentifierLong>,
 
+    @JacksonXmlProperty(localName = TagV2.Product.BarCode.LONG)
+    override val barcodes: List<String>?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.ReplacesISBN.LONG)
+    override var replacesISBN: String?,
+
     @JacksonXmlProperty(localName = "ProductForm")
     override val productForm: String?
 

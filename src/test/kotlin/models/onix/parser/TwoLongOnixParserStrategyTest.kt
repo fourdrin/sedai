@@ -162,4 +162,17 @@ internal class ProductLongTests : TwoLongOnixParserStrategyTest() {
         assertEquals("UPC", productIdentifier2.idTypeName)
         assertEquals("111", productIdentifier2.idValue)
     }
+
+    @Test
+    fun testBarcode() {
+        assertEquals(1, product.barcodes?.size)
+
+        val barcode1 = product.barcodes?.get(0)
+        assertEquals("abc", barcode1)
+    }
+
+    @Test
+    fun testReplacesISBN() {
+        assertEquals("111", product.replacesISBN)
+    }
 }

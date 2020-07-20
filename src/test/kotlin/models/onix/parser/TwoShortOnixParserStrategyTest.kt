@@ -1,9 +1,7 @@
 package models.onix.parser
 
-import app.fourdrin.sedai.models.onix.parser.TwoLongOnixParserStrategy
 import app.fourdrin.sedai.models.onix.parser.TwoShortOnixParserStrategy
 import app.fourdrin.sedai.models.onix.v2.MessageV2
-import org.apache.commons.io.IOUtils
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Tag
@@ -153,5 +151,18 @@ internal class ProductShortTests : TwoShortOnixParserStrategyTest() {
         assertEquals("04", productIdentifier2.productIDType)
         assertEquals("UPC", productIdentifier2.idTypeName)
         assertEquals("111", productIdentifier2.idValue)
+    }
+
+    @Test
+    fun testBarcode() {
+        assertEquals(1, product.barcodes?.size)
+
+        val barcode1 = product.barcodes?.get(0)
+        assertEquals("abc", barcode1)
+    }
+
+    @Test
+    fun testReplacesISBN() {
+        assertEquals("111", product.replacesISBN)
     }
 }

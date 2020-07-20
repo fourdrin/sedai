@@ -68,7 +68,11 @@ interface Product {
     @Deprecated("No longer supported in ONIX 2.1") val doi: String?
 
     val productIdentifiers: List<ProductIdentifier>
+    val barcodes: List<String>?
+    @Deprecated("No longer supported in ONIX 2.1") val replacesISBN: String?
+
     val productForm: String?
+
 }
 
 interface ProductIdentifier : IdentifierComposite {

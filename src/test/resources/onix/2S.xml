@@ -67,6 +67,8 @@
             <b233>UPC</b233>
             <b244>111</b244>
         </productidentifier>
+        <b246>abc</b246>
+        <b010>111</b010>
         <b012>BB</b012>
         <Title>
             <TitleType>01</TitleType>
