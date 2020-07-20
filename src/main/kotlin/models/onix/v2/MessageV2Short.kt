@@ -164,8 +164,11 @@ data class ProductShort(
     @JacksonXmlProperty(localName = TagV2.Product.ReplacesEAN13.SHORT)
     override var replacesEAN13: String?,
 
-    @JacksonXmlProperty(localName = "ProductForm")
-    override val productForm: String?
+    @JacksonXmlProperty(localName = TagV2.Product.ProductForm.SHORT)
+    override val productForm: String?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.ProductFormDetail.SHORT)
+    override val productFormDetails: List<String>?
 
 ) : Product
 

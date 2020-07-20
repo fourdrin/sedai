@@ -170,4 +170,13 @@ internal class ProductShortTests : TwoShortOnixParserStrategyTest() {
     fun testReplacesEAN13() {
         assertEquals("222", product.replacesEAN13)
     }
+
+    @Test
+    fun testProductForm() {
+        assertEquals("BB", product.productForm)
+
+        assertEquals(1, product.productFormDetails?.size)
+        val productFormDetail1 = product.productFormDetails?.get(0)
+        assertEquals("BB Hardback book", productFormDetail1)
+    }
 }

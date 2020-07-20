@@ -71,6 +71,7 @@
         <ReplacesISBN>111</ReplacesISBN>
         <ReplacesEAN13>222</ReplacesEAN13>
         <ProductForm>BB</ProductForm>
+        <ProductFormDetail>BB Hardback book</ProductFormDetail>
         <Title>
             <TitleType>01</TitleType>
             <TitleText textcase="02">British English, A to Zed</TitleText>

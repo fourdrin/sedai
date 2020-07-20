@@ -267,6 +267,16 @@ sealed class TagV2 {
             const val LONG = "ReplacesEAN13"
             const val SHORT = "b011"
         }
+
+        object ProductForm {
+            const val LONG = "ProductForm"
+            const val SHORT = "b012"
+        }
+
+        object ProductFormDetail {
+            const val LONG = "ProductFormDetail"
+            const val SHORT = "b333"
+        }
     }
 }
 

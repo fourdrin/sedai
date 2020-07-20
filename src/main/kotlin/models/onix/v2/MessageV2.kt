@@ -74,6 +74,7 @@ interface Product {
     @Deprecated("No longer supported in ONIX 2.1") val replacesEAN13: String?
 
     val productForm: String?
+    val productFormDetails: List<String>?
 
 }
 
