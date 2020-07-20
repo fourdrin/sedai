@@ -9,10 +9,12 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.fail
 
-internal class TwoLongOnixParserStrategyTest {
-    private val strategy = TwoLongOnixParserStrategy()
-    private val inputStream = this.javaClass.getResourceAsStream("/onix/2L.xml")
+internal abstract class TwoLongOnixParserStrategyTest {
+    val strategy = TwoLongOnixParserStrategy()
+    val inputStream = this.javaClass.getResourceAsStream("/onix/2L.xml")
+}
 
+internal class LongSmokeTests : TwoLongOnixParserStrategyTest() {
     @Test
     @Tag("smoke")
     fun testSmoke() {
@@ -25,10 +27,13 @@ internal class TwoLongOnixParserStrategyTest {
         assertNotNull(doc?.products)
         assertEquals(1, doc?.products?.size)
     }
+}
+
+internal class HeaderLongTests : TwoLongOnixParserStrategyTest() {
+    private val doc = strategy.parseMetadataFile(inputStream)
 
     @Test
     fun testHeaderFromFields() {
-        val doc = strategy.parseMetadataFile(inputStream)
         assertEquals("a", doc.header.fromSAN)
         assertEquals("1", doc.header.fromEANNumber)
         assertEquals("Foo LLC", doc.header.fromCompany)
@@ -38,7 +43,6 @@ internal class TwoLongOnixParserStrategyTest {
 
     @Test
     fun testHeaderSenderIdentifiers() {
-        val doc = strategy.parseMetadataFile(inputStream)
         assertNotNull(doc.header.senderIdentifiers)
         assertEquals(2, doc.header.senderIdentifiers?.size)
 
@@ -57,7 +61,6 @@ internal class TwoLongOnixParserStrategyTest {
 
     @Test
     fun testHeaderToFields() {
-        val doc = strategy.parseMetadataFile(inputStream)
         assertEquals("b", doc.header.toSAN)
         assertEquals("2", doc.header.toEANNumber)
         assertEquals("Bar LLC", doc.header.toCompany)
@@ -66,7 +69,6 @@ internal class TwoLongOnixParserStrategyTest {
 
     @Test
     fun testHeaderAddresseeFields() {
-        val doc = strategy.parseMetadataFile(inputStream)
         assertNotNull(doc.header.addresseeIdentifiers)
         assertEquals(2, doc.header.addresseeIdentifiers?.size)
 
@@ -87,8 +89,6 @@ internal class TwoLongOnixParserStrategyTest {
 
     @Test
     fun testHeaderMessageFields() {
-        val doc = strategy.parseMetadataFile(inputStream)
-
         assertEquals("1234", doc.header.messageNumber)
         assertEquals("1", doc.header.messageRepeat)
         assertEquals("20200618", doc.header.sentDate)
@@ -97,8 +97,6 @@ internal class TwoLongOnixParserStrategyTest {
 
     @Test
     fun testHeaderDefaultFields() {
-        val doc = strategy.parseMetadataFile(inputStream)
-
         assertEquals("eng", doc.header.defaultLanguageOfText)
         assertEquals("01", doc.header.defaultPriceTypeCode)
         assertEquals("USD", doc.header.defaultCurrencyCode)
@@ -107,32 +105,46 @@ internal class TwoLongOnixParserStrategyTest {
 
     @Test
     fun testHeaderDeprecatedFields() {
-        val doc = strategy.parseMetadataFile(inputStream)
-
         assertEquals("cm", doc.header.defaultLinearUnit)
         assertEquals("oz", doc.header.defaultWeightUnit)
     }
+}
+
+internal class ProductLongTests : TwoLongOnixParserStrategyTest() {
+    private val doc = strategy.parseMetadataFile(inputStream)
+    private val product = doc.products[0]
 
     @Test
     fun testProductRecordReference() {
-        val doc = strategy.parseMetadataFile(inputStream)
-        val product = doc.products[0]
-
         assertEquals("1234567890", product.recordReference)
     }
 
     @Test
     fun testProductNotificationType() {
-        val doc = strategy.parseMetadataFile(inputStream)
-        val product = doc.products[0]
-
         assertEquals("03", product.notificationType)
     }
 
     @Test
-    fun testProductForm() {
-        val doc = strategy.parseMetadataFile(inputStream)
-        val product = doc.products[0]
-        assertEquals("BB", product.productForm)
+    fun testProductDeletionInformation() {
+        assertEquals("00", product.deletionCode)
+        assertEquals("Removed from catalog", product.deletionText)
+    }
+
+    @Test
+    fun testProductRecordSourceDetails() {
+        assertEquals("01", product.recordSourceType)
+        assertEquals("03", product.recordSourceIdentifierType)
+        assertEquals("ABC", product.recordSourceIdentifier)
+        assertEquals("Rando Publisher", product.recordSourceName)
+    }
+
+    @Test
+    fun testProductDeprecatedNumbers() {
+        assertEquals("1", product.isbn)
+        assertEquals("2", product.ean13)
+        assertEquals("3", product.upc)
+        assertEquals("4", product.publisherProductNo)
+        assertEquals("5", product.ismn)
+        assertEquals("6", product.doi)
     }
 }

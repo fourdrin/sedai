@@ -3,6 +3,7 @@ import app.fourdrin.sedai.models.onix.v2.*
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement
+import javax.swing.text.html.HTML
 
 @JacksonXmlRootElement(localName = TagV2.Message.LONG)
 data class MessageV2Long(
@@ -107,13 +108,49 @@ data class AddresseeIdentifierLong(
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class ProductLong(
-    @JacksonXmlProperty(localName = "RecordReference")
-    override val recordReference: String?,
+    @JacksonXmlProperty(localName = TagV2.Product.RecordReference.LONG)
+    override val recordReference: String,
 
-    @JacksonXmlProperty(localName = "NotificationType")
-    override val notificationType: String?,
+    @JacksonXmlProperty(localName = TagV2.Product.NotificationType.LONG)
+    override val notificationType: String,
 
-    @JacksonXmlProperty(localName = "ProductIdentifier")
+    @JacksonXmlProperty(localName = TagV2.Product.DeletionCode.LONG)
+    override val deletionCode: String?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.DeletionText.LONG)
+    override val deletionText: String?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.RecordSourceType.LONG)
+    override val recordSourceType: String?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.RecordSourceIdentifierType.LONG)
+    override val recordSourceIdentifierType: String?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.RecordSourceIdentifier.LONG)
+    override val recordSourceIdentifier: String?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.RecordSourceName.LONG)
+    override val recordSourceName: String?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.ISBN.LONG)
+    override val isbn: String?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.EAN13.LONG)
+    override val ean13: String?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.UPC.LONG)
+    override val upc: String?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.PublisherProductNo.LONG)
+    override val publisherProductNo: String?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.ISMN.LONG)
+    override val ismn: String?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.DOI.LONG)
+    override val doi: String?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.ProductIdentifier.LONG)
     override val productIdentifiers: List<ProductIdentifierLong>,
 
     @JacksonXmlProperty(localName = "ProductForm")
@@ -122,12 +159,12 @@ data class ProductLong(
 ) : Product
 
 data class ProductIdentifierLong(
-    @JacksonXmlProperty(localName = "IDTypeName")
+    @JacksonXmlProperty(localName = TagV2.Product.ProductIdentifier.ProductIDType.LONG)
+    override val productIDType: String?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.ProductIdentifier.IDTypeName.LONG)
     override val idTypeName: String?,
 
-    @JacksonXmlProperty(localName = "IDValue")
-    override val idValue: String?,
-
-    @JacksonXmlProperty(localName = "ProductIDType")
-    override val productIDType: String?
+    @JacksonXmlProperty(localName = TagV2.Product.ProductIdentifier.IDValue.LONG)
+    override val idValue: String?
 ) : ProductIdentifier

@@ -13,7 +13,6 @@ interface IdentifierComposite {
     val idValue: String?
 }
 
-
 // Header
 
 interface Header {
@@ -51,8 +50,23 @@ interface AddresseeIdentifier : IdentifierComposite {
 // Products
 
 interface Product {
-    val recordReference: String?
-    val notificationType: String?
+    val recordReference: String
+    val notificationType: String
+    val deletionCode: String?
+    val deletionText: String?
+
+    val recordSourceType: String?
+    val recordSourceIdentifierType: String?
+    val recordSourceIdentifier: String?
+    val recordSourceName: String?
+
+    @Deprecated("No longer supported in ONIX 2.1") val isbn: String?
+    @Deprecated("No longer supported in ONIX 2.1") val ean13: String?
+    @Deprecated("No longer supported in ONIX 2.1") val upc: String?
+    @Deprecated("No longer supported in ONIX 2.1") val publisherProductNo: String?
+    @Deprecated("No longer supported in ONIX 2.1") val ismn: String?
+    @Deprecated("No longer supported in ONIX 2.1") val doi: String?
+
     val productForm: String?
     val productIdentifiers: List<ProductIdentifier>
 }

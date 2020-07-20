@@ -110,13 +110,49 @@ data class AddresseeIdentifierShort(
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class ProductShort(
-    @JacksonXmlProperty(localName = "RecordReference")
-    override val recordReference: String?,
+    @JacksonXmlProperty(localName = TagV2.Product.RecordReference.SHORT)
+    override val recordReference: String,
 
-    @JacksonXmlProperty(localName = "NotificationType")
-    override val notificationType: String?,
+    @JacksonXmlProperty(localName = TagV2.Product.NotificationType.SHORT)
+    override val notificationType: String,
 
-    @JacksonXmlProperty(localName = "ProductIdentifier")
+    @JacksonXmlProperty(localName = TagV2.Product.DeletionCode.SHORT)
+    override val deletionCode: String?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.DeletionText.SHORT)
+    override val deletionText: String?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.RecordSourceType.SHORT)
+    override val recordSourceType: String?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.RecordSourceIdentifierType.SHORT)
+    override val recordSourceIdentifierType: String?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.RecordSourceIdentifier.SHORT)
+    override val recordSourceIdentifier: String?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.RecordSourceName.SHORT)
+    override val recordSourceName: String?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.ISBN.SHORT)
+    override val isbn: String?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.EAN13.SHORT)
+    override val ean13: String?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.UPC.SHORT)
+    override val upc: String?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.PublisherProductNo.SHORT)
+    override val publisherProductNo: String?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.ISMN.SHORT)
+    override val ismn: String?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.DOI.SHORT)
+    override val doi: String?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.ProductIdentifier.SHORT)
     override val productIdentifiers: List<ProductIdentifierShort>,
 
     @JacksonXmlProperty(localName = "ProductForm")
@@ -125,12 +161,12 @@ data class ProductShort(
 ) : Product
 
 data class ProductIdentifierShort(
-    @JacksonXmlProperty(localName = "IDTypeName")
+    @JacksonXmlProperty(localName = TagV2.Product.ProductIdentifier.ProductIDType.SHORT)
+    override val productIDType: String?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.ProductIdentifier.IDTypeName.SHORT)
     override val idTypeName: String?,
 
-    @JacksonXmlProperty(localName = "IDValue")
-    override val idValue: String?,
-
-    @JacksonXmlProperty(localName = "ProductIDType")
-    override val productIDType: String?
+    @JacksonXmlProperty(localName = TagV2.Product.ProductIdentifier.IDValue.SHORT)
+    override val idValue: String?
 ) : ProductIdentifier

@@ -154,6 +154,102 @@ sealed class TagV2 {
     object Product {
         const val LONG = "Product"
         const val SHORT = "product"
+
+        object RecordReference {
+            const val LONG = "RecordReference"
+            const val SHORT = "a001"
+        }
+
+        object NotificationType {
+            const val LONG = "NotificationType"
+            const val SHORT = "a002"
+        }
+
+        object DeletionCode {
+            const val LONG = "DeletionCode"
+            const val SHORT = "a198"
+        }
+
+        object DeletionText {
+            const val LONG = "DeletionText"
+            const val SHORT = "a199"
+        }
+
+        object RecordSourceType {
+            const val LONG = "RecordSourceType"
+            const val SHORT = "a194"
+        }
+
+        object RecordSourceIdentifierType {
+            const val LONG = "RecordSourceIdentifierType"
+            const val SHORT = "a195"
+        }
+
+        object RecordSourceIdentifier {
+            const val LONG = "RecordSourceIdentifier"
+            const val SHORT = "a196"
+        }
+
+        object RecordSourceName {
+            const val LONG = "RecordSourceName"
+            const val SHORT = "a197"
+        }
+
+        @Deprecated("No longer supported in ONIX 2.1")
+        object ISBN {
+            const val LONG = "ISBN"
+            const val SHORT = "b004"
+        }
+
+        @Deprecated("No longer supported in ONIX 2.1")
+        object EAN13 {
+            const val LONG = "EAN13"
+            const val SHORT = "b005"
+        }
+
+        @Deprecated("No longer supported in ONIX 2.1")
+        object UPC {
+            const val LONG = "UPC"
+            const val SHORT = "b006"
+        }
+
+        @Deprecated("No longer supported in ONIX 2.1")
+        object PublisherProductNo {
+            const val LONG = "PublisherProductNo"
+            const val SHORT = "b007"
+        }
+
+        @Deprecated("No longer supported in ONIX 2.1")
+        object ISMN {
+            const val LONG = "ISMN"
+            const val SHORT = "b008"
+        }
+
+        @Deprecated("No longer supported in ONIX 2.1")
+        object DOI {
+            const val LONG = "DOI"
+            const val SHORT = "b009"
+        }
+
+        object ProductIdentifier {
+            const val LONG = "ProductIdentifier"
+            const val SHORT = "productidentifier"
+
+            object ProductIDType {
+                const val LONG = "ProductIDType"
+                const val SHORT = "b221"
+            }
+
+            object IDTypeName {
+                const val LONG = "IDTypeName"
+                const val SHORT = "b233"
+            }
+
+            object IDValue {
+                const val LONG = "IDValue"
+                const val SHORT = "b244"
+            }
+        }
     }
 }
 

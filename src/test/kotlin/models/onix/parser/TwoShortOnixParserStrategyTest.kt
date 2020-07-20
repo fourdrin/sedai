@@ -11,11 +11,12 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.fail
 
-internal class TwoShortOnixParserStrategyTest {
-    private val strategy = TwoShortOnixParserStrategy()
+internal abstract class TwoShortOnixParserStrategyTest {
+    val strategy = TwoShortOnixParserStrategy()
+    val inputStream = this.javaClass.getResourceAsStream("/onix/2S.xml")
+}
 
-    private val inputStream = this.javaClass.getResourceAsStream("/onix/2S.xml")
-
+internal class ShortSmokeTests : TwoShortOnixParserStrategyTest() {
     @Test
     @Tag("smoke")
     fun testSmoke() {
@@ -28,10 +29,13 @@ internal class TwoShortOnixParserStrategyTest {
         assertNotNull(doc?.products)
         assertEquals(1, doc?.products?.size)
     }
+}
+
+internal class HeaderShortTests : TwoShortOnixParserStrategyTest() {
+    private val doc = strategy.parseMetadataFile(inputStream)
 
     @Test
     fun testHeaderFromFields() {
-        val doc = strategy.parseMetadataFile(inputStream)
         assertEquals("a", doc.header.fromSAN)
         assertEquals("1", doc.header.fromEANNumber)
         assertEquals("Foo LLC", doc.header.fromCompany)
@@ -41,7 +45,6 @@ internal class TwoShortOnixParserStrategyTest {
 
     @Test
     fun testHeaderSenderIdentifiers() {
-        val doc = strategy.parseMetadataFile(inputStream)
         assertNotNull(doc.header.senderIdentifiers)
         assertEquals(2, doc.header.senderIdentifiers?.size)
 
@@ -60,7 +63,6 @@ internal class TwoShortOnixParserStrategyTest {
 
     @Test
     fun testHeaderToFields() {
-        val doc = strategy.parseMetadataFile(inputStream)
         assertEquals("b", doc.header.toSAN)
         assertEquals("2", doc.header.toEANNumber)
         assertEquals("Bar LLC", doc.header.toCompany)
@@ -69,7 +71,6 @@ internal class TwoShortOnixParserStrategyTest {
 
     @Test
     fun testHeaderAddresseeFields() {
-        val doc = strategy.parseMetadataFile(inputStream)
         assertNotNull(doc.header.addresseeIdentifiers)
         assertEquals(2, doc.header.addresseeIdentifiers?.size)
 
@@ -90,8 +91,6 @@ internal class TwoShortOnixParserStrategyTest {
 
     @Test
     fun testHeaderMessageFields() {
-        val doc = strategy.parseMetadataFile(inputStream)
-
         assertEquals("1234", doc.header.messageNumber)
         assertEquals("1", doc.header.messageRepeat)
         assertEquals("20200618", doc.header.sentDate)
@@ -100,8 +99,6 @@ internal class TwoShortOnixParserStrategyTest {
 
     @Test
     fun testHeaderDefaultFields() {
-        val doc = strategy.parseMetadataFile(inputStream)
-
         assertEquals("eng", doc.header.defaultLanguageOfText)
         assertEquals("01", doc.header.defaultPriceTypeCode)
         assertEquals("USD", doc.header.defaultCurrencyCode)
@@ -110,9 +107,36 @@ internal class TwoShortOnixParserStrategyTest {
 
     @Test
     fun testHeaderDeprecatedFields() {
-        val doc = strategy.parseMetadataFile(inputStream)
-
         assertEquals("cm", doc.header.defaultLinearUnit)
         assertEquals("oz", doc.header.defaultWeightUnit)
+    }
+}
+
+internal class ProductShortTests : TwoShortOnixParserStrategyTest() {
+    private val doc = strategy.parseMetadataFile(inputStream)
+    private val product = doc.products[0]
+
+    @Test
+    fun testProductDeletionInformation() {
+        assertEquals("00", product.deletionCode)
+        assertEquals("Removed from catalog", product.deletionText)
+    }
+
+    @Test
+    fun testProductRecordSourceDetails() {
+        assertEquals("01", product.recordSourceType)
+        assertEquals("03", product.recordSourceIdentifierType)
+        assertEquals("ABC", product.recordSourceIdentifier)
+        assertEquals("Rando Publisher", product.recordSourceName)
+    }
+
+    @Test
+    fun testProductDeprecatedNumbers() {
+        assertEquals("1", product.isbn)
+        assertEquals("2", product.ean13)
+        assertEquals("3", product.upc)
+        assertEquals("4", product.publisherProductNo)
+        assertEquals("5", product.ismn)
+        assertEquals("6", product.doi)
     }
 }

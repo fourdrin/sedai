@@ -45,8 +45,21 @@
     <Product>
         <RecordReference>1234567890</RecordReference>
         <NotificationType>03</NotificationType>
+        <DeletionCode>00</DeletionCode>
+        <DeletionText>Removed from catalog</DeletionText>
+        <RecordSourceType>01</RecordSourceType>
+        <RecordSourceIdentifierType>03</RecordSourceIdentifierType>
+        <RecordSourceIdentifier>ABC</RecordSourceIdentifier>
+        <RecordSourceName>Rando Publisher</RecordSourceName>
+        <ISBN>1</ISBN>
+        <EAN13>2</EAN13>
+        <UPC>3</UPC>
+        <PublisherProductNo>4</PublisherProductNo>
+        <ISMN>5</ISMN>
+        <DOI>6</DOI>
         <ProductIdentifier>
             <ProductIDType>02</ProductIDType>
+            <IDTypeName>ISBN</IDTypeName>
             <IDValue>0816016356</IDValue>
         </ProductIdentifier>
         <ProductForm>BB</ProductForm>
