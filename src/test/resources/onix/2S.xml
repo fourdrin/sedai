@@ -59,8 +59,13 @@
         <b009>6</b009>
         <productidentifier>
             <b221>02</b221>
-            <b233>ISBN</b233>
+            <b233>ISBN-10</b233>
             <b244>0816016356</b244>
+        </productidentifier>
+        <productidentifier>
+            <b221>04</b221>
+            <b233>UPC</b233>
+            <b244>111</b244>
         </productidentifier>
         <b012>BB</b012>
         <Title>

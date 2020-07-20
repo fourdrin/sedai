@@ -147,4 +147,19 @@ internal class ProductLongTests : TwoLongOnixParserStrategyTest() {
         assertEquals("5", product.ismn)
         assertEquals("6", product.doi)
     }
+
+    @Test
+    fun testProductIdentifierComposite() {
+        assertEquals(2, product.productIdentifiers.size)
+
+        val productIdentifier1 = product.productIdentifiers[0]
+        assertEquals("02", productIdentifier1.productIDType)
+        assertEquals("ISBN-10", productIdentifier1.idTypeName)
+        assertEquals("0816016356", productIdentifier1.idValue)
+
+        val productIdentifier2 = product.productIdentifiers[1]
+        assertEquals("04", productIdentifier2.productIDType)
+        assertEquals("UPC", productIdentifier2.idTypeName)
+        assertEquals("111", productIdentifier2.idValue)
+    }
 }

@@ -59,8 +59,13 @@
         <DOI>6</DOI>
         <ProductIdentifier>
             <ProductIDType>02</ProductIDType>
-            <IDTypeName>ISBN</IDTypeName>
+            <IDTypeName>ISBN-10</IDTypeName>
             <IDValue>0816016356</IDValue>
+        </ProductIdentifier>
+        <ProductIdentifier>
+            <ProductIDType>04</ProductIDType>
+            <IDTypeName>UPC</IDTypeName>
+            <IDValue>111</IDValue>
         </ProductIdentifier>
         <ProductForm>BB</ProductForm>
         <Title>

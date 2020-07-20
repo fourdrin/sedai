@@ -67,8 +67,8 @@ interface Product {
     @Deprecated("No longer supported in ONIX 2.1") val ismn: String?
     @Deprecated("No longer supported in ONIX 2.1") val doi: String?
 
-    val productForm: String?
     val productIdentifiers: List<ProductIdentifier>
+    val productForm: String?
 }
 
 interface ProductIdentifier : IdentifierComposite {
