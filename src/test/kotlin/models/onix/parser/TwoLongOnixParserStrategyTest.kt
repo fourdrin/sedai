@@ -2,8 +2,7 @@ package models.onix.parser
 
 import app.fourdrin.sedai.models.onix.parser.TwoLongOnixParserStrategy
 import app.fourdrin.sedai.models.onix.v2.MessageV2
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertNotNull
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
@@ -188,5 +187,22 @@ internal class ProductLongTests : TwoLongOnixParserStrategyTest() {
         assertEquals(1, product.productFormDetails?.size)
         val productFormDetail1 = product.productFormDetails?.get(0)
         assertEquals("BB Hardback book", productFormDetail1)
+    }
+
+    @Test
+    fun testProductFormFeature() {
+        assertEquals(2, product.productFormFeatures?.size)
+
+        val productFormFeatures1 = product.productFormFeatures?.get(0)
+
+        assertEquals("02 Page edge color", productFormFeatures1?.productFormFeatureType)
+        assertEquals("BLK Black (binding color)", productFormFeatures1?.productFormFeatureValue)
+        assertNull(productFormFeatures1?.productFormFeatureDescription)
+
+        val productFormFeatures2 = product.productFormFeatures?.get(1)
+
+        assertEquals("02 Page edge color", productFormFeatures2?.productFormFeatureType)
+        assertNull(productFormFeatures2?.productFormFeatureValue)
+        assertEquals("11pt Helvetica", productFormFeatures2?.productFormFeatureDescription)
     }
 }

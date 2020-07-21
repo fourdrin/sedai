@@ -277,6 +277,26 @@ sealed class TagV2 {
             const val LONG = "ProductFormDetail"
             const val SHORT = "b333"
         }
+
+        object ProductFormFeature {
+            const val LONG  = "ProductFormFeature"
+            const val SHORT = "productformfeature"
+
+            object ProductFormFeatureType {
+                const val LONG = "ProductFormFeatureType"
+                const val SHORT = "b334"
+            }
+
+            object ProductFormFeatureValue {
+                const val LONG = "ProductFormFeatureValue"
+                const val SHORT = "b335"
+            }
+
+            object ProductFormFeatureDescription {
+                const val LONG = "ProductFormFeatureDescription"
+                const val SHORT = "b336"
+            }
+        }
     }
 }
 

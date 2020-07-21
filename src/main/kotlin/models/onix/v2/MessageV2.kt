@@ -75,9 +75,16 @@ interface Product {
 
     val productForm: String?
     val productFormDetails: List<String>?
+    val productFormFeatures: List<ProductFormFeature>?
 
 }
 
 interface ProductIdentifier : IdentifierComposite {
     val productIDType: String?
+}
+
+interface ProductFormFeature {
+    val productFormFeatureType: String?
+    val productFormFeatureValue: String?
+    val productFormFeatureDescription: String?
 }

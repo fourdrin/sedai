@@ -168,8 +168,10 @@ data class ProductShort(
     override val productForm: String?,
 
     @JacksonXmlProperty(localName = TagV2.Product.ProductFormDetail.SHORT)
-    override val productFormDetails: List<String>?
+    override val productFormDetails: List<String>?,
 
+    @JacksonXmlProperty(localName = TagV2.Product.ProductFormFeature.SHORT)
+    override val productFormFeatures: List<ProductFormFeatureShort>?
 ) : Product
 
 data class ProductIdentifierShort(
@@ -182,3 +184,14 @@ data class ProductIdentifierShort(
     @JacksonXmlProperty(localName = TagV2.Product.ProductIdentifier.IDValue.SHORT)
     override val idValue: String?
 ) : ProductIdentifier
+
+data class ProductFormFeatureShort(
+    @JacksonXmlProperty(localName = TagV2.Product.ProductFormFeature.ProductFormFeatureType.SHORT)
+    override val productFormFeatureType: String?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.ProductFormFeature.ProductFormFeatureValue.SHORT)
+    override val productFormFeatureValue: String?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.ProductFormFeature.ProductFormFeatureDescription.SHORT)
+    override val productFormFeatureDescription: String?
+) : ProductFormFeature

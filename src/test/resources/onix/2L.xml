@@ -72,6 +72,14 @@
         <ReplacesEAN13>222</ReplacesEAN13>
         <ProductForm>BB</ProductForm>
         <ProductFormDetail>BB Hardback book</ProductFormDetail>
+        <ProductFormFeature>
+            <ProductFormFeatureType>02 Page edge color</ProductFormFeatureType>
+            <ProductFormFeatureValue>BLK Black (binding color)</ProductFormFeatureValue>
+        </ProductFormFeature>
+        <ProductFormFeature>
+            <ProductFormFeatureType>02 Page edge color</ProductFormFeatureType>
+            <ProductFormFeatureDescription>11pt Helvetica</ProductFormFeatureDescription>
+        </ProductFormFeature>
         <Title>
             <TitleType>01</TitleType>
             <TitleText textcase="02">British English, A to Zed</TitleText>
