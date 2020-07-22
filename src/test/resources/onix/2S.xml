@@ -80,6 +80,12 @@
             <b334>02 Page edge color</b334>
             <b336>11pt Helvetica</b336>
         </productformfeature>
+        <b013>04</b013>
+        <b225>05</b225>
+        <b014>3 volumes with 2 audiocassettes</b014>
+        <b210>3</b210>
+        <b384>03</b384>
+        <b385>01</b385>
         <Title>
             <TitleType>01</TitleType>
             <TitleText textcase="02">British English, A to Zed</TitleText>

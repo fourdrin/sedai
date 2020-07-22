@@ -175,6 +175,15 @@ internal class ProductShortTests : TwoShortOnixParserStrategyTest() {
         assertEquals(1, product.productFormDetails?.size)
         val productFormDetail1 = product.productFormDetails?.get(0)
         assertEquals("BB Hardback book", productFormDetail1)
+
+        assertEquals("04", product.bookFormDetail)
+        assertEquals("05", product.productPackaging)
+        assertEquals("3 volumes with 2 audiocassettes", product.productFormDescription)
+        assertEquals(3, product.numberOfPieces)
+        assertEquals("03", product.tradeCategory)
+
+        assertEquals(1, product.productContentTypes?.size)
+        assertEquals("01", product.productContentTypes?.get(0))
     }
 
     @Test

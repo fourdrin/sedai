@@ -80,6 +80,12 @@
             <ProductFormFeatureType>02 Page edge color</ProductFormFeatureType>
             <ProductFormFeatureDescription>11pt Helvetica</ProductFormFeatureDescription>
         </ProductFormFeature>
+        <BookFormDetail>04</BookFormDetail>
+        <ProductPackaging>05</ProductPackaging>
+        <ProductFormDescription>3 volumes with 2 audiocassettes</ProductFormDescription>
+        <NumberOfPieces>3</NumberOfPieces>
+        <TradeCategory>03</TradeCategory>
+        <ProductContentType>01</ProductContentType>
         <Title>
             <TitleType>01</TitleType>
             <TitleText textcase="02">British English, A to Zed</TitleText>

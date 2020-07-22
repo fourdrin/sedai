@@ -297,6 +297,37 @@ sealed class TagV2 {
                 const val SHORT = "b336"
             }
         }
+
+        @Deprecated("No longer supported in ONIX 2.1")
+        object BookFormDetail {
+            const val LONG = "BookFormDetail"
+            const val SHORT = "b013"
+        }
+
+        object ProductPackaging {
+            const val LONG = "ProductPackaging"
+            const val SHORT = "b225"
+        }
+
+        object ProductFormDescription {
+            const val LONG = "ProductFormDescription"
+            const val SHORT = "b014"
+        }
+
+        object NumberOfPieces {
+            const val LONG = "NumberOfPieces"
+            const val SHORT = "b210"
+        }
+
+        object TradeCategory {
+            const val LONG = "TradeCategory"
+            const val SHORT = "b384"
+        }
+
+        object ProductContentType {
+            const val LONG = "ProductContentType"
+            const val SHORT = "b385"
+        }
     }
 }
 

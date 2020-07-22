@@ -76,7 +76,12 @@ interface Product {
     val productForm: String?
     val productFormDetails: List<String>?
     val productFormFeatures: List<ProductFormFeature>?
-
+    @Deprecated("No longer supported in ONIX 2.1") val bookFormDetail: String?
+    val productPackaging: String?
+    val productFormDescription: String?
+    val numberOfPieces: Int?
+    val tradeCategory: String?
+    val productContentTypes: List<String>?
 }
 
 interface ProductIdentifier : IdentifierComposite {

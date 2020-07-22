@@ -169,7 +169,25 @@ data class ProductLong(
     override val productFormDetails: List<String>?,
 
     @JacksonXmlProperty(localName = TagV2.Product.ProductFormFeature.LONG)
-    override val productFormFeatures: List<ProductFormFeatureLong>?
+    override val productFormFeatures: List<ProductFormFeatureLong>?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.BookFormDetail.LONG)
+    override val bookFormDetail: String?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.ProductPackaging.LONG)
+    override val productPackaging: String?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.ProductFormDescription.LONG)
+    override val productFormDescription: String?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.NumberOfPieces.LONG)
+    override val numberOfPieces: Int?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.TradeCategory.LONG)
+    override val tradeCategory: String?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.ProductContentType.LONG)
+    override val productContentTypes: List<String>?
 ) : Product
 
 data class ProductIdentifierLong(
