@@ -328,6 +328,16 @@ sealed class TagV2 {
             const val LONG = "ProductContentType"
             const val SHORT = "b385"
         }
+
+        object ContainedItem {
+            const val LONG = "ContainedItem"
+            const val SHORT = "containeditem"
+
+            object ItemQuantity {
+                const val LONG = "ItemQuantity"
+                const val SHORT = "b015"
+            }
+        }
     }
 }
 

@@ -86,6 +86,28 @@
         <NumberOfPieces>3</NumberOfPieces>
         <TradeCategory>03</TradeCategory>
         <ProductContentType>01</ProductContentType>
+        <ContainedItem>
+            <ISBN>1</ISBN>
+            <EAN13>2</EAN13>
+            <ProductIdentifier>
+                <ProductIDType>02</ProductIDType>
+                <IDTypeName>ISBN-10</IDTypeName>
+                <IDValue>0816016356</IDValue>
+            </ProductIdentifier>
+            <ProductForm>BB</ProductForm>
+            <ProductFormDetail>BB Hardback book</ProductFormDetail>
+            <ProductFormFeature>
+                <ProductFormFeatureType>02 Page edge color</ProductFormFeatureType>
+                <ProductFormFeatureValue>BLK Black (binding color)</ProductFormFeatureValue>
+            </ProductFormFeature>
+            <BookFormDetail>04</BookFormDetail>
+            <ProductPackaging>05</ProductPackaging>
+            <ProductFormDescription>3 volumes with 2 audiocassettes</ProductFormDescription>
+            <NumberOfPieces>3</NumberOfPieces>
+            <TradeCategory>03</TradeCategory>
+            <ProductContentType>01</ProductContentType>
+            <ItemQuantity>1</ItemQuantity>
+        </ContainedItem>
         <Title>
             <TitleType>01</TitleType>
             <TitleText textcase="02">British English, A to Zed</TitleText>

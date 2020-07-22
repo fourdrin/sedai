@@ -189,7 +189,10 @@ data class ProductShort(
     override val tradeCategory: String?,
 
     @JacksonXmlProperty(localName = TagV2.Product.ProductContentType.SHORT)
-    override val productContentTypes: List<String>?
+    override val productContentTypes: List<String>?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.ContainedItem.SHORT)
+    override val containedItems: List<ContainedItemShort>?
 ) : Product
 
 data class ProductIdentifierShort(
@@ -213,3 +216,44 @@ data class ProductFormFeatureShort(
     @JacksonXmlProperty(localName = TagV2.Product.ProductFormFeature.ProductFormFeatureDescription.SHORT)
     override val productFormFeatureDescription: String?
 ) : ProductFormFeature
+
+data class ContainedItemShort(
+    @JacksonXmlProperty(localName = TagV2.Product.ISBN.SHORT)
+    override val isbn: String?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.EAN13.SHORT)
+    override val ean13: String?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.ProductIdentifier.SHORT)
+    override val productIdentifiers: List<ProductIdentifierShort>,
+
+    @JacksonXmlProperty(localName = TagV2.Product.ProductForm.SHORT)
+    override val productForm: String?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.ProductFormDetail.SHORT)
+    override val productFormDetails: List<String>?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.ProductFormFeature.SHORT)
+    override val productFormFeatures: List<ProductFormFeatureShort>?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.BookFormDetail.SHORT)
+    override val bookFormDetail: String?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.ProductPackaging.SHORT)
+    override val productPackaging: String?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.ProductFormDescription.SHORT)
+    override val productFormDescription: String?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.NumberOfPieces.SHORT)
+    override val numberOfPieces: Int?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.TradeCategory.SHORT)
+    override val tradeCategory: String?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.ProductContentType.SHORT)
+    override val productContentTypes: List<String>?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.ContainedItem.ItemQuantity.SHORT)
+    override val itemsQuantity: Int?
+) : ContainedItem

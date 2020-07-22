@@ -214,4 +214,35 @@ internal class ProductLongTests : TwoLongOnixParserStrategyTest() {
         assertNull(productFormFeatures2?.productFormFeatureValue)
         assertEquals("11pt Helvetica", productFormFeatures2?.productFormFeatureDescription)
     }
+
+    @Test
+    fun testContainedItem() {
+        assertEquals(1, product.containedItems?.size)
+
+        val containedItem = product.containedItems?.get(0)
+
+        assertEquals("1", containedItem?.isbn)
+        assertEquals("2", containedItem?.ean13)
+        assertEquals(1, containedItem?.productIdentifiers?.size)
+
+        val productIdentifier1 = containedItem?.productIdentifiers?.get(0)
+        assertEquals("02", productIdentifier1?.productIDType)
+        assertEquals("ISBN-10", productIdentifier1?.idTypeName)
+        assertEquals("0816016356", productIdentifier1?.idValue)
+
+        assertEquals("BB", containedItem?.productForm)
+        assertEquals(1, containedItem?.productFormDetails?.size)
+        assertEquals("04", containedItem?.bookFormDetail)
+        assertEquals("05", containedItem?.productPackaging)
+        assertEquals("3 volumes with 2 audiocassettes", containedItem?.productFormDescription)
+        assertEquals(3, containedItem?.numberOfPieces)
+        assertEquals("03", containedItem?.tradeCategory)
+        assertEquals(1, containedItem?.productContentTypes?.size)
+        assertEquals("01", containedItem?.productContentTypes?.get(0))
+
+        val productFormDetail1 = containedItem?.productFormDetails?.get(0)
+        assertEquals("BB Hardback book", productFormDetail1)
+
+        assertEquals(1, containedItem?.itemsQuantity)
+    }
 }

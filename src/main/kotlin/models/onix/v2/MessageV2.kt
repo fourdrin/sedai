@@ -49,7 +49,7 @@ interface AddresseeIdentifier : IdentifierComposite {
 
 // Products
 
-interface Product {
+interface Product : ProductIdentifiers, ProductForm {
     val recordReference: String
     val notificationType: String
     val deletionCode: String?
@@ -60,28 +60,34 @@ interface Product {
     val recordSourceIdentifier: String?
     val recordSourceName: String?
 
-    @Deprecated("No longer supported in ONIX 2.1") val isbn: String?
-    @Deprecated("No longer supported in ONIX 2.1") val ean13: String?
     @Deprecated("No longer supported in ONIX 2.1") val upc: String?
     @Deprecated("No longer supported in ONIX 2.1") val publisherProductNo: String?
     @Deprecated("No longer supported in ONIX 2.1") val ismn: String?
     @Deprecated("No longer supported in ONIX 2.1") val doi: String?
-
-    val productIdentifiers: List<ProductIdentifier>
     val barcodes: List<String>?
-
     @Deprecated("No longer supported in ONIX 2.1") val replacesISBN: String?
     @Deprecated("No longer supported in ONIX 2.1") val replacesEAN13: String?
 
+    val containedItems: List<ContainedItem>?
+}
+
+interface ProductForm {
     val productForm: String?
     val productFormDetails: List<String>?
     val productFormFeatures: List<ProductFormFeature>?
+
     @Deprecated("No longer supported in ONIX 2.1") val bookFormDetail: String?
     val productPackaging: String?
     val productFormDescription: String?
     val numberOfPieces: Int?
     val tradeCategory: String?
     val productContentTypes: List<String>?
+}
+
+interface ProductIdentifiers {
+    @Deprecated("No longer supported in ONIX 2.1") val isbn: String?
+    @Deprecated("No longer supported in ONIX 2.1") val ean13: String?
+    val productIdentifiers: List<ProductIdentifier>
 }
 
 interface ProductIdentifier : IdentifierComposite {
@@ -92,4 +98,8 @@ interface ProductFormFeature {
     val productFormFeatureType: String?
     val productFormFeatureValue: String?
     val productFormFeatureDescription: String?
+}
+
+interface ContainedItem : ProductIdentifiers, ProductForm {
+    val itemsQuantity: Int?
 }
