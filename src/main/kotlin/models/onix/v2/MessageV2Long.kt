@@ -190,7 +190,10 @@ data class ProductLong(
     override val productContentTypes: List<String>?,
 
     @JacksonXmlProperty(localName = TagV2.Product.ContainedItem.LONG)
-    override val containedItems: List<ContainedItemLong>?
+    override val containedItems: List<ContainedItemLong>?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.ProductClassification.LONG)
+    override val productClassifications: List<ProductClassificationLong>?
 ) : Product
 
 data class ProductIdentifierLong(
@@ -255,3 +258,14 @@ data class ContainedItemLong(
     @JacksonXmlProperty(localName = TagV2.Product.ContainedItem.ItemQuantity.LONG)
     override val itemsQuantity: Int?
 ) : ContainedItem
+
+data class ProductClassificationLong(
+    @JacksonXmlProperty(localName = TagV2.Product.ProductClassification.ProductClassificationType.LONG)
+    override val productClassificationType: String,
+
+    @JacksonXmlProperty(localName = TagV2.Product.ProductClassification.ProductClassificationCode.LONG)
+    override val productClassificationCode: String,
+
+    @JacksonXmlProperty(localName = TagV2.Product.ProductClassification.Percent.LONG)
+    override val percent: String?
+): ProductClassification

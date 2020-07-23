@@ -1,7 +1,6 @@
 package app.fourdrin.sedai.models.onix.v2
 
 import app.fourdrin.sedai.models.onix.TagV2
-import app.fourdrin.sedai.models.onix.v2.*
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement
@@ -192,7 +191,10 @@ data class ProductShort(
     override val productContentTypes: List<String>?,
 
     @JacksonXmlProperty(localName = TagV2.Product.ContainedItem.SHORT)
-    override val containedItems: List<ContainedItemShort>?
+    override val containedItems: List<ContainedItemShort>?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.ProductClassification.SHORT)
+    override val productClassifications: List<ProductClassificationShort>?
 ) : Product
 
 data class ProductIdentifierShort(
@@ -257,3 +259,14 @@ data class ContainedItemShort(
     @JacksonXmlProperty(localName = TagV2.Product.ContainedItem.ItemQuantity.SHORT)
     override val itemsQuantity: Int?
 ) : ContainedItem
+
+data class ProductClassificationShort(
+    @JacksonXmlProperty(localName = TagV2.Product.ProductClassification.ProductClassificationType.SHORT)
+    override val productClassificationType: String,
+
+    @JacksonXmlProperty(localName = TagV2.Product.ProductClassification.ProductClassificationCode.SHORT)
+    override val productClassificationCode: String,
+
+    @JacksonXmlProperty(localName = TagV2.Product.ProductClassification.Percent.SHORT)
+    override val percent: String?
+) : ProductClassification

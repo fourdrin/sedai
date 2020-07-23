@@ -112,6 +112,11 @@
             <b385>01</b385>
             <b015>1</b015>
         </containeditem>
+        <productclassification>
+            <b274>02</b274>
+            <b275>55101514</b275>
+            <b337>66.67</b337>
+        </productclassification>
         <Title>
             <TitleType>01</TitleType>
             <TitleText textcase="02">British English, A to Zed</TitleText>

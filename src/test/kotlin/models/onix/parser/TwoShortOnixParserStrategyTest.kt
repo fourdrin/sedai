@@ -233,4 +233,15 @@ internal class ProductShortTests : TwoShortOnixParserStrategyTest() {
 
         assertEquals(1, containedItem?.itemsQuantity)
     }
+
+    @Test
+    fun testProductClassifications() {
+        assertEquals(1, product.productClassifications?.size)
+
+        val productClassification = product.productClassifications?.get(0)
+
+        assertEquals("02", productClassification?.productClassificationType)
+        assertEquals("55101514", productClassification?.productClassificationCode)
+        assertEquals("66.67", productClassification?.percent)
+    }
 }

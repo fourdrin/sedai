@@ -108,6 +108,11 @@
             <ProductContentType>01</ProductContentType>
             <ItemQuantity>1</ItemQuantity>
         </ContainedItem>
+        <ProductClassification>
+            <ProductClassificationType>02</ProductClassificationType>
+            <ProductClassificationCode>55101514</ProductClassificationCode>
+            <Percent>66.67</Percent>
+        </ProductClassification>
         <Title>
             <TitleType>01</TitleType>
             <TitleText textcase="02">British English, A to Zed</TitleText>

@@ -69,6 +69,8 @@ interface Product : ProductIdentifiers, ProductForm {
     @Deprecated("No longer supported in ONIX 2.1") val replacesEAN13: String?
 
     val containedItems: List<ContainedItem>?
+
+    val productClassifications: List<ProductClassification>?
 }
 
 interface ProductForm {
@@ -102,4 +104,10 @@ interface ProductFormFeature {
 
 interface ContainedItem : ProductIdentifiers, ProductForm {
     val itemsQuantity: Int?
+}
+
+interface ProductClassification {
+    val productClassificationType: String
+    val productClassificationCode: String
+    val percent: String?
 }

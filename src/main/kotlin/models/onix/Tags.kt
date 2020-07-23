@@ -338,6 +338,26 @@ sealed class TagV2 {
                 const val SHORT = "b015"
             }
         }
+
+        object ProductClassification {
+            const val LONG = "ProductClassification"
+            const val SHORT = "productclassification"
+
+            object ProductClassificationType {
+                const val LONG = "ProductClassificationType"
+                const val SHORT = "b274"
+            }
+
+            object ProductClassificationCode {
+                const val LONG = "ProductClassificationCode"
+                const val SHORT = "b275"
+            }
+
+            object Percent {
+                const val LONG = "Percent"
+                const val SHORT = "b337"
+            }
+        }
     }
 }
 
