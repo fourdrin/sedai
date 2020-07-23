@@ -193,7 +193,37 @@ data class ProductLong(
     override val containedItems: List<ContainedItemLong>?,
 
     @JacksonXmlProperty(localName = TagV2.Product.ProductClassification.LONG)
-    override val productClassifications: List<ProductClassificationLong>?
+    override val productClassifications: List<ProductClassificationLong>?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.EpubType.LONG)
+    override val epubType: String?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.EpubTypeVersion.LONG)
+    override val epubTypeVersion: String?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.EpubTypeDescription.LONG)
+    override val epubTypeDescription: String?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.EpubFormat.LONG)
+    override val epubFormat: String?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.EpubFormatVersion.LONG)
+    override val epubFormatVersion: String?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.EpubFormatDescription.LONG)
+    override val epubFormatDescription: String?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.EpubSource.LONG)
+    override val epubSource: String?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.EpubSourceVersion.LONG)
+    override val epubSourceVersion: String?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.EpubSourceDescription.LONG)
+    override val epubSourceDescription: String?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.EpubTypeNote.LONG)
+    override val epubTypeNote: String?
 ) : Product
 
 data class ProductIdentifierLong(

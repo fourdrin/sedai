@@ -113,6 +113,16 @@
             <ProductClassificationCode>55101514</ProductClassificationCode>
             <Percent>66.67</Percent>
         </ProductClassification>
+        <EpubType>004</EpubType>
+        <EpubTypeVersion>2.1</EpubTypeVersion>
+        <EpubTypeDescription>Adobe Ebook Reader</EpubTypeDescription>
+        <EpubFormat>02</EpubFormat>
+        <EpubFormatVersion>2.1</EpubFormatVersion>
+        <EpubFormatDescription>Screen optimized PDF, with low-res figures</EpubFormatDescription>
+        <EpubSource>02</EpubSource>
+        <EpubSourceVersion>2.1</EpubSourceVersion>
+        <EpubSourceDescription>Screen optimized PDF, with low-res figures</EpubSourceDescription>
+        <EpubTypeNote>First appearance of this title in Microsoft Reader format</EpubTypeNote>
         <Title>
             <TitleType>01</TitleType>
             <TitleText textcase="02">British English, A to Zed</TitleText>

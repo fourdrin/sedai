@@ -244,4 +244,18 @@ internal class ProductShortTests : TwoShortOnixParserStrategyTest() {
         assertEquals("55101514", productClassification?.productClassificationCode)
         assertEquals("66.67", productClassification?.percent)
     }
+
+    @Test
+    fun testEpublicationDetails() {
+        assertEquals("004", product.epubType)
+        assertEquals("2.1", product.epubTypeVersion)
+        assertEquals("Adobe Ebook Reader", product.epubTypeDescription)
+        assertEquals("02", product.epubFormat)
+        assertEquals("2.1", product.epubFormatVersion)
+        assertEquals("Screen optimized PDF, with low-res figures", product.epubFormatDescription)
+        assertEquals("02", product.epubSource)
+        assertEquals("2.1", product.epubSourceVersion)
+        assertEquals("Screen optimized PDF, with low-res figures", product.epubSourceDescription)
+        assertEquals("First appearance of this title in Microsoft Reader format", product.epubTypeNote)
+    }
 }

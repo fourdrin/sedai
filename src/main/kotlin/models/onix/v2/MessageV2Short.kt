@@ -194,7 +194,37 @@ data class ProductShort(
     override val containedItems: List<ContainedItemShort>?,
 
     @JacksonXmlProperty(localName = TagV2.Product.ProductClassification.SHORT)
-    override val productClassifications: List<ProductClassificationShort>?
+    override val productClassifications: List<ProductClassificationShort>?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.EpubType.SHORT)
+    override val epubType: String?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.EpubTypeVersion.SHORT)
+    override val epubTypeVersion: String?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.EpubTypeDescription.SHORT)
+    override val epubTypeDescription: String?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.EpubFormat.SHORT)
+    override val epubFormat: String?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.EpubFormatVersion.SHORT)
+    override val epubFormatVersion: String?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.EpubFormatDescription.SHORT)
+    override val epubFormatDescription: String?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.EpubSource.SHORT)
+    override val epubSource: String?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.EpubSourceVersion.SHORT)
+    override val epubSourceVersion: String?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.EpubSourceDescription.SHORT)
+    override val epubSourceDescription: String?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.EpubTypeNote.SHORT)
+    override val epubTypeNote: String?
 ) : Product
 
 data class ProductIdentifierShort(

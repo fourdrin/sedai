@@ -49,7 +49,7 @@ interface AddresseeIdentifier : IdentifierComposite {
 
 // Products
 
-interface Product : ProductIdentifiers, ProductForm {
+interface Product : ProductIdentifiers, ProductForm, EpublicationDetail {
     val recordReference: String
     val notificationType: String
     val deletionCode: String?
@@ -110,4 +110,17 @@ interface ProductClassification {
     val productClassificationType: String
     val productClassificationCode: String
     val percent: String?
+}
+
+interface EpublicationDetail {
+    val epubType: String?
+    val epubTypeVersion: String?
+    val epubTypeDescription: String?
+    val epubFormat: String?
+    val epubFormatVersion: String?
+    val epubFormatDescription: String?
+    val epubSource: String?
+    val epubSourceVersion: String?
+    val epubSourceDescription: String?
+    val epubTypeNote: String?
 }

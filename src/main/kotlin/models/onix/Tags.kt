@@ -358,6 +358,56 @@ sealed class TagV2 {
                 const val SHORT = "b337"
             }
         }
+
+        object EpubType {
+            const val LONG = "EpubType"
+            const val SHORT = "b211"
+        }
+
+        object EpubTypeVersion {
+            const val LONG = "EpubTypeVersion"
+            const val SHORT = "b212"
+        }
+
+        object EpubTypeDescription {
+            const val LONG = "EpubTypeDescription"
+            const val SHORT = "b213"
+        }
+
+        object EpubFormat {
+            const val LONG = "EpubFormat"
+            const val SHORT = "b214"
+        }
+
+        object EpubFormatVersion {
+            const val LONG = "EpubFormatVersion"
+            const val SHORT = "b215"
+        }
+
+        object EpubFormatDescription {
+            const val LONG = "EpubFormatDescription"
+            const val SHORT = "b216"
+        }
+
+        object EpubSource {
+            const val LONG = "EpubSource"
+            const val SHORT = "b278"
+        }
+
+        object EpubSourceVersion {
+            const val LONG = "EpubSourceVersion"
+            const val SHORT = "b279"
+        }
+
+        object EpubSourceDescription {
+            const val LONG = "EpubSourceDescription"
+            const val SHORT = "b280"
+        }
+
+        object EpubTypeNote {
+            const val LONG = "EpubTypeNote"
+            const val SHORT = "b277"
+        }
     }
 }
 
