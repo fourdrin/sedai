@@ -1,8 +1,18 @@
 package app.fourdrin.sedai.loader.tasks
 
+import app.fourdrin.sedai.SEDAI_GRPC_SERVER_HOST
+import app.fourdrin.sedai.SEDAI_GRPC_SERVER_PORT
 import app.fourdrin.sedai.SEDAI_PIPELINE_DIRECTORY
+import app.fourdrin.sedai.loader.LoaderClient
 import app.fourdrin.sedai.loader.LoaderWorkerWithQueue
 import app.fourdrin.sedai.models.*
+import com.google.protobuf.ByteString
+import io.grpc.ManagedChannel
+import io.grpc.ManagedChannelBuilder
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.asExecutor
+import kotlinx.coroutines.runBlocking
+import software.amazon.awssdk.core.internal.http.pipeline.RequestPipelineBuilder.async
 import software.amazon.awssdk.core.sync.ResponseTransformer
 import software.amazon.awssdk.services.s3.S3Client
 import software.amazon.awssdk.services.s3.model.GetObjectRequest
@@ -13,6 +23,12 @@ import javax.xml.stream.XMLStreamException
 
 class MetadataRunnable constructor(private val s3Client: S3Client, private val metadataKey: String) : Runnable {
     private val inputFactory = XMLInputFactory.newInstance()
+    private val client = LoaderClient(
+        ManagedChannelBuilder.forAddress(SEDAI_GRPC_SERVER_HOST, SEDAI_GRPC_SERVER_PORT)
+            .usePlaintext()
+            .executor(Dispatchers.Default.asExecutor())
+            .build()
+    )
 
     init {
         inputFactory.setProperty(
@@ -52,26 +68,29 @@ class MetadataRunnable constructor(private val s3Client: S3Client, private val m
         }
 
         if (firstTag != null) {
-            val metadataType: MetadataType = when (firstTag) {
-                "ONIXMessageAcknowledgement" -> OnixThreeLong
-                "ONIXmessageacknowledgement" -> OnixThreeShort
-                "ONIXMessage" -> OnixTwoLong
-                "ONIXmessage" -> OnixTwoShort
-                else -> UnknownMetadata
+            val metadataType: LoaderServiceOuterClass.MetadataType = when (firstTag) {
+                "ONIXMessageAcknowledgement" -> LoaderServiceOuterClass.MetadataType.ONIX_THREE_LONG
+                "ONIXmessageacknowledgement" -> LoaderServiceOuterClass.MetadataType.ONIX_THREE_SHORT
+                "ONIXMessage" -> LoaderServiceOuterClass.MetadataType.ONIX_TWO_LONG
+                "ONIXmessage" -> LoaderServiceOuterClass.MetadataType.ONIX_TWO_SHORT
+                else -> LoaderServiceOuterClass.MetadataType.UNRECOGNIZED
             }
 
 
-            if (metadataType != UnknownMetadata) {
+            if (metadataType != LoaderServiceOuterClass.MetadataType.UNRECOGNIZED) {
                 val metadataFile = ByteArrayInputStream(resp.asByteArray())
-                val work = LoaderWork(
-                    id = metadataKey,
-                    assetType = AssetType.METADATA,
-                    metadataType = metadataType,
-                    metadataFile = metadataFile
-                )
 
-                // Requeue the work now that we know the version
-                LoaderWorkerWithQueue.workerQueue.add(work)
+                runBlocking {
+                    val loadResp = client.createLoad(
+                        s3Key = metadataKey,
+                        assetType = LoaderServiceOuterClass.AssetType.METADATA,
+                        metadataType = metadataType,
+                        metadataFile = ByteString.copyFrom(resp.asByteArray())
+                    )
+
+                    loadResp.join()
+                }
+
                 return
             }
         }

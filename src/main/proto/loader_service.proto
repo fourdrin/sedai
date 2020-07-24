@@ -10,9 +10,18 @@ enum AssetType {
   COVER = 2;
 }
 
+enum MetadataType {
+  ONIX_TWO_SHORT = 0;
+  ONIX_TWO_LONG = 1;
+  ONIX_THREE_SHORT = 2;
+  ONIX_THREE_LONG = 3;
+}
+
 message CreateLoadRequest {
   string s3Key = 1;
   AssetType assetType = 2;
+  MetadataType metadataType = 3;
+  bytes metadataFile = 4;
 }
 
 message CreateLoadResponse {}
