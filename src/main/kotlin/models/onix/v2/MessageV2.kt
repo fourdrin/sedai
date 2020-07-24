@@ -159,10 +159,10 @@ interface TitleComposite {
     val abbreviatedLength: String?
     @Deprecated("No longer supported in ONIX 2.1")
     val textCaseFlag: String?
-    val titleText: ProductTitle?
-    val titlePrefix: ProductTitle?
-    val titleWithoutPrefix: ProductTitle?
-    val subtitle: ProductTitle?
+    val titleText: TitleText?
+    val titlePrefix: TitleText?
+    val titleWithoutPrefix: TitleText?
+    val subtitle: TitleText?
 }
 
 interface TitleText {

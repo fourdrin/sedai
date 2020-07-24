@@ -134,6 +134,15 @@
         <b029>The Russian Revolution 1891-1924</b029>
         <b032>L’Isola del Giorno Prima</b032>
         <b033>English English</b033>
+        <title>
+            <b202>01</b202>
+            <b276>40</b276>
+            <b027>01</b027>
+            <b203 textformat="a" language="eng" transliteration="t" textcase="02">Nicholas Nickleby</b203>
+            <b030 textformat="a" language="eng" transliteration="t" textcase="02">The</b030>
+            <b031 textformat="a" language="eng" transliteration="t" textcase="02">shameful life of Salvador Dali</b031>
+            <b029 textformat="a" language="eng" transliteration="t" textcase="02">The Russian Revolution 1891-1924</b029>
+        </title>
         <Contributor>
             <SequenceNumber>1</SequenceNumber>
             <ContributorRole>A01</ContributorRole>

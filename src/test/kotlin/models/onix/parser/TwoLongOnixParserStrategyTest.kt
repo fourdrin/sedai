@@ -285,6 +285,39 @@ internal class ProductLongTests : TwoLongOnixParserStrategyTest() {
 
     @Test
     fun testTitleComposite() {
+        assertEquals(1, product.titles?.size)
 
+        val title = product.titles?.get(0)
+        assertEquals("01", title?.titleType)
+        assertEquals("40", title?.abbreviatedLength)
+        assertEquals("01", title?.textCaseFlag)
+
+        // Title
+        assertEquals("a", title?.titleText?.textFormat)
+        assertEquals("eng", title?.titleText?.language)
+        assertEquals("t", title?.titleText?.transliteration)
+        assertEquals("02", title?.titleText?.textCase)
+        assertEquals("Nicholas Nickleby", title?.titleText?.value)
+
+        // Prefix
+        assertEquals("a", title?.titlePrefix?.textFormat)
+        assertEquals("eng", title?.titlePrefix?.language)
+        assertEquals("t", title?.titlePrefix?.transliteration)
+        assertEquals("02", title?.titlePrefix?.textCase)
+        assertEquals("The", title?.titlePrefix?.value)
+
+        // Title Without Prefix
+        assertEquals("a", title?.titleWithoutPrefix?.textFormat)
+        assertEquals("eng", title?.titleWithoutPrefix?.language)
+        assertEquals("t", title?.titleWithoutPrefix?.transliteration)
+        assertEquals("02", title?.titleWithoutPrefix?.textCase)
+        assertEquals("shameful life of Salvador Dali", title?.titleWithoutPrefix?.value)
+
+        // Subtitle
+        assertEquals("a", title?.subtitle?.textFormat)
+        assertEquals("eng", title?.subtitle?.language)
+        assertEquals("t", title?.subtitle?.transliteration)
+        assertEquals("02", title?.subtitle?.textCase)
+        assertEquals("The Russian Revolution 1891-1924", title?.subtitle?.value)
     }
 }

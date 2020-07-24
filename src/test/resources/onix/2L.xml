@@ -132,7 +132,12 @@
         <FormerTitle>English English</FormerTitle>
         <Title>
             <TitleType>01</TitleType>
-            <TitleText textcase="02">British English, A to Zed</TitleText>
+            <AbbreviatedLength>40</AbbreviatedLength>
+            <TextCaseFlag>01</TextCaseFlag>
+            <TitleText textformat="a" language="eng" transliteration="t" textcase="02">Nicholas Nickleby</TitleText>
+            <TitlePrefix textformat="a" language="eng" transliteration="t" textcase="02">The</TitlePrefix>
+            <TitleWithoutPrefix textformat="a" language="eng" transliteration="t" textcase="02">shameful life of Salvador Dali</TitleWithoutPrefix>
+            <Subtitle textformat="a" language="eng" transliteration="t" textcase="02">The Russian Revolution 1891-1924</Subtitle>
         </Title>
         <Contributor>
             <SequenceNumber>1</SequenceNumber>
