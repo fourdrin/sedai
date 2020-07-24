@@ -78,14 +78,12 @@ class MetadataRunnable constructor(private val s3Client: S3Client, private val m
                 val metadataFile = ByteArrayInputStream(resp.asByteArray())
 
                 runBlocking {
-                    val loadResp = client.createLoad(
+                    client.createLoad(
                         s3Key = metadataKey,
                         assetType = LoaderServiceOuterClass.AssetType.METADATA,
                         metadataType = metadataType,
                         metadataFile = ByteString.copyFrom(resp.asByteArray())
                     )
-
-                    loadResp.join()
                 }
 
                 return

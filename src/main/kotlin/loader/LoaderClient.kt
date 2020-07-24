@@ -18,7 +18,8 @@ class LoaderClient constructor(private val channel: ManagedChannel) : Closeable 
             .setMetadataType(metadataType)
             .setMetadataFile(metadataFile)
             .build()
-        async { stub.createLoad(request) }
+        val resp = async { stub.createLoad(request) }
+        println(resp.await())
     }
 
     override fun close() {
