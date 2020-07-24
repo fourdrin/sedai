@@ -127,10 +127,13 @@
         <b279>2.1</b279>
         <b280>Screen optimized PDF, with low-res figures</b280>
         <b277>First appearance of this title in Microsoft Reader format</b277>
-        <Title>
-            <TitleType>01</TitleType>
-            <TitleText textcase="02">British English, A to Zed</TitleText>
-        </Title>
+        <b027>01</b027>
+        <b028>A People’s Tragedy</b028>
+        <b030>The</b030>
+        <b031>shameful life of Salvador Dali</b031>
+        <b029>The Russian Revolution 1891-1924</b029>
+        <b032>L’Isola del Giorno Prima</b032>
+        <b033>English English</b033>
         <Contributor>
             <SequenceNumber>1</SequenceNumber>
             <ContributorRole>A01</ContributorRole>

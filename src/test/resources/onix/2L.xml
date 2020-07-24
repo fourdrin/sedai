@@ -123,6 +123,13 @@
         <EpubSourceVersion>2.1</EpubSourceVersion>
         <EpubSourceDescription>Screen optimized PDF, with low-res figures</EpubSourceDescription>
         <EpubTypeNote>First appearance of this title in Microsoft Reader format</EpubTypeNote>
+        <TextCaseFlag>01</TextCaseFlag>
+        <DistinctiveTitle>A People’s Tragedy</DistinctiveTitle>
+        <TitlePrefix>The</TitlePrefix>
+        <TitleWithoutPrefix>shameful life of Salvador Dali</TitleWithoutPrefix>
+        <Subtitle>The Russian Revolution 1891-1924</Subtitle>
+        <TranslationOfTitle>L’Isola del Giorno Prima</TranslationOfTitle>
+        <FormerTitle>English English</FormerTitle>
         <Title>
             <TitleType>01</TitleType>
             <TitleText textcase="02">British English, A to Zed</TitleText>

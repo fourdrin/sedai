@@ -34,8 +34,10 @@ interface Header {
     val defaultLanguageOfText: String?
     val defaultPriceTypeCode: String?
     val defaultCurrencyCode: String?
-    @Deprecated("No longer supported in ONIX 2.1") val defaultLinearUnit: String?
-    @Deprecated("No longer supported in ONIX 2.1") val defaultWeightUnit: String?
+    @Deprecated("No longer supported in ONIX 2.1")
+    val defaultLinearUnit: String?
+    @Deprecated("No longer supported in ONIX 2.1")
+    val defaultWeightUnit: String?
     val defaultClassOfTrade: String?
 }
 
@@ -49,7 +51,7 @@ interface AddresseeIdentifier : IdentifierComposite {
 
 // Products
 
-interface Product : ProductIdentifiers, ProductForm, EpublicationDetail {
+interface Product : ProductIdentifiers, ProductForm, EpublicationDetail, Title {
     val recordReference: String
     val notificationType: String
     val deletionCode: String?
@@ -60,13 +62,19 @@ interface Product : ProductIdentifiers, ProductForm, EpublicationDetail {
     val recordSourceIdentifier: String?
     val recordSourceName: String?
 
-    @Deprecated("No longer supported in ONIX 2.1") val upc: String?
-    @Deprecated("No longer supported in ONIX 2.1") val publisherProductNo: String?
-    @Deprecated("No longer supported in ONIX 2.1") val ismn: String?
-    @Deprecated("No longer supported in ONIX 2.1") val doi: String?
+    @Deprecated("No longer supported in ONIX 2.1")
+    val upc: String?
+    @Deprecated("No longer supported in ONIX 2.1")
+    val publisherProductNo: String?
+    @Deprecated("No longer supported in ONIX 2.1")
+    val ismn: String?
+    @Deprecated("No longer supported in ONIX 2.1")
+    val doi: String?
     val barcodes: List<String>?
-    @Deprecated("No longer supported in ONIX 2.1") val replacesISBN: String?
-    @Deprecated("No longer supported in ONIX 2.1") val replacesEAN13: String?
+    @Deprecated("No longer supported in ONIX 2.1")
+    val replacesISBN: String?
+    @Deprecated("No longer supported in ONIX 2.1")
+    val replacesEAN13: String?
 
     val containedItems: List<ContainedItem>?
 
@@ -78,7 +86,8 @@ interface ProductForm {
     val productFormDetails: List<String>?
     val productFormFeatures: List<ProductFormFeature>?
 
-    @Deprecated("No longer supported in ONIX 2.1") val bookFormDetail: String?
+    @Deprecated("No longer supported in ONIX 2.1")
+    val bookFormDetail: String?
     val productPackaging: String?
     val productFormDescription: String?
     val numberOfPieces: Int?
@@ -87,8 +96,10 @@ interface ProductForm {
 }
 
 interface ProductIdentifiers {
-    @Deprecated("No longer supported in ONIX 2.1") val isbn: String?
-    @Deprecated("No longer supported in ONIX 2.1") val ean13: String?
+    @Deprecated("No longer supported in ONIX 2.1")
+    val isbn: String?
+    @Deprecated("No longer supported in ONIX 2.1")
+    val ean13: String?
     val productIdentifiers: List<ProductIdentifier>
 }
 
@@ -123,4 +134,41 @@ interface EpublicationDetail {
     val epubSourceVersion: String?
     val epubSourceDescription: String?
     val epubTypeNote: String?
+}
+
+interface Title {
+    @Deprecated("No longer supported in ONIX 2.1")
+    val textCaseFlag: String?
+    @Deprecated("No longer supported in ONIX 2.1")
+    val distinctiveTitle: String?
+    @Deprecated("No longer supported in ONIX 2.1")
+    val titlePrefix: String?
+    @Deprecated("No longer supported in ONIX 2.1")
+    val titleWithoutPrefix: String?
+    @Deprecated("No longer supported in ONIX 2.1")
+    val subtitle: String?
+    @Deprecated("No longer supported in ONIX 2.1")
+    val translationOfTitle: String?
+    @Deprecated("No longer supported in ONIX 2.1")
+    val formerTitle: String?
+    val titles: List<TitleComposite>?
+}
+
+interface TitleComposite {
+    val titleType: String
+    val abbreviatedLength: String?
+    @Deprecated("No longer supported in ONIX 2.1")
+    val textCaseFlag: String?
+    val titleText: ProductTitle?
+    val titlePrefix: ProductTitle?
+    val titleWithoutPrefix: ProductTitle?
+    val subtitle: ProductTitle?
+}
+
+interface TitleText {
+    val textFormat: String?
+    val language: String?
+    val transliteration: String?
+    val textCase: String?
+    val value: String
 }

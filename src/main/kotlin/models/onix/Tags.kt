@@ -408,6 +408,89 @@ sealed class TagV2 {
             const val LONG = "EpubTypeNote"
             const val SHORT = "b277"
         }
+
+        @Deprecated("No longer supported in ONIX 2.1")
+        object TextCaseFlag {
+            const val LONG = "TextCaseFlag"
+            const val SHORT = "b027"
+        }
+
+        @Deprecated("No longer supported in ONIX 2.1")
+        object DistinctiveTitle {
+            const val LONG = "DistinctiveTitle"
+            const val SHORT = "b028"
+        }
+
+        @Deprecated("No longer supported in ONIX 2.1")
+        object TitlePrefix {
+            const val LONG = "TitlePrefix"
+            const val SHORT = "b030"
+        }
+
+        @Deprecated("No longer supported in ONIX 2.1")
+        object TitleWithoutPrefix {
+            const val LONG = "TitleWithoutPrefix"
+            const val SHORT = "b031"
+        }
+
+        @Deprecated("No longer supported in ONIX 2.1")
+        object Subtitle {
+            const val LONG = "Subtitle"
+            const val SHORT = "b029"
+        }
+
+        @Deprecated("No longer supported in ONIX 2.1")
+        object TranslationOfTitle {
+            const val LONG = "TranslationOfTitle"
+            const val SHORT = "b032"
+        }
+
+        @Deprecated("No longer supported in ONIX 2.1")
+        object FormerTitle {
+            const val LONG = "FormerTitle"
+            const val SHORT = "b033"
+        }
+
+        object Title {
+            const val LONG = "Title"
+            const val SHORT = "title"
+
+            object TitleType {
+                const val LONG = "TitleType"
+                const val SHORT = "b202"
+            }
+
+            object AbbreviatedLength {
+                const val LONG = "AbbreviatedLength"
+                const val SHORT = "b276"
+            }
+
+            @Deprecated("No longer supported in ONIX 2.1")
+            object TextCaseFlag {
+                const val LONG = "TextCaseFlag"
+                const val SHORT = "b027"
+            }
+
+            object TitleText {
+                const val LONG = "TitleText"
+                const val SHORT = "b203"
+            }
+
+            object TitlePrefix {
+                const val LONG = "TitlePrefix"
+                const val SHORT = "b030"
+            }
+
+            object TitleWithoutPrefix {
+                const val LONG = "TitleWithoutPrefix"
+                const val SHORT = "b031"
+            }
+
+            object Subtitle {
+                const val LONG = "Subtitle"
+                const val SHORT = "b029"
+            }
+        }
     }
 }
 

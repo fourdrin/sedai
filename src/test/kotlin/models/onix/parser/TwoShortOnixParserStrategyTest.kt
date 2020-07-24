@@ -258,4 +258,16 @@ internal class ProductShortTests : TwoShortOnixParserStrategyTest() {
         assertEquals("Screen optimized PDF, with low-res figures", product.epubSourceDescription)
         assertEquals("First appearance of this title in Microsoft Reader format", product.epubTypeNote)
     }
+
+    @Test
+    fun testDeprecatedTitles() {
+        assertEquals("01", product.textCaseFlag)
+        assertEquals("A People’s Tragedy", product.distinctiveTitle)
+        assertEquals("The", product.titlePrefix)
+        assertEquals("shameful life of Salvador Dali", product.titleWithoutPrefix)
+        assertEquals("The Russian Revolution 1891-1924", product.subtitle)
+        assertEquals("L’Isola del Giorno Prima", product.translationOfTitle)
+        assertEquals("L’Isola del Giorno Prima", product.translationOfTitle)
+        assertEquals("English English", product.formerTitle)
+    }
 }

@@ -224,7 +224,31 @@ data class ProductShort(
     override val epubSourceDescription: String?,
 
     @JacksonXmlProperty(localName = TagV2.Product.EpubTypeNote.SHORT)
-    override val epubTypeNote: String?
+    override val epubTypeNote: String?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.TextCaseFlag.SHORT)
+    override val textCaseFlag: String?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.DistinctiveTitle.SHORT)
+    override val distinctiveTitle: String?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.TitlePrefix.SHORT)
+    override val titlePrefix: String?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.TitleWithoutPrefix.SHORT)
+    override val titleWithoutPrefix: String?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.Subtitle.SHORT)
+    override val subtitle: String?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.TranslationOfTitle.SHORT)
+    override val translationOfTitle: String?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.FormerTitle.SHORT)
+    override val formerTitle: String?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.Title.SHORT)
+    override val titles: List<TitleCompositeShort>?
 ) : Product
 
 data class ProductIdentifierShort(
@@ -300,3 +324,26 @@ data class ProductClassificationShort(
     @JacksonXmlProperty(localName = TagV2.Product.ProductClassification.Percent.SHORT)
     override val percent: String?
 ) : ProductClassification
+
+data class TitleCompositeShort(
+    @JacksonXmlProperty(localName = TagV2.Product.Title.TitleType.SHORT)
+    override val titleType: String,
+
+    @JacksonXmlProperty(localName = TagV2.Product.Title.AbbreviatedLength.SHORT)
+    override val abbreviatedLength: String?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.Title.TextCaseFlag.SHORT)
+    override val textCaseFlag: String?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.Title.TitleText.SHORT)
+    override val titleText: ProductTitle?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.Title.TitlePrefix.SHORT)
+    override val titlePrefix: ProductTitle?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.Title.TitleWithoutPrefix.SHORT)
+    override val titleWithoutPrefix: ProductTitle?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.Title.Subtitle.SHORT)
+    override val subtitle: ProductTitle?
+) : TitleComposite
