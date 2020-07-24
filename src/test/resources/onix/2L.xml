@@ -139,6 +139,19 @@
             <TitleWithoutPrefix textformat="a" language="eng" transliteration="t" textcase="02">shameful life of Salvador Dali</TitleWithoutPrefix>
             <Subtitle textformat="a" language="eng" transliteration="t" textcase="02">The Russian Revolution 1891-1924</Subtitle>
         </Title>
+        <WorkIdentifier>
+            <WorkIDType>01</WorkIDType>
+            <IDTypeName>abc</IDTypeName>
+            <IDValue>xyz</IDValue>
+        </WorkIdentifier>
+        <Website>
+            <WebsiteRole>05</WebsiteRole>
+            <WebsiteDescription>test</WebsiteDescription>
+            <WebsiteLink>http://xyzbooks.com/ISTC123456789.htm</WebsiteLink>
+        </Website>
+        <ThesisType>01</ThesisType>
+        <ThesisPresentedTo>J Smith</ThesisPresentedTo>
+        <ThesisYear>2002</ThesisYear>
         <Contributor>
             <SequenceNumber>1</SequenceNumber>
             <ContributorRole>A01</ContributorRole>

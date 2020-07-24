@@ -248,7 +248,22 @@ data class ProductShort(
     override val formerTitle: String?,
 
     @JacksonXmlProperty(localName = TagV2.Product.Title.SHORT)
-    override val titles: List<TitleCompositeShort>?
+    override val titles: List<TitleCompositeShort>?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.WorkIdentifier.SHORT)
+    override val workIdentifiers: List<WorkIdentifierShort>?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.Website.SHORT)
+    override val websites: List<WebsiteShort>?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.ThesisType.SHORT)
+    override val thesisType: String?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.ThesisPresentedTo.SHORT)
+    override val thesisPresentedTo: String?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.ThesisYear.SHORT)
+    override val thesisYear: String?
 ) : Product
 
 data class ProductIdentifierShort(
@@ -347,3 +362,25 @@ data class TitleCompositeShort(
     @JacksonXmlProperty(localName = TagV2.Product.Title.Subtitle.SHORT)
     override val subtitle: ProductTitle?
 ) : TitleComposite
+
+data class WorkIdentifierShort(
+    @JacksonXmlProperty(localName = TagV2.Product.WorkIdentifier.WorkIDType.SHORT)
+    override val workIDType: String?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.WorkIdentifier.IDTypeName.SHORT)
+    override val idTypeName: String?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.WorkIdentifier.IDValue.SHORT)
+    override val idValue: String?
+) : WorkIdentifier
+
+data class WebsiteShort(
+    @JacksonXmlProperty(localName = TagV2.Product.Website.WebsiteRole.SHORT)
+    override val websiteRole: String?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.Website.WebsiteDescription.SHORT)
+    override val websiteDescription: String?,
+
+    @JacksonXmlProperty(localName = TagV2.Product.Website.WebsiteLink.SHORT)
+    override val websiteLink: String?
+) : Website

@@ -79,6 +79,26 @@ interface Product : ProductIdentifiers, ProductForm, EpublicationDetail, Title {
     val containedItems: List<ContainedItem>?
 
     val productClassifications: List<ProductClassification>?
+
+    val workIdentifiers: List<WorkIdentifier>?
+
+    val websites: List<Website>?
+
+    val thesisType: String?
+    val thesisPresentedTo: String?
+    val thesisYear: String?
+}
+
+interface ProductIdentifiers {
+    @Deprecated("No longer supported in ONIX 2.1")
+    val isbn: String?
+    @Deprecated("No longer supported in ONIX 2.1")
+    val ean13: String?
+    val productIdentifiers: List<ProductIdentifier>
+}
+
+interface ProductIdentifier : IdentifierComposite {
+    val productIDType: String?
 }
 
 interface ProductForm {
@@ -95,18 +115,6 @@ interface ProductForm {
     val productContentTypes: List<String>?
 }
 
-interface ProductIdentifiers {
-    @Deprecated("No longer supported in ONIX 2.1")
-    val isbn: String?
-    @Deprecated("No longer supported in ONIX 2.1")
-    val ean13: String?
-    val productIdentifiers: List<ProductIdentifier>
-}
-
-interface ProductIdentifier : IdentifierComposite {
-    val productIDType: String?
-}
-
 interface ProductFormFeature {
     val productFormFeatureType: String?
     val productFormFeatureValue: String?
@@ -116,13 +124,6 @@ interface ProductFormFeature {
 interface ContainedItem : ProductIdentifiers, ProductForm {
     val itemsQuantity: Int?
 }
-
-interface ProductClassification {
-    val productClassificationType: String
-    val productClassificationCode: String
-    val percent: String?
-}
-
 interface EpublicationDetail {
     val epubType: String?
     val epubTypeVersion: String?
@@ -171,4 +172,20 @@ interface TitleText {
     val transliteration: String?
     val textCase: String?
     val value: String
+}
+
+interface ProductClassification {
+    val productClassificationType: String
+    val productClassificationCode: String
+    val percent: String?
+}
+
+interface WorkIdentifier : IdentifierComposite {
+    val workIDType: String?
+}
+
+interface Website {
+    val websiteRole: String?
+    val websiteDescription: String?
+    val websiteLink: String?
 }

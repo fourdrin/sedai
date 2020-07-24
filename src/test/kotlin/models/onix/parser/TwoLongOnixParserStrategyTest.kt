@@ -320,4 +320,33 @@ internal class ProductLongTests : TwoLongOnixParserStrategyTest() {
         assertEquals("02", title?.subtitle?.textCase)
         assertEquals("The Russian Revolution 1891-1924", title?.subtitle?.value)
     }
+
+    @Test
+    fun testWorkIdentifiers() {
+        assertEquals(1, product.workIdentifiers?.size)
+
+        val workIdentifier = product.workIdentifiers?.get(0)
+
+        assertEquals("01", workIdentifier?.workIDType)
+        assertEquals("abc", workIdentifier?.idTypeName)
+        assertEquals("xyz", workIdentifier?.idValue)
+    }
+
+    @Test
+    fun testWebsites() {
+        assertEquals(1, product.websites?.size)
+
+        val website = product.websites?.get(0)
+
+        assertEquals("05", website?.websiteRole)
+        assertEquals("test", website?.websiteDescription)
+        assertEquals("http://xyzbooks.com/ISTC123456789.htm", website?.websiteLink)
+    }
+
+    @Test
+    fun testThesis() {
+        assertEquals("01", product.thesisType)
+        assertEquals("J Smith", product.thesisPresentedTo)
+        assertEquals("2002", product.thesisYear)
+    }
 }

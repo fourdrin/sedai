@@ -143,6 +143,19 @@
             <b031 textformat="a" language="eng" transliteration="t" textcase="02">shameful life of Salvador Dali</b031>
             <b029 textformat="a" language="eng" transliteration="t" textcase="02">The Russian Revolution 1891-1924</b029>
         </title>
+        <workidentifier>
+            <b201>01</b201>
+            <b233>abc</b233>
+            <b244>xyz</b244>
+        </workidentifier>
+        <website>
+            <b367>05</b367>
+            <b294>test</b294>
+            <b295>http://xyzbooks.com/ISTC123456789.htm</b295>
+        </website>
+        <b368>01</b368>
+        <b369>J Smith</b369>
+        <b370>2002</b370>
         <Contributor>
             <SequenceNumber>1</SequenceNumber>
             <ContributorRole>A01</ContributorRole>

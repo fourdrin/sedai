@@ -491,6 +491,61 @@ sealed class TagV2 {
                 const val SHORT = "b029"
             }
         }
+
+        object WorkIdentifier {
+            const val LONG = "WorkIdentifier"
+            const val SHORT = "workidentifier"
+
+            object WorkIDType {
+                const val LONG = "WorkIDType"
+                const val SHORT = "b201"
+            }
+
+            object IDTypeName {
+                const val LONG = "IDTypeName"
+                const val SHORT = "b233"
+            }
+
+            object IDValue {
+                const val LONG = "IDValue"
+                const val SHORT = "b244"
+            }
+        }
+
+        object Website {
+            const val LONG = "Website"
+            const val SHORT = "website"
+
+            object WebsiteRole {
+                const val LONG = "WebsiteRole"
+                const val SHORT = "b367"
+            }
+
+            object WebsiteDescription {
+                const val LONG = "WebsiteDescription"
+                const val SHORT = "b294"
+            }
+
+            object WebsiteLink {
+                const val LONG = "WebsiteLink"
+                const val SHORT = "b295"
+            }
+        }
+
+        object ThesisType {
+            const val LONG = "ThesisType"
+            const val SHORT = "b368"
+        }
+
+        object ThesisPresentedTo {
+            const val LONG = "ThesisPresentedTo"
+            const val SHORT = "b369"
+        }
+
+        object ThesisYear {
+            const val LONG = "ThesisYear"
+            const val SHORT = "b370"
+        }
     }
 }
 
