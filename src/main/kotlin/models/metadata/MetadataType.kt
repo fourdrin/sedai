@@ -1,4 +1,4 @@
-package app.fourdrin.sedai.models
+package app.fourdrin.sedai.models.metadata
 
 sealed class MetadataType
 

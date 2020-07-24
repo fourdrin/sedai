@@ -1,4 +1,4 @@
-package app.fourdrin.sedai.models
+package app.fourdrin.sedai.models.worker
 
 import java.io.Closeable
 import java.util.*

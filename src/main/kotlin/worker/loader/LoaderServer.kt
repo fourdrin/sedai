@@ -2,9 +2,10 @@ package app.fourdrin.sedai.loader
 
 import LoaderServiceGrpcKt
 import LoaderServiceOuterClass
-import app.fourdrin.sedai.models.*
+import app.fourdrin.sedai.models.metadata.*
+import app.fourdrin.sedai.models.worker.AssetType
+import app.fourdrin.sedai.models.worker.LoaderWork
 import java.io.ByteArrayInputStream
-import java.io.InputStream
 
 class LoaderService : LoaderServiceGrpcKt.LoaderServiceCoroutineImplBase() {
     override suspend fun createLoad(request: LoaderServiceOuterClass.CreateLoadRequest): LoaderServiceOuterClass.CreateLoadResponse {

@@ -1,6 +1,6 @@
 package app.fourdrin.sedai.models.onix.parser
 
-import app.fourdrin.sedai.models.MetadataDocument
+import app.fourdrin.sedai.models.metadata.MetadataDocument
 import java.io.InputStream
 
 class ThreeLongOnixParserStrategy: OnixParserStrategy<MetadataDocument>() {

@@ -1,6 +1,6 @@
 package app.fourdrin.sedai.models.onix.v2
 
-import app.fourdrin.sedai.models.MetadataDocument
+import app.fourdrin.sedai.models.metadata.MetadataDocument
 
 
 interface MessageV2 : MetadataDocument {

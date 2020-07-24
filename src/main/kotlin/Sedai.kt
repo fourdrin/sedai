@@ -3,10 +3,8 @@ package app.fourdrin.sedai
 import app.fourdrin.sedai.ftp.FTPWorkerWithQueue
 import app.fourdrin.sedai.loader.LoaderService
 import app.fourdrin.sedai.loader.LoaderWorkerWithQueue
-import app.fourdrin.sedai.models.WorkerWithQueue
+import app.fourdrin.sedai.models.worker.WorkerWithQueue
 import io.grpc.ServerBuilder
-import kotlinx.coroutines.async
-import kotlinx.coroutines.runBlocking
 import org.apache.curator.framework.CuratorFramework
 import org.apache.curator.framework.CuratorFrameworkFactory
 import org.apache.curator.framework.recipes.leader.CancelLeadershipException
@@ -14,7 +12,6 @@ import org.apache.curator.framework.recipes.leader.LeaderSelector
 import org.apache.curator.framework.recipes.leader.LeaderSelectorListenerAdapter
 import org.apache.curator.retry.ExponentialBackoffRetry
 import org.apache.curator.utils.CloseableUtils
-import software.amazon.awssdk.core.internal.http.pipeline.RequestPipelineBuilder.async
 
 fun main() {
     // Initialize the service

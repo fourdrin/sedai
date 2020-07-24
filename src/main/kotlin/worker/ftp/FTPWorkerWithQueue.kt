@@ -2,8 +2,8 @@ package app.fourdrin.sedai.ftp
 
 import app.fourdrin.sedai.ftp.tasks.CheckpointRunnable
 import app.fourdrin.sedai.ftp.tasks.FileSyncRunnable
-import app.fourdrin.sedai.models.FTPWork
-import app.fourdrin.sedai.models.WorkerWithQueue
+import app.fourdrin.sedai.models.worker.FTPWork
+import app.fourdrin.sedai.models.worker.WorkerWithQueue
 import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider
 import software.amazon.awssdk.regions.Region
 import software.amazon.awssdk.services.s3.S3Client

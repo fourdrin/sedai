@@ -1,7 +1,6 @@
 package app.fourdrin.sedai.models.onix.parser
 
-import app.fourdrin.sedai.models.*
-import app.fourdrin.sedai.models.onix.v2.MessageV2
+import app.fourdrin.sedai.models.metadata.*
 import com.ctc.wstx.stax.WstxInputFactory
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -11,7 +10,8 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import javax.xml.stream.XMLInputFactory
 
-abstract class OnixParserStrategy<out T: MetadataDocument> : MetadataParserStrategy<T> {
+abstract class OnixParserStrategy<out T: MetadataDocument> :
+    MetadataParserStrategy<T> {
     private val inputFactory = WstxInputFactory()
 
     init {

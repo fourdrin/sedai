@@ -1,5 +1,6 @@
-package app.fourdrin.sedai.models
+package app.fourdrin.sedai.models.worker
 
+import app.fourdrin.sedai.models.metadata.MetadataType
 import java.io.InputStream
 
 
