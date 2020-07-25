@@ -1,4 +1,4 @@
-package app.fourdrin.sedai.ftp.tasks
+package app.fourdrin.sedai.worker
 
 import software.amazon.awssdk.services.s3.S3Client
 

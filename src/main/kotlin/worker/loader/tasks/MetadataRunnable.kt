@@ -4,6 +4,7 @@ import LoaderServiceOuterClass
 import app.fourdrin.sedai.SEDAI_GRPC_SERVER_HOST
 import app.fourdrin.sedai.SEDAI_GRPC_SERVER_PORT
 import app.fourdrin.sedai.SEDAI_PIPELINE_DIRECTORY
+import app.fourdrin.sedai.worker.FtpRunnable
 import app.fourdrin.sedai.loader.LoaderClient
 import com.google.protobuf.ByteString
 import io.grpc.ManagedChannelBuilder
@@ -18,7 +19,7 @@ import java.io.IOException
 import javax.xml.stream.XMLInputFactory
 import javax.xml.stream.XMLStreamException
 
-class MetadataRunnable constructor(private val s3Client: S3Client, private val metadataKey: String) : Runnable {
+class MetadataRunnable constructor(override val s3Client: S3Client, private val metadataKey: String) : FtpRunnable {
     private val inputFactory = XMLInputFactory.newInstance()
     private val client = LoaderClient(
         ManagedChannelBuilder.forAddress(SEDAI_GRPC_SERVER_HOST, SEDAI_GRPC_SERVER_PORT)

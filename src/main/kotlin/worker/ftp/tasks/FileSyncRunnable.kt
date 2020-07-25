@@ -8,6 +8,7 @@ import app.fourdrin.sedai.models.metadata.UnknownMetadata
 import app.fourdrin.sedai.models.worker.AssetType
 import app.fourdrin.sedai.models.worker.FTPWork
 import app.fourdrin.sedai.models.worker.LoaderWork
+import app.fourdrin.sedai.worker.FtpRunnable
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
