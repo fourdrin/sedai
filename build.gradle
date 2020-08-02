@@ -8,6 +8,7 @@ buildscript {
     ext.woodstox_version = "6.2.1"
     ext.junit_version = "1.6.2"
     ext.jupiter_version = "1.6.2"
+    ext.mockito_version = "3.+"
 
     repositories {
         mavenCentral()
@@ -71,6 +72,9 @@ dependencies {
     testImplementation "org.junit.jupiter:junit-jupiter:$jupiter_version"
     testImplementation "org.junit.jupiter:junit-jupiter-api:$jupiter_version"
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0"
+    testImplementation "io.grpc:grpc-testing:$grpc_version"
+    testImplementation "org.mockito:mockito-core:$mockito_version"
+    testImplementation "org.mockito:mockito-inline:$mockito_version"
 }
 
 test {

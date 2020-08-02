@@ -152,7 +152,7 @@ private suspend fun buildAssetFiles(accountKey: String, s3Objects: List<S3Object
         }
         .forEach() { key ->
             val isbn = key.replace(assetMatcher, "").replace(accountS3Key, "")
-            val assetType =  if (key.contains(".jpg") || key.contains(".jpeg")) AssetType.COVER else AssetType.EPUB
+            val assetType =  if (key.endsWith(".jpg") || key.endsWith(".jpeg")) AssetType.COVER else AssetType.EPUB
 
             // Check if we've seen this asset before (i.e. the cover but not the epub and vice versa).
             // If we have, we'll use the previous value.  Otherwise, create a new map since is the first time we've seen this asset

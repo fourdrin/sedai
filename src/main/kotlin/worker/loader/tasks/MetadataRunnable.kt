@@ -19,14 +19,8 @@ import java.io.IOException
 import javax.xml.stream.XMLInputFactory
 import javax.xml.stream.XMLStreamException
 
-class MetadataRunnable constructor(override val s3Client: S3Client, private val metadataKey: String) : FtpRunnable {
+class MetadataRunnable constructor(override val s3Client: S3Client, private val metadataKey: String, private val loaderClient: LoaderClient) : FtpRunnable {
     private val inputFactory = XMLInputFactory.newInstance()
-    private val client = LoaderClient(
-        ManagedChannelBuilder.forAddress(SEDAI_GRPC_SERVER_HOST, SEDAI_GRPC_SERVER_PORT)
-            .usePlaintext()
-            .executor(Dispatchers.Default.asExecutor())
-            .build()
-    )
 
     init {
         inputFactory.setProperty(
@@ -79,7 +73,7 @@ class MetadataRunnable constructor(override val s3Client: S3Client, private val 
                 val metadataFile = ByteArrayInputStream(resp.asByteArray())
 
                 runBlocking {
-                    client.createLoad(
+                    loaderClient.createLoad(
                         s3Key = metadataKey,
                         assetType = LoaderServiceOuterClass.AssetType.METADATA,
                         metadataType = metadataType,

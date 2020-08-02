@@ -1,5 +1,7 @@
 package app.fourdrin.sedai.loader
 
+import app.fourdrin.sedai.SEDAI_GRPC_SERVER_HOST
+import app.fourdrin.sedai.SEDAI_GRPC_SERVER_PORT
 import app.fourdrin.sedai.loader.tasks.MetadataRunnable
 import app.fourdrin.sedai.loader.tasks.ParserRunnable
 import app.fourdrin.sedai.models.metadata.CSVMetadata
@@ -8,6 +10,9 @@ import app.fourdrin.sedai.models.onix.parser.OnixParserStrategy
 import app.fourdrin.sedai.models.worker.AssetType
 import app.fourdrin.sedai.models.worker.LoaderWork
 import app.fourdrin.sedai.models.worker.WorkerWithQueue
+import io.grpc.ManagedChannelBuilder
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.asExecutor
 import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider
 import software.amazon.awssdk.regions.Region
 import software.amazon.awssdk.services.s3.S3Client
@@ -24,13 +29,20 @@ object LoaderWorkerWithQueue : WorkerWithQueue<LoaderWork> {
         .credentialsProvider(ProfileCredentialsProvider.builder().profileName("default").build())
         .build()
 
+    private val loaderClient = LoaderClient(
+        ManagedChannelBuilder.forAddress(SEDAI_GRPC_SERVER_HOST, SEDAI_GRPC_SERVER_PORT)
+            .usePlaintext()
+            .executor(Dispatchers.Default.asExecutor())
+            .build()
+    )
+
     override fun start() {
         loaderExecutor.scheduleAtFixedRate({
             val work = workerQueue.poll()
             if (work != null) {
                 if (work.assetType == AssetType.METADATA) {
                     when (work.metadataType) {
-                        UnknownMetadata -> MetadataRunnable(s3Client, work.id).run()
+                        UnknownMetadata -> MetadataRunnable(s3Client, work.id, loaderClient).run()
                         CSVMetadata -> TODO()
                         else -> {
                             val strategy = OnixParserStrategy.build(work.metadataType)
