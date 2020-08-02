@@ -25,6 +25,7 @@ import software.amazon.awssdk.core.sync.ResponseTransformer
 import software.amazon.awssdk.services.s3.S3Client
 import software.amazon.awssdk.services.s3.model.GetObjectRequest
 import software.amazon.awssdk.services.s3.model.GetObjectResponse
+import java.io.ByteArrayInputStream
 import java.time.Instant
 
 internal class MetadataRunnableTest {
@@ -64,6 +65,27 @@ internal class MetadataRunnableTest {
     private val loaderClient = Mockito.mock(LoaderClient::class.java)
 
     private val metadataTypeCaptor = ArgumentCaptor.forClass(LoaderServiceOuterClass.MetadataType::class.java)
+
+    @Test
+    fun testRunUnknown() = runBlocking {
+        Mockito.`when`(
+            s3Client.getObject(
+                any<GetObjectRequest>(),
+                any<ResponseTransformer<GetObjectResponse, ResponseBytes<GetObjectResponse>>>()
+            )
+        ).thenReturn(
+            ResponseBytes.fromByteArray(GetObjectResponse.builder().build(), "garbage".toByteArray())
+        )
+
+        MetadataRunnable(s3Client, metadataKey, loaderClient).run()
+
+        verify(loaderClient, never()).createLoad(
+            eq(metadataKey),
+            eq(LoaderServiceOuterClass.AssetType.METADATA),
+            eq(LoaderServiceOuterClass.MetadataType.UNRECOGNIZED),
+            any()
+        )
+    }
 
     @Test
     fun testRunOnixTwoLong() = runBlocking {
