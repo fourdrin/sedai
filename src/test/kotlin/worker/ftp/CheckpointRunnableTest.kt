@@ -1,7 +1,7 @@
-package worker.ftp.tasks
+package worker.ftp
 
 import app.fourdrin.sedai.SEDAI_FTP_ROOT_DIRECTORY
-import app.fourdrin.sedai.ftp.tasks.CheckpointRunnable
+import app.fourdrin.sedai.worker.ftp.CheckpointRunnable
 import app.fourdrin.sedai.models.ftp.Manifest
 import app.fourdrin.sedai.models.worker.AssetType
 import com.google.gson.Gson

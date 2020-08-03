@@ -1,9 +1,9 @@
 package app.fourdrin.sedai
 
-import app.fourdrin.sedai.ftp.FTPWorkerWithQueue
-import app.fourdrin.sedai.worker.loader.LoaderService
-import app.fourdrin.sedai.worker.WorkerWithQueue
-import app.fourdrin.sedai.worker.JobWorker
+import app.fourdrin.sedai.ftp.FTPWorker
+import app.fourdrin.sedai.grpc.LoaderService
+import app.fourdrin.sedai.worker.Worker
+import app.fourdrin.sedai.worker.job.JobWorker
 import io.grpc.ServerBuilder
 import org.apache.curator.framework.CuratorFramework
 import org.apache.curator.framework.CuratorFrameworkFactory
@@ -38,7 +38,7 @@ class Sedai : LeaderSelectorListenerAdapter() {
         ExponentialBackoffRetry(1000, 3)
     )
 
-    private val workers = listOf<WorkerWithQueue<*>>(JobWorker)
+    private val workers = listOf<Worker<*>>(JobWorker)
 
     private val leaderSelector = LeaderSelector(client, SEDAI_ZK_LEADERSHIP_GROUP, this)
 
@@ -79,10 +79,10 @@ class Sedai : LeaderSelectorListenerAdapter() {
     override fun takeLeadership(client: CuratorFramework?) {
         try {
             println("This instance of Sedai is currently the leader. I will be managing the FTP server.")
-            FTPWorkerWithQueue.start()
+            FTPWorker.start()
         } catch (e: CancelLeadershipException) {
             println("This instance of Sedai is no longer the leader")
-            FTPWorkerWithQueue.close()
+            FTPWorker.close()
         }
     }
 }

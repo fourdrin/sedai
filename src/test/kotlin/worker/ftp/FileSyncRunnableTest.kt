@@ -1,10 +1,10 @@
-package worker.ftp.tasks
+package worker.ftp
 
 import app.fourdrin.sedai.SEDAI_FTP_ROOT_DIRECTORY
 import app.fourdrin.sedai.SEDAI_MANIFEST_NAME
 import app.fourdrin.sedai.SEDAI_PIPELINE_DIRECTORY
-import app.fourdrin.sedai.worker.ftp.tasks.FileSyncRunnable
-import app.fourdrin.sedai.worker.loader.LoaderClient
+import app.fourdrin.sedai.worker.ftp.FileSyncRunnable
+import app.fourdrin.sedai.grpc.LoaderClient
 import app.fourdrin.sedai.models.ftp.Account
 import app.fourdrin.sedai.models.ftp.Manifest
 import app.fourdrin.sedai.models.worker.AssetType

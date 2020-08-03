@@ -2,11 +2,11 @@ package app.fourdrin.sedai.ftp
 
 import app.fourdrin.sedai.SEDAI_GRPC_SERVER_HOST
 import app.fourdrin.sedai.SEDAI_GRPC_SERVER_PORT
-import app.fourdrin.sedai.ftp.tasks.CheckpointRunnable
-import app.fourdrin.sedai.worker.ftp.tasks.FileSyncRunnable
-import app.fourdrin.sedai.worker.loader.LoaderClient
+import app.fourdrin.sedai.worker.ftp.CheckpointRunnable
+import app.fourdrin.sedai.worker.ftp.FileSyncRunnable
+import app.fourdrin.sedai.grpc.LoaderClient
 import app.fourdrin.sedai.models.worker.FTPWork
-import app.fourdrin.sedai.worker.WorkerWithQueue
+import app.fourdrin.sedai.worker.Worker
 import io.grpc.ManagedChannelBuilder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.asExecutor
@@ -18,7 +18,7 @@ import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
 
-object FTPWorkerWithQueue : WorkerWithQueue<FTPWork> {
+object FTPWorker : Worker<FTPWork> {
     private val checkpointExecutor = Executors.newSingleThreadScheduledExecutor()
     private val fileSyncExecutor = Executors.newSingleThreadScheduledExecutor()
     override val queue = ConcurrentLinkedQueue<FTPWork>()

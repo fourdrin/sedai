@@ -1,9 +1,8 @@
-package app.fourdrin.sedai.loader.tasks
+package app.fourdrin.sedai.worker.job
 
 import LoaderServiceOuterClass
 import app.fourdrin.sedai.SEDAI_PIPELINE_DIRECTORY
-import app.fourdrin.sedai.worker.FtpRunnable
-import app.fourdrin.sedai.worker.loader.LoaderClient
+import app.fourdrin.sedai.grpc.LoaderClient
 import com.google.protobuf.ByteString
 import kotlinx.coroutines.runBlocking
 import software.amazon.awssdk.core.sync.ResponseTransformer
@@ -14,7 +13,7 @@ import java.io.IOException
 import javax.xml.stream.XMLInputFactory
 import javax.xml.stream.XMLStreamException
 
-class MetadataRunnable constructor(override val s3Client: S3Client, private val metadataKey: String, private val loaderClient: LoaderClient) : FtpRunnable {
+class MetadataRunnable constructor(val s3Client: S3Client, private val metadataKey: String, private val loaderClient: LoaderClient) : Runnable {
     private val inputFactory = XMLInputFactory.newInstance()
 
     init {

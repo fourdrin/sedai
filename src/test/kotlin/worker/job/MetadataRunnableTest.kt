@@ -1,9 +1,9 @@
-package worker.loader.tasks
+package worker.job
 
 import LoaderServiceGrpcKt
 import LoaderServiceOuterClass
-import app.fourdrin.sedai.worker.loader.LoaderClient
-import app.fourdrin.sedai.loader.tasks.MetadataRunnable
+import app.fourdrin.sedai.grpc.LoaderClient
+import app.fourdrin.sedai.worker.job.MetadataRunnable
 import com.nhaarman.mockitokotlin2.*
 import io.grpc.inprocess.InProcessChannelBuilder
 import io.grpc.inprocess.InProcessServerBuilder

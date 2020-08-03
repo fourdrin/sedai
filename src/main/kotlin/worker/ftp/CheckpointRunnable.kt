@@ -1,14 +1,13 @@
-package app.fourdrin.sedai.ftp.tasks
+package app.fourdrin.sedai.worker.ftp
 
-import app.fourdrin.sedai.ftp.FTPWorkerWithQueue
 import app.fourdrin.sedai.SEDAI_FTP_ROOT_DIRECTORY
 import app.fourdrin.sedai.SEDAI_MANIFEST_NAME
+import app.fourdrin.sedai.ftp.FTPWorker
 import app.fourdrin.sedai.models.ftp.Account
 import app.fourdrin.sedai.models.ftp.Asset
 import app.fourdrin.sedai.models.ftp.Manifest
 import app.fourdrin.sedai.models.worker.AssetType
 import app.fourdrin.sedai.models.worker.FTPWork
-import app.fourdrin.sedai.worker.FtpRunnable
 import com.google.gson.Gson
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
@@ -22,8 +21,8 @@ import java.time.Instant
 
 const val ASSET_REGEX = ".(jpg|jpeg|epub)"
 
-class CheckpointRunnable constructor(override val s3Client: S3Client) :
-    FtpRunnable {
+class CheckpointRunnable constructor(val s3Client: S3Client) :
+    Runnable {
 
     override fun run() {
         runBlocking {
@@ -87,7 +86,7 @@ class CheckpointRunnable constructor(override val s3Client: S3Client) :
                         manifestName = SEDAI_MANIFEST_NAME
                     )
 
-                    FTPWorkerWithQueue.queue.add(work)
+                    FTPWorker.queue.add(work)
                 }
             }
         }
@@ -152,12 +151,13 @@ private suspend fun buildAssetFiles(accountKey: String, s3Objects: List<S3Object
         }
         .forEach() { key ->
             val isbn = key.replace(assetMatcher, "").replace(accountS3Key, "")
-            val assetType =  if (key.endsWith(".jpg") || key.endsWith(".jpeg")) AssetType.COVER else AssetType.EPUB
+            val assetType = if (key.endsWith(".jpg") || key.endsWith(".jpeg")) AssetType.COVER else AssetType.EPUB
 
             // Check if we've seen this asset before (i.e. the cover but not the epub and vice versa).
             // If we have, we'll use the previous value.  Otherwise, create a new map since is the first time we've seen this asset
             val asset = assets[isbn] ?: mutableMapOf<AssetType, String?>(
-                AssetType.EPUB to null, AssetType.COVER to null)
+                AssetType.EPUB to null, AssetType.COVER to null
+            )
 
             // Add the asset type and associate the key
             asset[assetType] = key

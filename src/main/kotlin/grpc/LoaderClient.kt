@@ -1,4 +1,4 @@
-package app.fourdrin.sedai.worker.loader
+package app.fourdrin.sedai.grpc
 
 import com.google.protobuf.ByteString
 import io.grpc.ManagedChannel

@@ -26,15 +26,7 @@ data class FTPWork(
     val manifestS3Key: String
         get() = "${this.id}/${this.manifestName}"
 }
-
 data class LoaderWork(
-    override val id: String,
-    val assetType: AssetType,
-    val metadataType: MetadataType,
-    val metadataFile: InputStream? = null
-) : Work()
-
-data class Job(
     override val id: String,
     val assetType: AssetType,
     val metadataType: MetadataType? = null,

@@ -1,4 +1,4 @@
-package app.fourdrin.sedai.loader.tasks
+package app.fourdrin.sedai.worker.job
 
 import app.fourdrin.sedai.models.metadata.MetadataDocument
 import app.fourdrin.sedai.models.metadata.MetadataParserStrategy

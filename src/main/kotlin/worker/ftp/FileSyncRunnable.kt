@@ -1,11 +1,13 @@
-package app.fourdrin.sedai.worker.ftp.tasks
+package app.fourdrin.sedai.worker.ftp
 
-import app.fourdrin.sedai.*
-import app.fourdrin.sedai.worker.loader.LoaderClient
+import LoaderServiceOuterClass
+import app.fourdrin.sedai.SEDAI_FTP_ROOT_DIRECTORY
+import app.fourdrin.sedai.SEDAI_INTERNAL_FTP_ACCOUNT_NAME
+import app.fourdrin.sedai.SEDAI_PIPELINE_DIRECTORY
+import app.fourdrin.sedai.grpc.LoaderClient
 import app.fourdrin.sedai.models.ftp.Account
 import app.fourdrin.sedai.models.ftp.Manifest
 import app.fourdrin.sedai.models.worker.FTPWork
-import app.fourdrin.sedai.worker.FtpRunnable
 import com.google.gson.Gson
 import com.google.protobuf.ByteString
 import kotlinx.coroutines.flow.Flow
@@ -18,8 +20,8 @@ import software.amazon.awssdk.services.s3.model.CopyObjectRequest
 import software.amazon.awssdk.services.s3.model.DeleteObjectRequest
 import software.amazon.awssdk.services.s3.model.GetObjectRequest
 
-class FileSyncRunnable constructor(override val s3Client: S3Client, private val loaderClient: LoaderClient, val work: FTPWork) :
-    FtpRunnable {
+class FileSyncRunnable constructor(val s3Client: S3Client, private val loaderClient: LoaderClient, val work: FTPWork) :
+    Runnable {
 
     lateinit var assetType:  LoaderServiceOuterClass.AssetType
 
