@@ -67,8 +67,8 @@ internal class FileSyncRunnableTest {
         LoaderServiceGrpcKt.LoaderServiceCoroutineImplBase::class.java,
         AdditionalAnswers.delegatesTo<LoaderServiceGrpcKt.LoaderServiceCoroutineImplBase>(
             object : LoaderServiceGrpcKt.LoaderServiceCoroutineImplBase() {
-                override suspend fun createLoad(request: LoaderServiceOuterClass.CreateLoadRequest): LoaderServiceOuterClass.CreateLoadResponse {
-                    return LoaderServiceOuterClass.CreateLoadResponse.newBuilder().build()
+                override suspend fun createMetadataJob(request: LoaderServiceOuterClass.CreateMetadataJobRequest): LoaderServiceOuterClass.CreateMetadataJobResponse {
+                    return LoaderServiceOuterClass.CreateMetadataJobResponse.newBuilder().setQueued(true).build()
                 }
             }
         )
@@ -101,7 +101,7 @@ internal class FileSyncRunnableTest {
     private val deleteObjectCaptor = ArgumentCaptor.forClass(DeleteObjectRequest::class.java)
 
     @Test
-    fun testRunMetadata() = runBlocking {
+    fun testRunMetadata() {
         FileSyncRunnable(s3Client, loaderClient, work).run()
 
         // Verify the objects were copied
@@ -115,12 +115,14 @@ internal class FileSyncRunnableTest {
         assertEquals(SEDAI_FTP_ROOT_DIRECTORY, deleteObjectCaptor.value.bucket())
         assertEquals("test/foo.xml", deleteObjectCaptor.value.key())
 
+
         // Verify the work was queued via a gRPC request
-        verify(loaderClient).createLoad(
-            eq("$id/test/foo.xml"),
-            eq(LoaderServiceOuterClass.AssetType.METADATA),
-            eq(LoaderServiceOuterClass.MetadataType.UNKNOWN),
-            any()
-        )
+        runBlocking {
+            verify(loaderClient).createMetadataJob(
+                eq("$id/test/foo.xml"),
+                eq(LoaderServiceOuterClass.MetadataType.UNKNOWN),
+                any()
+            )
+        }
     }
 }

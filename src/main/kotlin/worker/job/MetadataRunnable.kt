@@ -64,12 +64,9 @@ class MetadataRunnable constructor(val s3Client: S3Client, private val metadataK
 
 
             if (metadataType != LoaderServiceOuterClass.MetadataType.UNRECOGNIZED) {
-                val metadataFile = ByteArrayInputStream(resp.asByteArray())
-
                 runBlocking {
-                    loaderClient.createLoad(
+                    loaderClient.createMetadataJob(
                         s3Key = metadataKey,
-                        assetType = LoaderServiceOuterClass.AssetType.METADATA,
                         metadataType = metadataType,
                         metadataFile = ByteString.copyFrom(resp.asByteArray())
                     )

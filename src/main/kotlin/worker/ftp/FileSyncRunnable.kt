@@ -22,9 +22,6 @@ import software.amazon.awssdk.services.s3.model.GetObjectRequest
 
 class FileSyncRunnable constructor(val s3Client: S3Client, private val loaderClient: LoaderClient, val work: FTPWork) :
     Runnable {
-
-    lateinit var assetType:  LoaderServiceOuterClass.AssetType
-
     override fun run() {
         println("Syncing files...")
         // Open the manifest file
@@ -41,28 +38,23 @@ class FileSyncRunnable constructor(val s3Client: S3Client, private val loaderCli
         if (account != null) {
             runBlocking {
                 syncFile(account).collect { s3Key ->
-                    var metadataFile: ByteString? = null
 
+                    // Create a metadata job based on what type of asset we are working with
                     if (s3Key.endsWith(".xml")) {
-                        assetType = LoaderServiceOuterClass.AssetType.METADATA
-                        metadataFile = ByteString.copyFrom(resp.asByteArray())
+                        loaderClient.createMetadataJob(
+                            s3Key,
+                            metadataType = LoaderServiceOuterClass.MetadataType.UNKNOWN,
+                            metadataFile = ByteString.copyFrom(resp.asByteArray())
+                        )
                     }
 
                     if (s3Key.endsWith(".epub")) {
-                        assetType = LoaderServiceOuterClass.AssetType.EPUB
+                        TODO()
                     }
 
                     if (s3Key.endsWith(".jpg") || s3Key.endsWith(".jpeg")) {
-                        assetType = LoaderServiceOuterClass.AssetType.COVER
+                        TODO()
                     }
-
-                    // Kick off the load process
-                    loaderClient.createLoad(
-                        s3Key,
-                        assetType,
-                        metadataType = LoaderServiceOuterClass.MetadataType.UNKNOWN,
-                        metadataFile = metadataFile
-                    )
                 }
             }
 

@@ -11,15 +11,14 @@ import java.util.concurrent.TimeUnit
 class LoaderClient constructor(private val channel: ManagedChannel) : Closeable {
     private val stub = LoaderServiceGrpcKt.LoaderServiceCoroutineStub(channel)
 
-    suspend fun createLoad(s3Key: String, assetType: LoaderServiceOuterClass.AssetType, metadataType: LoaderServiceOuterClass.MetadataType, metadataFile: ByteString?) = coroutineScope {
-        val request = LoaderServiceOuterClass.CreateLoadRequest.newBuilder()
+    suspend fun createMetadataJob(s3Key: String,  metadataType: LoaderServiceOuterClass.MetadataType, metadataFile: ByteString?) = coroutineScope {
+        val request = LoaderServiceOuterClass.CreateMetadataJobRequest.newBuilder()
             .setS3Key(s3Key)
-            .setAssetType(assetType)
             .setMetadataType(metadataType)
             .setMetadataFile(metadataFile)
             .build()
-        val resp = async { stub.createLoad(request) }
-        println(resp.await())
+        val resp = async { stub.createMetadataJob(request) }
+        resp.await()
     }
 
     override fun close() {

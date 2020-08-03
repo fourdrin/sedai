@@ -31,8 +31,8 @@ internal class MetadataRunnableTest {
         LoaderServiceGrpcKt.LoaderServiceCoroutineImplBase::class.java,
         delegatesTo<LoaderServiceGrpcKt.LoaderServiceCoroutineImplBase>(
             object : LoaderServiceGrpcKt.LoaderServiceCoroutineImplBase() {
-                override suspend fun createLoad(request: LoaderServiceOuterClass.CreateLoadRequest): LoaderServiceOuterClass.CreateLoadResponse {
-                    return LoaderServiceOuterClass.CreateLoadResponse.newBuilder().build()
+                override suspend fun createMetadataJob(request: LoaderServiceOuterClass.CreateMetadataJobRequest): LoaderServiceOuterClass.CreateMetadataJobResponse {
+                    return LoaderServiceOuterClass.CreateMetadataJobResponse.newBuilder().setQueued(true).build()
                 }
             }
         )
@@ -60,7 +60,7 @@ internal class MetadataRunnableTest {
     private val metadataTypeCaptor = ArgumentCaptor.forClass(LoaderServiceOuterClass.MetadataType::class.java)
 
     @Test
-    fun testRunUnknown() = runBlocking {
+    fun testRunUnknown() {
         Mockito.`when`(
             s3Client.getObject(
                 any<GetObjectRequest>(),
@@ -72,16 +72,18 @@ internal class MetadataRunnableTest {
 
         MetadataRunnable(s3Client, metadataKey, loaderClient).run()
 
-        verify(loaderClient, never()).createLoad(
-            eq(metadataKey),
-            eq(LoaderServiceOuterClass.AssetType.METADATA),
-            eq(LoaderServiceOuterClass.MetadataType.UNRECOGNIZED),
-            any()
-        )
+        runBlocking {
+
+            verify(loaderClient, never()).createMetadataJob(
+                eq(metadataKey),
+                eq(LoaderServiceOuterClass.MetadataType.UNRECOGNIZED),
+                any()
+            )
+        }
     }
 
     @Test
-    fun testRunOnixTwoLong() = runBlocking {
+    fun testRunOnixTwoLong() {
         Mockito.`when`(
             s3Client.getObject(
                 any<GetObjectRequest>(),
@@ -93,16 +95,17 @@ internal class MetadataRunnableTest {
 
         MetadataRunnable(s3Client, metadataKey, loaderClient).run()
 
-        verify(loaderClient).createLoad(
-            eq(metadataKey),
-            eq(LoaderServiceOuterClass.AssetType.METADATA),
-            eq(LoaderServiceOuterClass.MetadataType.ONIX_TWO_LONG),
-            any()
-        )
+        runBlocking {
+            verify(loaderClient).createMetadataJob(
+                eq(metadataKey),
+                eq(LoaderServiceOuterClass.MetadataType.ONIX_TWO_LONG),
+                any()
+            )
+        }
     }
 
     @Test
-    fun testRunOnixTwoShort() = runBlocking {
+    fun testRunOnixTwoShort() {
         Mockito.`when`(
             s3Client.getObject(
                 any<GetObjectRequest>(),
@@ -114,12 +117,14 @@ internal class MetadataRunnableTest {
 
         MetadataRunnable(s3Client, metadataKey, loaderClient).run()
 
-        verify(loaderClient).createLoad(
-            eq(metadataKey),
-            eq(LoaderServiceOuterClass.AssetType.METADATA),
-            eq(LoaderServiceOuterClass.MetadataType.ONIX_TWO_SHORT),
-            any()
-        )
+        runBlocking {
+
+            verify(loaderClient).createMetadataJob(
+                eq(metadataKey),
+                eq(LoaderServiceOuterClass.MetadataType.ONIX_TWO_SHORT),
+                any()
+            )
+        }
     }
 
     @Test
