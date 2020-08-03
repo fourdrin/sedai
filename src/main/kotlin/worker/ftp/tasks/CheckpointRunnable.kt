@@ -87,7 +87,7 @@ class CheckpointRunnable constructor(override val s3Client: S3Client) :
                         manifestName = SEDAI_MANIFEST_NAME
                     )
 
-                    FTPWorkerWithQueue.workerQueue.add(work)
+                    FTPWorkerWithQueue.queue.add(work)
                 }
             }
         }

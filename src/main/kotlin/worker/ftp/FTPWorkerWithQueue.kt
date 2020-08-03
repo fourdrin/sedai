@@ -6,7 +6,7 @@ import app.fourdrin.sedai.ftp.tasks.CheckpointRunnable
 import app.fourdrin.sedai.worker.ftp.tasks.FileSyncRunnable
 import app.fourdrin.sedai.worker.loader.LoaderClient
 import app.fourdrin.sedai.models.worker.FTPWork
-import app.fourdrin.sedai.models.worker.WorkerWithQueue
+import app.fourdrin.sedai.worker.WorkerWithQueue
 import io.grpc.ManagedChannelBuilder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.asExecutor
@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit
 object FTPWorkerWithQueue : WorkerWithQueue<FTPWork> {
     private val checkpointExecutor = Executors.newSingleThreadScheduledExecutor()
     private val fileSyncExecutor = Executors.newSingleThreadScheduledExecutor()
-    override val workerQueue = ConcurrentLinkedQueue<FTPWork>()
+    override val queue = ConcurrentLinkedQueue<FTPWork>()
 
     private val s3Client: S3Client = S3Client.builder()
         .region(Region.US_EAST_1)
@@ -41,7 +41,7 @@ object FTPWorkerWithQueue : WorkerWithQueue<FTPWork> {
 
         // Schedule a task to read from the work queue, which triggers moving files off the FTP server into the book load folder
         fileSyncExecutor.scheduleAtFixedRate({
-            val work: FTPWork? = workerQueue.poll()
+            val work: FTPWork? = queue.poll()
             if (work != null) {
                 FileSyncRunnable(s3Client, loaderClient, work).run()
             }

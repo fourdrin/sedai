@@ -1,4 +1,4 @@
-package app.fourdrin.sedai.loader
+package app.fourdrin.sedai.worker.loader
 
 import LoaderServiceGrpcKt
 import LoaderServiceOuterClass
@@ -30,15 +30,6 @@ class LoaderService : LoaderServiceGrpcKt.LoaderServiceCoroutineImplBase() {
 
         val metadataFile = ByteArrayInputStream(request.metadataFile.toByteArray())
 
-        val work = LoaderWork(
-            id = request.s3Key,
-            assetType = assetType,
-            metadataType = metadataType,
-            metadataFile = metadataFile
-        )
-
-        LoaderWorkerWithQueue.workerQueue.add(work)
-
         val job = Job(
             id = request.s3Key,
             assetType = assetType,
@@ -46,7 +37,7 @@ class LoaderService : LoaderServiceGrpcKt.LoaderServiceCoroutineImplBase() {
             metadataFile = metadataFile
         )
 
-        JobWorker.queue(job)
+        JobWorker.queue.add(job)
 
         return LoaderServiceOuterClass.CreateLoadResponse.newBuilder().build()
     }
