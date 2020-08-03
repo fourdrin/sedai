@@ -1,9 +1,15 @@
 package app.fourdrin.sedai.ftp
 
+import app.fourdrin.sedai.SEDAI_GRPC_SERVER_HOST
+import app.fourdrin.sedai.SEDAI_GRPC_SERVER_PORT
 import app.fourdrin.sedai.ftp.tasks.CheckpointRunnable
-import app.fourdrin.sedai.ftp.tasks.FileSyncRunnable
+import app.fourdrin.sedai.worker.ftp.tasks.FileSyncRunnable
+import app.fourdrin.sedai.worker.loader.LoaderClient
 import app.fourdrin.sedai.models.worker.FTPWork
 import app.fourdrin.sedai.models.worker.WorkerWithQueue
+import io.grpc.ManagedChannelBuilder
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.asExecutor
 import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider
 import software.amazon.awssdk.regions.Region
 import software.amazon.awssdk.services.s3.S3Client
@@ -22,6 +28,13 @@ object FTPWorkerWithQueue : WorkerWithQueue<FTPWork> {
         .credentialsProvider(ProfileCredentialsProvider.builder().profileName("default").build())
         .build()
 
+    private val loaderClient = LoaderClient(
+        ManagedChannelBuilder.forAddress(SEDAI_GRPC_SERVER_HOST, SEDAI_GRPC_SERVER_PORT)
+            .usePlaintext()
+            .executor(Dispatchers.Default.asExecutor())
+            .build()
+    )
+
     override fun start() {
         // Schedule checkpoint tasks, which kick off the book load process by getting the current "state" of the FTP server
         checkpointExecutor.scheduleAtFixedRate(CheckpointRunnable(s3Client) , 0, 60, TimeUnit.SECONDS)
@@ -30,7 +43,7 @@ object FTPWorkerWithQueue : WorkerWithQueue<FTPWork> {
         fileSyncExecutor.scheduleAtFixedRate({
             val work: FTPWork? = workerQueue.poll()
             if (work != null) {
-                FileSyncRunnable(s3Client, work).run()
+                FileSyncRunnable(s3Client, loaderClient, work).run()
             }
         }, 0, 10, TimeUnit.SECONDS)
     }

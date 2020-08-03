@@ -1,15 +1,13 @@
-package app.fourdrin.sedai.ftp.tasks
+package app.fourdrin.sedai.worker.ftp.tasks
 
 import app.fourdrin.sedai.*
-import app.fourdrin.sedai.loader.LoaderWorkerWithQueue
+import app.fourdrin.sedai.worker.loader.LoaderClient
 import app.fourdrin.sedai.models.ftp.Account
 import app.fourdrin.sedai.models.ftp.Manifest
-import app.fourdrin.sedai.models.metadata.UnknownMetadata
-import app.fourdrin.sedai.models.worker.AssetType
 import app.fourdrin.sedai.models.worker.FTPWork
-import app.fourdrin.sedai.models.worker.LoaderWork
 import app.fourdrin.sedai.worker.FtpRunnable
 import com.google.gson.Gson
+import com.google.protobuf.ByteString
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
@@ -20,8 +18,10 @@ import software.amazon.awssdk.services.s3.model.CopyObjectRequest
 import software.amazon.awssdk.services.s3.model.DeleteObjectRequest
 import software.amazon.awssdk.services.s3.model.GetObjectRequest
 
-class FileSyncRunnable constructor(override val s3Client: S3Client, private val work: FTPWork) :
+class FileSyncRunnable constructor(override val s3Client: S3Client, private val loaderClient: LoaderClient, val work: FTPWork) :
     FtpRunnable {
+
+    lateinit var assetType:  LoaderServiceOuterClass.AssetType
 
     override fun run() {
         println("Syncing files...")
@@ -39,26 +39,28 @@ class FileSyncRunnable constructor(override val s3Client: S3Client, private val 
         if (account != null) {
             runBlocking {
                 syncFile(account).collect { s3Key ->
-                    var assetType = AssetType.EPUB
+                    var metadataFile: ByteString? = null
+
                     if (s3Key.endsWith(".xml")) {
-                        assetType = AssetType.METADATA
+                        assetType = LoaderServiceOuterClass.AssetType.METADATA
+                        metadataFile = ByteString.copyFrom(resp.asByteArray())
                     }
-                    val work = LoaderWork(
-                        id = s3Key,
-                        assetType = assetType,
-                        metadataType = UnknownMetadata
-                    )
-                    LoaderWorkerWithQueue.workerQueue.add(work)
 
-                    /*
-                    val loaderClient = LoaderClient(
-                        ManagedChannelBuilder.forAddress(SEDAI_GRPC_SERVER_HOST, SEDAI_GRPC_SERVER_PORT)
-                            .usePlaintext()
-                            .build()
-                    )
+                    if (s3Key.endsWith(".epub")) {
+                        assetType = LoaderServiceOuterClass.AssetType.EPUB
+                    }
 
-                    val result = async { loaderClient.createLoad(s3Key, assetType) }
-                     */
+                    if (s3Key.endsWith(".jpg") || s3Key.endsWith(".jpeg")) {
+                        assetType = LoaderServiceOuterClass.AssetType.COVER
+                    }
+
+                    // Kick off the load process
+                    loaderClient.createLoad(
+                        s3Key,
+                        assetType,
+                        metadataType = LoaderServiceOuterClass.MetadataType.UNKNOWN,
+                        metadataFile = metadataFile
+                    )
                 }
             }
 

@@ -2,30 +2,23 @@ package worker.loader.tasks
 
 import LoaderServiceGrpcKt
 import LoaderServiceOuterClass
-import app.fourdrin.sedai.loader.LoaderClient
+import app.fourdrin.sedai.worker.loader.LoaderClient
 import app.fourdrin.sedai.loader.tasks.MetadataRunnable
-import com.google.protobuf.ByteString
 import com.nhaarman.mockitokotlin2.*
-import io.grpc.Server
 import io.grpc.inprocess.InProcessChannelBuilder
 import io.grpc.inprocess.InProcessServerBuilder
 import io.grpc.testing.GrpcCleanupRule
-import junit.framework.Assert.assertEquals
 import kotlinx.coroutines.runBlocking
 import org.junit.Ignore
-import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
-import org.mockito.AdditionalAnswers
 import org.mockito.AdditionalAnswers.delegatesTo
 import org.mockito.ArgumentCaptor
-import org.mockito.ArgumentMatchers
 import org.mockito.Mockito
 import software.amazon.awssdk.core.ResponseBytes
 import software.amazon.awssdk.core.sync.ResponseTransformer
 import software.amazon.awssdk.services.s3.S3Client
 import software.amazon.awssdk.services.s3.model.GetObjectRequest
 import software.amazon.awssdk.services.s3.model.GetObjectResponse
-import java.io.ByteArrayInputStream
 import java.time.Instant
 
 internal class MetadataRunnableTest {

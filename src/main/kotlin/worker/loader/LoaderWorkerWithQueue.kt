@@ -10,6 +10,7 @@ import app.fourdrin.sedai.models.onix.parser.OnixParserStrategy
 import app.fourdrin.sedai.models.worker.AssetType
 import app.fourdrin.sedai.models.worker.LoaderWork
 import app.fourdrin.sedai.models.worker.WorkerWithQueue
+import app.fourdrin.sedai.worker.loader.LoaderClient
 import io.grpc.ManagedChannelBuilder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.asExecutor

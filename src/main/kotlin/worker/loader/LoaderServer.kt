@@ -4,7 +4,9 @@ import LoaderServiceGrpcKt
 import LoaderServiceOuterClass
 import app.fourdrin.sedai.models.metadata.*
 import app.fourdrin.sedai.models.worker.AssetType
+import app.fourdrin.sedai.models.worker.Job
 import app.fourdrin.sedai.models.worker.LoaderWork
+import app.fourdrin.sedai.worker.JobWorker
 import java.io.ByteArrayInputStream
 
 class LoaderService : LoaderServiceGrpcKt.LoaderServiceCoroutineImplBase() {
@@ -22,6 +24,7 @@ class LoaderService : LoaderServiceGrpcKt.LoaderServiceCoroutineImplBase() {
             LoaderServiceOuterClass.MetadataType.ONIX_TWO_SHORT -> OnixTwoShort
             LoaderServiceOuterClass.MetadataType.ONIX_THREE_LONG -> OnixThreeLong
             LoaderServiceOuterClass.MetadataType.ONIX_THREE_SHORT -> OnixThreeShort
+            LoaderServiceOuterClass.MetadataType.UNKNOWN -> UnknownMetadata
             else -> throw Exception("Unknown asset type")
         }
 
@@ -35,6 +38,15 @@ class LoaderService : LoaderServiceGrpcKt.LoaderServiceCoroutineImplBase() {
         )
 
         LoaderWorkerWithQueue.workerQueue.add(work)
+
+        val job = Job(
+            id = request.s3Key,
+            assetType = assetType,
+            metadataType = metadataType,
+            metadataFile = metadataFile
+        )
+
+        JobWorker.queue(job)
 
         return LoaderServiceOuterClass.CreateLoadResponse.newBuilder().build()
     }

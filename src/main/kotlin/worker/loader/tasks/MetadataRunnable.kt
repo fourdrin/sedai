@@ -1,15 +1,10 @@
 package app.fourdrin.sedai.loader.tasks
 
 import LoaderServiceOuterClass
-import app.fourdrin.sedai.SEDAI_GRPC_SERVER_HOST
-import app.fourdrin.sedai.SEDAI_GRPC_SERVER_PORT
 import app.fourdrin.sedai.SEDAI_PIPELINE_DIRECTORY
 import app.fourdrin.sedai.worker.FtpRunnable
-import app.fourdrin.sedai.loader.LoaderClient
+import app.fourdrin.sedai.worker.loader.LoaderClient
 import com.google.protobuf.ByteString
-import io.grpc.ManagedChannelBuilder
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.asExecutor
 import kotlinx.coroutines.runBlocking
 import software.amazon.awssdk.core.sync.ResponseTransformer
 import software.amazon.awssdk.services.s3.S3Client

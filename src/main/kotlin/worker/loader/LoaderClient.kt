@@ -1,4 +1,4 @@
-package app.fourdrin.sedai.loader
+package app.fourdrin.sedai.worker.loader
 
 import com.google.protobuf.ByteString
 import io.grpc.ManagedChannel
@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit
 class LoaderClient constructor(private val channel: ManagedChannel) : Closeable {
     private val stub = LoaderServiceGrpcKt.LoaderServiceCoroutineStub(channel)
 
-    suspend fun createLoad(s3Key: String, assetType: LoaderServiceOuterClass.AssetType, metadataType: LoaderServiceOuterClass.MetadataType, metadataFile: ByteString) = coroutineScope {
+    suspend fun createLoad(s3Key: String, assetType: LoaderServiceOuterClass.AssetType, metadataType: LoaderServiceOuterClass.MetadataType, metadataFile: ByteString?) = coroutineScope {
         val request = LoaderServiceOuterClass.CreateLoadRequest.newBuilder()
             .setS3Key(s3Key)
             .setAssetType(assetType)

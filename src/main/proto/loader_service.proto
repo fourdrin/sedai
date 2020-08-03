@@ -15,6 +15,7 @@ enum MetadataType {
   ONIX_TWO_LONG = 1;
   ONIX_THREE_SHORT = 2;
   ONIX_THREE_LONG = 3;
+  UNKNOWN = 4;
 }
 
 message CreateLoadRequest {

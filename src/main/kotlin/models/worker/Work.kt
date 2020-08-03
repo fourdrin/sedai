@@ -33,3 +33,10 @@ data class LoaderWork(
     val metadataType: MetadataType,
     val metadataFile: InputStream? = null
 ) : Work()
+
+data class Job(
+    override val id: String,
+    val assetType: AssetType,
+    val metadataType: MetadataType? = null,
+    val metadataFile: InputStream? = null
+) : Work()
