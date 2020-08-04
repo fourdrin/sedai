@@ -1,4 +1,4 @@
-package app.fourdrin.sedai.worker.job
+package app.fourdrin.sedai.worker.loader
 
 import app.fourdrin.sedai.SEDAI_GRPC_SERVER_HOST
 import app.fourdrin.sedai.SEDAI_GRPC_SERVER_PORT
@@ -15,7 +15,7 @@ import java.util.concurrent.ConcurrentLinkedQueue
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
-object JobWorker : Worker<LoaderWork> {
+object LoaderWorker : Worker<LoaderWork> {
     override val queue = ConcurrentLinkedQueue<LoaderWork>()
     private val executor = Executors.newSingleThreadScheduledExecutor()
     private val s3Client: S3Client = S3Client.builder()
@@ -34,7 +34,7 @@ object JobWorker : Worker<LoaderWork> {
         executor.scheduleAtFixedRate({
             val job = queue.poll()
             if (job != null) {
-                JobStrategy.build(
+                LoaderStrategy.build(
                     s3Client,
                     loaderClient, job).run()
             }

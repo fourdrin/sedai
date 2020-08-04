@@ -1,4 +1,4 @@
-package app.fourdrin.sedai.worker.job
+package app.fourdrin.sedai.worker.loader
 
 import LoaderServiceOuterClass
 import app.fourdrin.sedai.SEDAI_PIPELINE_DIRECTORY

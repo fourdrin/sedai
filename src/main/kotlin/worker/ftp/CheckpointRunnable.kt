@@ -1,5 +1,6 @@
 package app.fourdrin.sedai.worker.ftp
 
+import app.fourdrin.sedai.SEDAI_ASSET_REGEX
 import app.fourdrin.sedai.SEDAI_FTP_ROOT_DIRECTORY
 import app.fourdrin.sedai.SEDAI_MANIFEST_NAME
 import app.fourdrin.sedai.grpc.LoaderClient
@@ -17,8 +18,6 @@ import software.amazon.awssdk.services.s3.model.ListObjectsV2Request
 import software.amazon.awssdk.services.s3.model.PutObjectRequest
 import software.amazon.awssdk.services.s3.model.S3Object
 import java.time.Instant
-
-const val ASSET_REGEX = ".(jpg|jpeg|epub)"
 
 class CheckpointRunnable constructor(private val s3Client: S3Client, private val loaderClient: LoaderClient) :
     Runnable {
@@ -131,7 +130,7 @@ private suspend fun buildMetadataFiles(accountKey: String, s3Objects: List<S3Obj
 }
 
 private suspend fun buildAssetFiles(accountKey: String, s3Objects: List<S3Object>): Map<String, Asset> {
-    val assetMatcher = Regex(ASSET_REGEX)
+    val assetMatcher = Regex(SEDAI_ASSET_REGEX)
     val assets = mutableMapOf<String, MutableMap<FileType, String?>>()
 
     // S3 key includes the trailing slash

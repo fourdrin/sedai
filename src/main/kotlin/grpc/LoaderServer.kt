@@ -7,7 +7,7 @@ import app.fourdrin.sedai.models.metadata.*
 import app.fourdrin.sedai.models.worker.FileType
 import app.fourdrin.sedai.models.worker.FTPWork
 import app.fourdrin.sedai.models.worker.LoaderWork
-import app.fourdrin.sedai.worker.job.JobWorker
+import app.fourdrin.sedai.worker.loader.LoaderWorker
 import java.io.ByteArrayInputStream
 
 class LoaderService : LoaderServiceGrpcKt.LoaderServiceCoroutineImplBase() {
@@ -42,7 +42,7 @@ class LoaderService : LoaderServiceGrpcKt.LoaderServiceCoroutineImplBase() {
             metadataFile = metadataFile
         )
 
-        JobWorker.queue.add(job)
+        LoaderWorker.queue.add(job)
 
         return LoaderServiceOuterClass.CreateMetadataJobResponse.newBuilder().setQueued(true).build()
     }

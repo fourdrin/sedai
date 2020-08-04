@@ -3,7 +3,7 @@ package app.fourdrin.sedai
 import app.fourdrin.sedai.ftp.FTPWorker
 import app.fourdrin.sedai.grpc.LoaderService
 import app.fourdrin.sedai.worker.Worker
-import app.fourdrin.sedai.worker.job.JobWorker
+import app.fourdrin.sedai.worker.loader.LoaderWorker
 import io.grpc.ServerBuilder
 import org.apache.curator.framework.CuratorFramework
 import org.apache.curator.framework.CuratorFrameworkFactory
@@ -38,7 +38,7 @@ class Sedai : LeaderSelectorListenerAdapter() {
         ExponentialBackoffRetry(1000, 3)
     )
 
-    private val workers = listOf<Worker<*>>(JobWorker)
+    private val workers = listOf<Worker<*>>(LoaderWorker)
 
     private val leaderSelector = LeaderSelector(client, SEDAI_ZK_LEADERSHIP_GROUP, this)
 

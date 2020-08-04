@@ -8,3 +8,5 @@ const val SEDAI_FTP_ROOT_DIRECTORY = "books-worker.ftp"
 const val SEDAI_PIPELINE_DIRECTORY = "books-data-pipeline"
 const val SEDAI_MANIFEST_NAME = "manifest.json"
 const val SEDAI_INTERNAL_FTP_ACCOUNT_NAME = "internal"
+const val SEDAI_ASSET_REGEX = ".(jpg|jpeg|epub)"
+
