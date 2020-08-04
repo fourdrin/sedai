@@ -3,6 +3,8 @@ syntax = "proto3";
 service LoaderService {
   rpc CreateFileSyncJob (CreateFileSyncJobRequest) returns (CreateFileSyncJobResponse) {}
   rpc CreateMetadataJob (CreateMetadataJobRequest) returns (CreateMetadataJobResponse) {}
+  rpc CreateEpubJob (CreateEpubJobRequest) returns (CreateEpubJobResponse) {}
+  rpc CreateCoverJob (CreateCoverJobRequest) returns (CreateCoverJobResponse) {}
 }
 
 enum MetadataType {
@@ -30,5 +32,23 @@ message CreateMetadataJobRequest {
 }
 
 message CreateMetadataJobResponse {
+  bool queued = 1;
+}
+
+message CreateEpubJobRequest {
+  string s3Key = 1;
+  bytes epubFile = 2;
+}
+
+message CreateEpubJobResponse {
+  bool queued = 1;
+}
+
+message CreateCoverJobRequest {
+  string s3Key = 1;
+  bytes coverFile = 2;
+}
+
+message CreateCoverJobResponse {
   bool queued = 1;
 }

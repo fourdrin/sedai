@@ -101,26 +101,53 @@ internal class FileSyncRunnableTest {
     private val deleteObjectCaptor = ArgumentCaptor.forClass(DeleteObjectRequest::class.java)
 
     @Test
-    fun testRunMetadata() {
+    fun testRun() {
         FileSyncRunnable(s3Client, loaderClient, work).run()
 
-        // Verify the objects were copied
-        verify(s3Client).copyObject(copyObjectCaptor.capture())
-        assertEquals("books-worker.ftp/test/foo.xml", copyObjectCaptor.value.copySource())
-        assertEquals(SEDAI_PIPELINE_DIRECTORY, copyObjectCaptor.value.destinationBucket())
-        assertEquals("$id/test/foo.xml", copyObjectCaptor.value.destinationKey())
+        // Verify the objects were copied and deleted
+        verify(s3Client, times(3)).copyObject(copyObjectCaptor.capture())
+        verify(s3Client, times(3)).deleteObject(deleteObjectCaptor.capture())
 
-        // Verify the objects were deleted
-        verify(s3Client).deleteObject(deleteObjectCaptor.capture())
-        assertEquals(SEDAI_FTP_ROOT_DIRECTORY, deleteObjectCaptor.value.bucket())
-        assertEquals("test/foo.xml", deleteObjectCaptor.value.key())
+        // Metadata
+        assertEquals("books-worker.ftp/test/foo.xml", copyObjectCaptor.allValues[0].copySource())
+        assertEquals(SEDAI_PIPELINE_DIRECTORY, copyObjectCaptor.allValues[0].destinationBucket())
+        assertEquals("$id/test/foo.xml", copyObjectCaptor.allValues[0].destinationKey())
+
+        assertEquals(SEDAI_FTP_ROOT_DIRECTORY, deleteObjectCaptor.allValues[0].bucket())
+        assertEquals("test/foo.xml", deleteObjectCaptor.allValues[0].key())
+
+        // EPUBs
+        assertEquals("books-worker.ftp/test/test.epub", copyObjectCaptor.allValues[1].copySource())
+        assertEquals(SEDAI_PIPELINE_DIRECTORY, copyObjectCaptor.allValues[1].destinationBucket())
+        assertEquals("$id/test/test.epub", copyObjectCaptor.allValues[1].destinationKey())
+
+        assertEquals(SEDAI_FTP_ROOT_DIRECTORY, deleteObjectCaptor.allValues[1].bucket())
+        assertEquals("test/test.epub", deleteObjectCaptor.allValues[1].key())
+
+        // Covers
+        assertEquals("books-worker.ftp/test/test.jpg", copyObjectCaptor.allValues[2].copySource())
+        assertEquals(SEDAI_PIPELINE_DIRECTORY, copyObjectCaptor.allValues[2].destinationBucket())
+        assertEquals("$id/test/test.jpg", copyObjectCaptor.allValues[2].destinationKey())
+
+        assertEquals(SEDAI_FTP_ROOT_DIRECTORY, deleteObjectCaptor.allValues[2].bucket())
+        assertEquals("test/test.jpg", deleteObjectCaptor.allValues[2].key())
 
 
-        // Verify the work was queued via a gRPC request
+        // Verify all the work was queued via a gRPC request
         runBlocking {
             verify(loaderClient).createMetadataJob(
                 eq("$id/test/foo.xml"),
                 eq(LoaderServiceOuterClass.MetadataType.UNKNOWN),
+                any()
+            )
+
+            verify(loaderClient).createEpubJob(
+                eq("$id/test/test.epub"),
+                any()
+            )
+
+            verify(loaderClient).createCoverJob(
+                eq("$id/test/test.jpg"),
                 any()
             )
         }

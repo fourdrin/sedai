@@ -46,5 +46,17 @@ class LoaderService : LoaderServiceGrpcKt.LoaderServiceCoroutineImplBase() {
 
         return LoaderServiceOuterClass.CreateMetadataJobResponse.newBuilder().setQueued(true).build()
     }
+
+    override suspend fun createEpubJob(request: LoaderServiceOuterClass.CreateEpubJobRequest): LoaderServiceOuterClass.CreateEpubJobResponse {
+        // TODO
+
+        return LoaderServiceOuterClass.CreateEpubJobResponse.newBuilder().setQueued(true).build()
+    }
+
+    override suspend fun createCoverJob(request: LoaderServiceOuterClass.CreateCoverJobRequest): LoaderServiceOuterClass.CreateCoverJobResponse {
+        // TODO
+
+        return LoaderServiceOuterClass.CreateCoverJobResponse.newBuilder().setQueued(true).build()
+    }
 }
 

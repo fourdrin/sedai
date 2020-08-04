@@ -8,6 +8,7 @@ import app.fourdrin.sedai.grpc.LoaderClient
 import app.fourdrin.sedai.models.ftp.Account
 import app.fourdrin.sedai.models.ftp.Manifest
 import app.fourdrin.sedai.models.worker.FTPWork
+import app.fourdrin.sedai.models.worker.FileType
 import com.google.gson.Gson
 import com.google.protobuf.ByteString
 import kotlinx.coroutines.flow.Flow
@@ -49,11 +50,17 @@ class FileSyncRunnable constructor(val s3Client: S3Client, private val loaderCli
                     }
 
                     if (s3Key.endsWith(".epub")) {
-                        TODO()
+                        loaderClient.createEpubJob(
+                            s3Key,
+                            epubFile = ByteString.copyFrom(resp.asByteArray())
+                        )
                     }
 
                     if (s3Key.endsWith(".jpg") || s3Key.endsWith(".jpeg")) {
-                        TODO()
+                        loaderClient.createCoverJob(
+                            s3Key,
+                            coverFile = ByteString.copyFrom(resp.asByteArray())
+                        )
                     }
                 }
             }
@@ -62,9 +69,21 @@ class FileSyncRunnable constructor(val s3Client: S3Client, private val loaderCli
     }
 
     private fun syncFile(account: Account): Flow<String> = flow {
-        account.metadataFiles.forEach { metadataFile ->
-            val source = "$SEDAI_FTP_ROOT_DIRECTORY/${metadataFile}"
-            val destination = "${work.id}/${metadataFile}"
+        val files = account.metadataFiles.toMutableList()
+
+        account.assetFiles.forEach { entry ->
+            if (!entry.value[FileType.EPUB].isNullOrEmpty()) {
+                files.add(entry.value[FileType.EPUB])
+            }
+
+            if (!entry.value[FileType.COVER].isNullOrEmpty()) {
+                files.add(entry.value[FileType.COVER])
+            }
+        }
+
+        files.forEach { file ->
+            val source = "$SEDAI_FTP_ROOT_DIRECTORY/${file}"
+            val destination = "${work.id}/${file}"
             // Copy the file over
             val copyRequest = CopyObjectRequest.builder()
                 .copySource(source)
@@ -82,7 +101,7 @@ class FileSyncRunnable constructor(val s3Client: S3Client, private val loaderCli
                 if (account.name != SEDAI_INTERNAL_FTP_ACCOUNT_NAME) {
                     val deleteRequest = DeleteObjectRequest.builder()
                         .bucket(SEDAI_FTP_ROOT_DIRECTORY)
-                        .key(metadataFile)
+                        .key(file)
                         .build()
 
                     s3Client.deleteObject(deleteRequest)
@@ -93,7 +112,5 @@ class FileSyncRunnable constructor(val s3Client: S3Client, private val loaderCli
             } catch (e: Exception) {
             }
         }
-
-        // TODO: Sync assets
     }
 }
