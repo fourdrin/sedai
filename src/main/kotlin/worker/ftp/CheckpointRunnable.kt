@@ -2,13 +2,11 @@ package app.fourdrin.sedai.worker.ftp
 
 import app.fourdrin.sedai.SEDAI_FTP_ROOT_DIRECTORY
 import app.fourdrin.sedai.SEDAI_MANIFEST_NAME
-import app.fourdrin.sedai.ftp.FTPWorker
 import app.fourdrin.sedai.grpc.LoaderClient
 import app.fourdrin.sedai.models.ftp.Account
 import app.fourdrin.sedai.models.ftp.Asset
 import app.fourdrin.sedai.models.ftp.Manifest
-import app.fourdrin.sedai.models.worker.AssetType
-import app.fourdrin.sedai.models.worker.FTPWork
+import app.fourdrin.sedai.models.worker.FileType
 import com.google.gson.Gson
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
@@ -134,7 +132,7 @@ private suspend fun buildMetadataFiles(accountKey: String, s3Objects: List<S3Obj
 
 private suspend fun buildAssetFiles(accountKey: String, s3Objects: List<S3Object>): Map<String, Asset> {
     val assetMatcher = Regex(ASSET_REGEX)
-    val assets = mutableMapOf<String, MutableMap<AssetType, String?>>()
+    val assets = mutableMapOf<String, MutableMap<FileType, String?>>()
 
     // S3 key includes the trailing slash
     val accountS3Key = "${accountKey}/"
@@ -146,12 +144,12 @@ private suspend fun buildAssetFiles(accountKey: String, s3Objects: List<S3Object
         }
         .forEach() { key ->
             val isbn = key.replace(assetMatcher, "").replace(accountS3Key, "")
-            val assetType = if (key.endsWith(".jpg") || key.endsWith(".jpeg")) AssetType.COVER else AssetType.EPUB
+            val assetType = if (key.endsWith(".jpg") || key.endsWith(".jpeg")) FileType.COVER else FileType.EPUB
 
             // Check if we've seen this asset before (i.e. the cover but not the epub and vice versa).
             // If we have, we'll use the previous value.  Otherwise, create a new map since is the first time we've seen this asset
-            val asset = assets[isbn] ?: mutableMapOf<AssetType, String?>(
-                AssetType.EPUB to null, AssetType.COVER to null
+            val asset = assets[isbn] ?: mutableMapOf<FileType, String?>(
+                FileType.EPUB to null, FileType.COVER to null
             )
 
             // Add the asset type and associate the key

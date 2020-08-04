@@ -7,7 +7,7 @@ import app.fourdrin.sedai.worker.ftp.FileSyncRunnable
 import app.fourdrin.sedai.grpc.LoaderClient
 import app.fourdrin.sedai.models.ftp.Account
 import app.fourdrin.sedai.models.ftp.Manifest
-import app.fourdrin.sedai.models.worker.AssetType
+import app.fourdrin.sedai.models.worker.FileType
 import app.fourdrin.sedai.models.worker.FTPWork
 import com.google.gson.Gson
 import com.nhaarman.mockitokotlin2.*
@@ -31,9 +31,9 @@ internal class FileSyncRunnableTest {
         name = "test",
         metadataFiles = listOf("test/foo.xml"),
         assetFiles = mapOf(
-            "test" to mapOf<AssetType, String>(
-                AssetType.EPUB to "test/test.epub",
-                AssetType.COVER to "test/test.jpg"
+            "test" to mapOf<FileType, String>(
+                FileType.EPUB to "test/test.epub",
+                FileType.COVER to "test/test.jpg"
             )
         )
     )

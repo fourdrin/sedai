@@ -6,7 +6,7 @@ import app.fourdrin.sedai.SEDAI_FTP_ROOT_DIRECTORY
 import app.fourdrin.sedai.SEDAI_MANIFEST_NAME
 import app.fourdrin.sedai.grpc.LoaderClient
 import app.fourdrin.sedai.models.ftp.Manifest
-import app.fourdrin.sedai.models.worker.AssetType
+import app.fourdrin.sedai.models.worker.FileType
 import app.fourdrin.sedai.worker.ftp.CheckpointRunnable
 import com.google.gson.Gson
 import com.nhaarman.mockitokotlin2.*
@@ -123,10 +123,10 @@ internal class CheckpointRunnableTest {
         assertTrue(account?.metadataFiles?.contains("internal/foo.xml") ?: false)
 
         // asset files
-        val epub = account?.assetFiles?.get("test")?.get(AssetType.EPUB)
+        val epub = account?.assetFiles?.get("test")?.get(FileType.EPUB)
         assertEquals("internal/test.epub", epub)
 
-        val cover = account?.assetFiles?.get("test")?.get(AssetType.COVER)
+        val cover = account?.assetFiles?.get("test")?.get(FileType.COVER)
         assertEquals("internal/test.jpg", cover)
 
         // Verify the work was queued via a gRPC request
@@ -158,7 +158,7 @@ internal class CheckpointRunnableTest {
         val manifestJSON = Gson().fromJson(manifestFile, Manifest::class.java)
         val account = manifestJSON.accounts["internal"]
 
-        val cover = account?.assetFiles?.get("test")?.get(AssetType.COVER)
+        val cover = account?.assetFiles?.get("test")?.get(FileType.COVER)
         assertEquals("internal/test.jpeg", cover)
 
         // Verify the work was queued via a gRPC request

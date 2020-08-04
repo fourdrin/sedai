@@ -4,7 +4,7 @@ import LoaderServiceGrpcKt
 import LoaderServiceOuterClass
 import app.fourdrin.sedai.ftp.FTPWorker
 import app.fourdrin.sedai.models.metadata.*
-import app.fourdrin.sedai.models.worker.AssetType
+import app.fourdrin.sedai.models.worker.FileType
 import app.fourdrin.sedai.models.worker.FTPWork
 import app.fourdrin.sedai.models.worker.LoaderWork
 import app.fourdrin.sedai.worker.job.JobWorker
@@ -37,7 +37,7 @@ class LoaderService : LoaderServiceGrpcKt.LoaderServiceCoroutineImplBase() {
 
         val job = LoaderWork(
             id = request.s3Key,
-            assetType = AssetType.METADATA,
+            fileType = FileType.METADATA,
             metadataType = metadataType,
             metadataFile = metadataFile
         )

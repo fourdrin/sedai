@@ -4,7 +4,7 @@ import app.fourdrin.sedai.models.metadata.MetadataType
 import java.io.InputStream
 
 
-enum class AssetType {
+enum class FileType {
     METADATA,
     EPUB,
     COVER,
@@ -23,7 +23,7 @@ data class FTPWork(
 
 data class LoaderWork(
     override val id: String,
-    val assetType: AssetType,
+    val fileType: FileType,
     val metadataType: MetadataType? = null,
     val metadataFile: InputStream? = null
 ) : Work()
