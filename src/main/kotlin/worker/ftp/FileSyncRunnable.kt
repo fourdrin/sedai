@@ -27,7 +27,7 @@ class FileSyncRunnable constructor(val s3Client: S3Client, private val loaderCli
         // Open the manifest file
         val manifestRequest = GetObjectRequest.builder()
             .bucket(SEDAI_PIPELINE_DIRECTORY)
-            .key(work.manifestS3Key)
+            .key(work.manifestKey)
             .build()
 
         val resp = s3Client.getObject(manifestRequest, ResponseTransformer.toBytes())

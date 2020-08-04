@@ -2,13 +2,27 @@ package app.fourdrin.sedai.grpc
 
 import LoaderServiceGrpcKt
 import LoaderServiceOuterClass
+import app.fourdrin.sedai.ftp.FTPWorker
 import app.fourdrin.sedai.models.metadata.*
 import app.fourdrin.sedai.models.worker.AssetType
+import app.fourdrin.sedai.models.worker.FTPWork
 import app.fourdrin.sedai.models.worker.LoaderWork
 import app.fourdrin.sedai.worker.job.JobWorker
 import java.io.ByteArrayInputStream
 
 class LoaderService : LoaderServiceGrpcKt.LoaderServiceCoroutineImplBase() {
+    override suspend fun createFileSyncJob(request: LoaderServiceOuterClass.CreateFileSyncJobRequest): LoaderServiceOuterClass.CreateFileSyncJobResponse {
+        val work = FTPWork(
+            id = request.id,
+            accountName = request.accountName,
+            manifestKey =  request.manifestKey
+        )
+
+        FTPWorker.queue.add(work)
+
+        return LoaderServiceOuterClass.CreateFileSyncJobResponse.newBuilder().setQueued(true).build()
+    }
+
     override suspend fun createMetadataJob(request: LoaderServiceOuterClass.CreateMetadataJobRequest): LoaderServiceOuterClass.CreateMetadataJobResponse {
         val metadataType: MetadataType = when(request.metadataType) {
             LoaderServiceOuterClass.MetadataType.ONIX_TWO_LONG -> OnixTwoLong

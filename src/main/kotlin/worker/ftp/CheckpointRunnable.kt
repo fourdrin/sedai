@@ -3,6 +3,7 @@ package app.fourdrin.sedai.worker.ftp
 import app.fourdrin.sedai.SEDAI_FTP_ROOT_DIRECTORY
 import app.fourdrin.sedai.SEDAI_MANIFEST_NAME
 import app.fourdrin.sedai.ftp.FTPWorker
+import app.fourdrin.sedai.grpc.LoaderClient
 import app.fourdrin.sedai.models.ftp.Account
 import app.fourdrin.sedai.models.ftp.Asset
 import app.fourdrin.sedai.models.ftp.Manifest
@@ -21,7 +22,7 @@ import java.time.Instant
 
 const val ASSET_REGEX = ".(jpg|jpeg|epub)"
 
-class CheckpointRunnable constructor(val s3Client: S3Client) :
+class CheckpointRunnable constructor(private val s3Client: S3Client, private val loaderClient: LoaderClient) :
     Runnable {
 
     override fun run() {
@@ -80,13 +81,7 @@ class CheckpointRunnable constructor(val s3Client: S3Client) :
                 val account = accounts[accountKey]
 
                 if (account != null) {
-                    val work = FTPWork(
-                        id,
-                        accountName = accountKey,
-                        manifestName = SEDAI_MANIFEST_NAME
-                    )
-
-                    FTPWorker.queue.add(work)
+                    loaderClient.createFileSyncJob(id, account.name, manifestKey)
                 }
             }
         }

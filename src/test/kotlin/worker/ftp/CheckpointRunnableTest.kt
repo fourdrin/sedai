@@ -1,17 +1,23 @@
 package worker.ftp
 
+import LoaderServiceGrpcKt
+import LoaderServiceOuterClass
 import app.fourdrin.sedai.SEDAI_FTP_ROOT_DIRECTORY
-import app.fourdrin.sedai.worker.ftp.CheckpointRunnable
+import app.fourdrin.sedai.SEDAI_MANIFEST_NAME
+import app.fourdrin.sedai.grpc.LoaderClient
 import app.fourdrin.sedai.models.ftp.Manifest
 import app.fourdrin.sedai.models.worker.AssetType
+import app.fourdrin.sedai.worker.ftp.CheckpointRunnable
 import com.google.gson.Gson
-import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.doReturn
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.*
+import io.grpc.inprocess.InProcessServerBuilder
+import io.grpc.testing.GrpcCleanupRule
+import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
+import org.mockito.AdditionalAnswers
 import org.mockito.ArgumentCaptor
+import org.mockito.Mockito
 import software.amazon.awssdk.core.sync.RequestBody
 import software.amazon.awssdk.services.s3.S3Client
 import software.amazon.awssdk.services.s3.model.*
@@ -54,7 +60,34 @@ internal class CheckpointRunnableTest {
         .contents(s3ObjectsAlt)
         .build()
 
-    val requestBodyArgCaptor = ArgumentCaptor.forClass(RequestBody::class.java)
+    private val loaderService = Mockito.mock(
+        LoaderServiceGrpcKt.LoaderServiceCoroutineImplBase::class.java,
+        AdditionalAnswers.delegatesTo<LoaderServiceGrpcKt.LoaderServiceCoroutineImplBase>(
+            object : LoaderServiceGrpcKt.LoaderServiceCoroutineImplBase() {
+                override suspend fun createFileSyncJob(request: LoaderServiceOuterClass.CreateFileSyncJobRequest): LoaderServiceOuterClass.CreateFileSyncJobResponse {
+                    return LoaderServiceOuterClass.CreateFileSyncJobResponse.newBuilder().setQueued(true).build()
+                }
+            }
+        )
+    )
+
+    private val serverName = InProcessServerBuilder.generateName()
+    private val grpcServer = InProcessServerBuilder
+        .forName(serverName)
+        .directExecutor()
+        .addService(loaderService)
+        .build()
+        .start()
+
+    private val grpcCleanup = GrpcCleanupRule()
+
+    init {
+        grpcCleanup.register(grpcServer)
+    }
+
+
+    private val loaderClient = Mockito.mock(LoaderClient::class.java)
+    private val requestBodyArgCaptor = ArgumentCaptor.forClass(RequestBody::class.java)
 
     @Test
     fun testGeneratedManifestFile() {
@@ -68,7 +101,7 @@ internal class CheckpointRunnableTest {
             } doReturn accountResponse
         }
 
-        CheckpointRunnable(s3Client).run()
+        CheckpointRunnable(s3Client, loaderClient).run()
 
         verify(s3Client).putObject(any<PutObjectRequest>(), requestBodyArgCaptor.capture())
 
@@ -95,6 +128,15 @@ internal class CheckpointRunnableTest {
 
         val cover = account?.assetFiles?.get("test")?.get(AssetType.COVER)
         assertEquals("internal/test.jpg", cover)
+
+        // Verify the work was queued via a gRPC request
+        runBlocking {
+            verify(loaderClient).createFileSyncJob(
+                eq(manifestJSON.id),
+                eq("internal"),
+                eq("${manifestJSON.id}/$SEDAI_MANIFEST_NAME")
+            )
+        }
     }
 
     @Test
@@ -109,7 +151,7 @@ internal class CheckpointRunnableTest {
             } doReturn accountResponseAlt
         }
 
-        CheckpointRunnable(s3Client).run()
+        CheckpointRunnable(s3Client, loaderClient).run()
         verify(s3Client).putObject(any<PutObjectRequest>(), requestBodyArgCaptor.capture())
 
         val manifestFile = String(requestBodyArgCaptor.value.contentStreamProvider().newStream().readBytes())
@@ -118,5 +160,14 @@ internal class CheckpointRunnableTest {
 
         val cover = account?.assetFiles?.get("test")?.get(AssetType.COVER)
         assertEquals("internal/test.jpeg", cover)
+
+        // Verify the work was queued via a gRPC request
+        runBlocking {
+            verify(loaderClient).createFileSyncJob(
+                eq(manifestJSON.id),
+                eq("internal"),
+                eq("${manifestJSON.id}/$SEDAI_MANIFEST_NAME")
+            )
+        }
     }
 }

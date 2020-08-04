@@ -1,6 +1,7 @@
 syntax = "proto3";
 
 service LoaderService {
+  rpc CreateFileSyncJob (CreateFileSyncJobRequest) returns (CreateFileSyncJobResponse) {}
   rpc CreateMetadataJob (CreateMetadataJobRequest) returns (CreateMetadataJobResponse) {}
 }
 
@@ -10,6 +11,16 @@ enum MetadataType {
   ONIX_THREE_SHORT = 2;
   ONIX_THREE_LONG = 3;
   UNKNOWN = 4;
+}
+
+message CreateFileSyncJobRequest {
+  string id = 1;
+  string accountName = 2;
+  string manifestKey = 3;
+}
+
+message CreateFileSyncJobResponse {
+  bool queued = 1;
 }
 
 message CreateMetadataJobRequest {

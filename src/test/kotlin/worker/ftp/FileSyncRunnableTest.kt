@@ -94,7 +94,7 @@ internal class FileSyncRunnableTest {
     private val work = FTPWork(
         id = id,
         accountName = "test",
-        manifestName = SEDAI_MANIFEST_NAME
+        manifestKey = "$id/$SEDAI_MANIFEST_NAME"
     )
 
     private val copyObjectCaptor = ArgumentCaptor.forClass(CopyObjectRequest::class.java)

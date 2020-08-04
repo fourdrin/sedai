@@ -37,7 +37,7 @@ object FTPWorker : Worker<FTPWork> {
 
     override fun start() {
         // Schedule checkpoint tasks, which kick off the book load process by getting the current "state" of the FTP server
-        checkpointExecutor.scheduleAtFixedRate(CheckpointRunnable(s3Client) , 0, 60, TimeUnit.SECONDS)
+        checkpointExecutor.scheduleAtFixedRate(CheckpointRunnable(s3Client, loaderClient) , 0, 60, TimeUnit.SECONDS)
 
         // Schedule a task to read from the work queue, which triggers moving files off the FTP server into the book load folder
         fileSyncExecutor.scheduleAtFixedRate({
